@@ -2,8 +2,8 @@
 // Title: Context aware autocomplete
 // Description: Autocompletion inspired by vim.
 // Author: Henrik Skov Midtiby
-// Version: 0.1
-// Date: 2010-12-26
+// Version: 0.2
+// Date: 2010-12-30
 // Script-Type: standalone
 // Context: TeXDocument
 // Shortcut: Ctrl+M
