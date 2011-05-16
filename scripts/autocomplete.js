@@ -288,10 +288,39 @@ function determineMatchingCommandsFromCurrentCommand(currentCommand)
 	return([]);
 }
 
+function getListOfFilesInDir(directory)
+{
+	var retVal = TW.system("ls " + directory, true);
+
+	return retVal.output;
+}
 
 var inputWord = locateWordEndingOnCursor();
-var matchingCommands = determineMatchingCommandsFromCurrentCommand(inputWord.commandName);
-var words = locateMatchingWords(inputWord.extractedWord, matchingCommands);
+if(inputWord.commandName == "includegraphics")
+{
+	var currentDirectory = getPathFromFilename(TW.target.fileName);
+	var filenamesInDirectory = getListOfFilesInDir(currentDirectory);
+	var words = [];
+
+	while(filenamesInDirectory.indexOf('\n') > -1)
+	{
+		var index = filenamesInDirectory.indexOf('\n');
+		var tempWord = filenamesInDirectory.substr(0, index);
+		filenamesInDirectory = filenamesInDirectory.substr(index + 1, filenamesInDirectory.length - index)
+
+		//TW.information(null, "tempWord", "x" + tempWord + "x");
+
+		if(tempWord.indexOf(inputWord.extractedWord) == 0)
+		{
+			words.push(tempWord);
+		}
+	}
+}
+else
+{
+	var matchingCommands = determineMatchingCommandsFromCurrentCommand(inputWord.commandName);
+	var words = locateMatchingWords(inputWord.extractedWord, matchingCommands);
+}
 var CommonSequence = determineLongestCommonInitialSequence(words);
 var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, inputWord);
 
@@ -307,6 +336,23 @@ TW.target.selectRange(inputWord.wordStart + CommonSequence.length, max(0, NextGu
 //var mYchildrenRegion = TW.target.childrenRegion;
 //var howMany = mYchildrenRegion.numRects;
 //TW.information(null, "childrenRegion Rectangles", howMany);
+function getPathFromFilename(filename)
+{
+	// Locate the last directory separator
+	var counter = 0;
+	var lastDirectorySeparator = -1;
+	while(counter < filename.length)
+	{
+		if(filename.charAt(counter) == '/')
+		{
+			lastDirectorySeparator = counter;
+			//TW.information(null, "Val", filename.charAt(counter));
+		}
+		counter += 1;
+	}
+	var basepath = filename.substr(0, lastDirectorySeparator);
+	return basepath;
+}
 
 
 // Debug output
