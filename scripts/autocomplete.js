@@ -21,6 +21,8 @@ function isAlphaNumeric(character)
 		return(true); }
 	if('/' == character) {
 		return(true); }
+	if('.' == character) {
+		return(true); }
 	return(false);
 }
 
@@ -43,6 +45,8 @@ function isAlphaNumericKommaOrSpace(character)
 	if('\t' == character) {
 		return(true); }
 	if('/' == character) {
+		return(true); }
+	if('.' == character) {
 		return(true); }
 	return(false);
 }
