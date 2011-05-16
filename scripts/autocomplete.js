@@ -325,7 +325,9 @@ function getMatchingFilenames(filenamesInDirectory, localPath, inputWord, words)
 }
 
 var inputWord = locateWordEndingOnCursor();
-if(inputWord.commandName == "includegraphics")
+if(inputWord.commandName == "includegraphics" ||
+		inputWord.commandName == "input" ||
+		inputWord.commandName == "include")
 {
 	var currentDirectory = getPathFromFilename(TW.target.fileName);
 	var localPath = getPathFromFilename(inputWord.extractedWord);
