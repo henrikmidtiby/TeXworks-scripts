@@ -346,18 +346,25 @@ else
 {
 	var matchingCommands = determineMatchingCommandsFromCurrentCommand(inputWord.commandName);
 	var words = locateMatchingWords(inputWord.extractedWord, matchingCommands);
+	//TW.information(null, "Hej", words);
 }
 var CommonSequence = determineLongestCommonInitialSequence(words);
+//TW.information(null, "CommonSequence", CommonSequence);
 var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, inputWord);
+//TW.information(null, "CommonStringInAllMatchingWords", CommonStringInAllMatchingWords);
 
 
 // Insert remaining part of the common substring
 TW.target.insertText(CommonStringInAllMatchingWords);
 
 var NextGuess = determineNextGuess(words, inputWord.lastGuess);
+//TW.information(null, "NextGuess", NextGuess);
 
 TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
 TW.target.selectRange(inputWord.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
+
+//TW.information(null, "Hej", getListOfFilesInDir('.'))
+//TW.information(null, "Hej", inputWord.commandName)
 
 //var mYchildrenRegion = TW.target.childrenRegion;
 //var howMany = mYchildrenRegion.numRects;
@@ -376,6 +383,7 @@ function getPathFromFilename(filename)
 		}
 		counter += 1;
 	}
+	//TW.information(null, "Counter:", "Counter: " + counter + " filename.length: " + filename.length);
 	var basepath = filename.substr(0, lastDirectorySeparator);
 	return basepath;
 }
