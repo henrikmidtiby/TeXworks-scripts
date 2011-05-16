@@ -295,26 +295,28 @@ function getListOfFilesInDir(directory)
 	return retVal.output;
 }
 
-var inputWord = locateWordEndingOnCursor();
-if(inputWord.commandName == "includegraphics")
+function getMatchingFilenames(filenamesInDirectory, inputWord, words)
 {
-	var currentDirectory = getPathFromFilename(TW.target.fileName);
-	var filenamesInDirectory = getListOfFilesInDir(currentDirectory);
-	var words = [];
-
 	while(filenamesInDirectory.indexOf('\n') > -1)
 	{
 		var index = filenamesInDirectory.indexOf('\n');
 		var tempWord = filenamesInDirectory.substr(0, index);
 		filenamesInDirectory = filenamesInDirectory.substr(index + 1, filenamesInDirectory.length - index)
 
-		//TW.information(null, "tempWord", "x" + tempWord + "x");
-
 		if(tempWord.indexOf(inputWord.extractedWord) == 0)
 		{
 			words.push(tempWord);
 		}
 	}
+	return(words);
+}
+
+var inputWord = locateWordEndingOnCursor();
+if(inputWord.commandName == "includegraphics")
+{
+	var currentDirectory = getPathFromFilename(TW.target.fileName);
+	var filenamesInDirectory = getListOfFilesInDir(currentDirectory);
+	var words = getMatchingFilenames(filenamesInDirectory, inputWord, []);
 }
 else
 {
