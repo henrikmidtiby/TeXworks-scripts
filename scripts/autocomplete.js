@@ -19,6 +19,8 @@ function isAlphaNumeric(character)
 		return(true); }
 	if('0' <= character && character <= '9') {
 		return(true); }
+	if('/' == character) {
+		return(true); }
 	return(false);
 }
 
@@ -39,6 +41,8 @@ function isAlphaNumericKommaOrSpace(character)
 	if(' ' == character) {
 		return(true); }
 	if('\t' == character) {
+		return(true); }
+	if('/' == character) {
 		return(true); }
 	return(false);
 }
@@ -295,12 +299,16 @@ function getListOfFilesInDir(directory)
 	return retVal.output;
 }
 
-function getMatchingFilenames(filenamesInDirectory, inputWord, words)
+function getMatchingFilenames(filenamesInDirectory, localPath, inputWord, words)
 {
 	while(filenamesInDirectory.indexOf('\n') > -1)
 	{
 		var index = filenamesInDirectory.indexOf('\n');
 		var tempWord = filenamesInDirectory.substr(0, index);
+		if(localPath != "")
+		{
+			tempWord = localPath + "/" + tempWord;
+		}
 		filenamesInDirectory = filenamesInDirectory.substr(index + 1, filenamesInDirectory.length - index)
 
 		if(tempWord.indexOf(inputWord.extractedWord) == 0)
@@ -315,8 +323,9 @@ var inputWord = locateWordEndingOnCursor();
 if(inputWord.commandName == "includegraphics")
 {
 	var currentDirectory = getPathFromFilename(TW.target.fileName);
-	var filenamesInDirectory = getListOfFilesInDir(currentDirectory);
-	var words = getMatchingFilenames(filenamesInDirectory, inputWord, []);
+	var localPath = getPathFromFilename(inputWord.extractedWord);
+	var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
+	var words = getMatchingFilenames(filenamesInDirectory, localPath, inputWord, []);
 }
 else
 {
