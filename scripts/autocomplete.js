@@ -321,6 +321,14 @@ function getMatchingFilenames(filenamesInDirectory, localPath, inputWord, words)
 			words.push(tempWord);
 		}
 	}
+	if(words.length > 0)
+	{
+		words = unique(words);
+	}
+	else
+	{
+		words.push(inputWord.extractedWord);
+	}
 	return(words);
 }
 
