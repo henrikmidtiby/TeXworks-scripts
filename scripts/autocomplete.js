@@ -212,6 +212,11 @@ function locateMatchingWords(wordToMatch, commands)
 			}
 		}
 	}
+	return(wordsCleanUp(words, wordToMatch));
+}
+
+function wordsCleanUp(words, wordToMatch)
+{
 	// Remove duplicates
 	words = unique(words);
 	// Ensure that there is at least one word in the words list.
