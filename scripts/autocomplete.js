@@ -22,7 +22,7 @@ function autocomplete()
 
 	if(shouldCompleteFilename(locationInformation.commandName))
 	{
-		var words = locateMatchingFilenames(locationInformation);
+		var words = locateMatchingFilenames(locationInformation.extractedWord);
 	} else {
 		var words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
 	}
@@ -69,12 +69,12 @@ function shouldCompleteFilename(commandName)
 		return true;
 	return false;
 }
-function locateMatchingFilenames(locationInformation)
+function locateMatchingFilenames(extractedWord)
 {
 	var currentDirectory = getPathFromFilename(TW.target.fileName);
-	var localPath = getPathFromFilename(locationInformation.extractedWord);
+	var localPath = getPathFromFilename(extractedWord);
 	var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
-	var words = getMatchingFilenames(filenamesInDirectory, localPath, locationInformation, []);
+	var words = getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, []);
 	return words;
 }
 function locateMatchingWordsAwareOfContext(commandName, extractedWord)
@@ -258,7 +258,7 @@ function getListOfFilesInDir(directory)
 
 	return retVal.output;
 }
-function getMatchingFilenames(filenamesInDirectory, localPath, inputWord, words)
+function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, words)
 {
 	while(filenamesInDirectory.indexOf('\n') > -1)
 	{
@@ -270,7 +270,7 @@ function getMatchingFilenames(filenamesInDirectory, localPath, inputWord, words)
 		}
 		filenamesInDirectory = filenamesInDirectory.substr(index + 1, filenamesInDirectory.length - index)
 
-		if(tempWord.indexOf(inputWord.extractedWord) == 0)
+		if(tempWord.indexOf(extractedWord) == 0)
 		{
 			words.push(tempWord);
 		}
@@ -281,7 +281,7 @@ function getMatchingFilenames(filenamesInDirectory, localPath, inputWord, words)
 	}
 	else
 	{
-		words.push(inputWord.extractedWord);
+		words.push(extractedWord);
 	}
 	return(words);
 }
