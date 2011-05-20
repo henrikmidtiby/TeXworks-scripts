@@ -10,16 +10,13 @@
 
 function autocomplete()
 {
-	var temp = collectDetailsAboutTheCurrentSelection();
-	//showObject(temp);
+	var locationInformation = collectDetailsAboutTheCurrentSelection();
+	//showObject(locationInformation);
 
 	// If first in a line, complete unfinished environment.
-	if(temp.firstPlaceInLine)
+	if(locationInformation.firstPlaceInLine)
 	{
-		if(temp.unclosedEnvironment != "")
-		{
-			TW.target.insertText("\\end{" + temp.unclosedEnvironment + "}\n");
-		}
+		closeEnvironment(locationInformation);
 		return;
 	}
 
@@ -68,6 +65,13 @@ function collectDetailsAboutTheCurrentSelection()
 	}
 
 	return(details);
+}
+function closeEnvironment(locationInformation)
+{
+	if(locationInformation.unclosedEnvironment != "")
+	{
+		TW.target.insertText("\\end{" + locationInformation.unclosedEnvironment + "}\n");
+	}
 }
 // Function that extracts the longest alphanumeric string ending 
 // on the current cursor location.
