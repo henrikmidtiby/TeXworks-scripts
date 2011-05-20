@@ -254,13 +254,21 @@ function getPathFromFilename(filename)
 }
 function getListOfFilesInDir(directory)
 {
-	var retVal = TW.system("ls " + directory, true);
+	if (TW.platform() == 'Windows')
+	{   
+		var retVal = TW.system("cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"", true);   
+	}   
+	else     
+	{ 
+		var retVal = TW.system("ls " + directory, true);    
+	} 
 
 	return retVal.output;
 }
 function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, words)
 {
-	while(filenamesInDirectory.indexOf('\n') > -1)
+	var typeOfLineBreak = getTypeOfLineBreak(filenamesInDirectory);
+	while(filenamesInDirectory.indexOf(typeOfLineBreak) > -1)
 	{
 		var index = filenamesInDirectory.indexOf('\n');
 		var tempWord = filenamesInDirectory.substr(0, index);
@@ -284,6 +292,14 @@ function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, wo
 		words.push(extractedWord);
 	}
 	return(words);
+}
+function getTypeOfLineBreak(sample) 
+{   
+	if (sample.indexOf("\r\n") > -1)
+	{  
+		return("\r\n"); 
+	}    
+	return("\n");
 }
 // Function for removing dublicate element in an array.
 // Code from http://www.martienus.com/code/javascript-remove-duplicates-from-array.html
