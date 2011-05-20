@@ -16,7 +16,7 @@ function autocomplete()
 	// If first in a line, complete unfinished environment.
 	if(locationInformation.firstPlaceInLine)
 	{
-		closeEnvironment(locationInformation);
+		closeEnvironment(locationInformation.unclosedEnvironment);
 		return;
 	}
 
@@ -52,11 +52,11 @@ function collectDetailsAboutTheCurrentSelection()
 
 	return(details);
 }
-function closeEnvironment(locationInformation)
+function closeEnvironment(unclosedEnvironment)
 {
-	if(locationInformation.unclosedEnvironment != "")
+	if(unclosedEnvironment != "")
 	{
-		TW.target.insertText("\\end{" + locationInformation.unclosedEnvironment + "}\n");
+		TW.target.insertText("\\end{" + unclosedEnvironment + "}\n");
 	}
 }
 function shouldCompleteFilename(commandName)
@@ -86,7 +86,7 @@ function locateMatchingWordsAwareOfContext(commandName, extractedWord)
 function insertSuggestion(words, locationInformation)
 {
 	var CommonSequence = determineLongestCommonInitialSequence(words);
-	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, locationInformation);
+	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, locationInformation.extractedWord);
 
 	// Insert remaining part of the common substring
 	TW.target.insertText(CommonStringInAllMatchingWords);
@@ -424,10 +424,10 @@ function determineLongestCommonInitialSequence(words)
 	}
 	return CommonSequence;
 }
-function getEndOfCommonSubstring(CommonSequence, inputWord)
+function getEndOfCommonSubstring(CommonSequence, extractedWord)
 {
-	var offset = inputWord.extractedWord.length;
-	var seqLength = CommonSequence.length - inputWord.extractedWord.length;
+	var offset = extractedWord.length;
+	var seqLength = CommonSequence.length - extractedWord.length;
 	return CommonSequence.substr(offset, seqLength);
 }
 // Given a list of matching words and the current guess, the function 
