@@ -20,31 +20,30 @@ function autocomplete()
 		return;
 	}
 
-	var inputWord = locateWordEndingOnCursor();
-	if(inputWord.commandName == "includegraphics" ||
-			inputWord.commandName == "input" ||
-			inputWord.commandName == "include")
+	if(locationInformation.commandName == "includegraphics" ||
+			locationInformation.commandName == "input" ||
+			locationInformation.commandName == "include")
 	{
 		var currentDirectory = getPathFromFilename(TW.target.fileName);
-		var localPath = getPathFromFilename(inputWord.extractedWord);
+		var localPath = getPathFromFilename(locationInformation.extractedWord);
 		var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
-		var words = getMatchingFilenames(filenamesInDirectory, localPath, inputWord, []);
+		var words = getMatchingFilenames(filenamesInDirectory, localPath, locationInformation, []);
 	}
 	else
 	{
-		var matchingCommands = determineMatchingCommandsFromCurrentCommand(inputWord.commandName);
-		var words = locateMatchingWords(inputWord.extractedWord, matchingCommands);
+		var matchingCommands = determineMatchingCommandsFromCurrentCommand(locationInformation.commandName);
+		var words = locateMatchingWords(locationInformation.extractedWord, matchingCommands);
 	}
 	var CommonSequence = determineLongestCommonInitialSequence(words);
-	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, inputWord);
+	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, locationInformation);
 
 	// Insert remaining part of the common substring
 	TW.target.insertText(CommonStringInAllMatchingWords);
 
-	var NextGuess = determineNextGuess(words, inputWord.lastGuess);
+	var NextGuess = determineNextGuess(words, locationInformation.lastGuess);
 
 	TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
-	TW.target.selectRange(inputWord.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
+	TW.target.selectRange(locationInformation.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
 }
 function collectDetailsAboutTheCurrentSelection()
 {
@@ -54,6 +53,9 @@ function collectDetailsAboutTheCurrentSelection()
 	details.selectedText = TW.target.selection;
 	details.lastGuess = selectedWord.lastGuess;
 	details.commandName = selectedWord.commandName;
+	details.extractedWord = selectedWord.extractedWord;
+	details.lastGuess = selectedWord.lastGuess;
+	details.wordStart = selectedWord.wordStart;
 
 	var unclosed = locateUnclosedEnvironmentsBeforeCursor();
 	details.unclosedEnvironment = unclosed;
