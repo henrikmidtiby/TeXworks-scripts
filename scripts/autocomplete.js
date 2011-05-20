@@ -23,22 +23,11 @@ function autocomplete()
 	if(shouldCompleteFilename(locationInformation.commandName))
 	{
 		var words = locateMatchingFilenames(locationInformation);
+	} else {
+		var words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
 	}
-	else
-	{
-		var matchingCommands = determineMatchingCommandsFromCurrentCommand(locationInformation.commandName);
-		var words = locateMatchingWords(locationInformation.extractedWord, matchingCommands);
-	}
-	var CommonSequence = determineLongestCommonInitialSequence(words);
-	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, locationInformation);
 
-	// Insert remaining part of the common substring
-	TW.target.insertText(CommonStringInAllMatchingWords);
-
-	var NextGuess = determineNextGuess(words, locationInformation.lastGuess);
-
-	TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
-	TW.target.selectRange(locationInformation.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
+	insertSuggestion(words, locationInformation);
 }
 function collectDetailsAboutTheCurrentSelection()
 {
@@ -87,6 +76,25 @@ function locateMatchingFilenames(locationInformation)
 	var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
 	var words = getMatchingFilenames(filenamesInDirectory, localPath, locationInformation, []);
 	return words;
+}
+function locateMatchingWordsAwareOfContext(commandName, extractedWord)
+{
+	var matchingCommands = determineMatchingCommandsFromCurrentCommand(commandName);
+	var words = locateMatchingWords(extractedWord, matchingCommands);
+	return words;
+}
+function insertSuggestion(words, locationInformation)
+{
+	var CommonSequence = determineLongestCommonInitialSequence(words);
+	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, locationInformation);
+
+	// Insert remaining part of the common substring
+	TW.target.insertText(CommonStringInAllMatchingWords);
+
+	var NextGuess = determineNextGuess(words, locationInformation.lastGuess);
+
+	TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
+	TW.target.selectRange(locationInformation.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
 }
 // Function that extracts the longest alphanumeric string ending 
 // on the current cursor location.
