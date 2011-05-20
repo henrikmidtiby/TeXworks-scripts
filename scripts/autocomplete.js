@@ -10,6 +10,19 @@
 
 function autocomplete()
 {
+	var temp = collectDetailsAboutTheCurrentSelection();
+	//showObject(temp);
+
+	// If first in a line, complete unfinished environment.
+	if(temp.firstPlaceInLine)
+	{
+		if(temp.unclosedEnvironment != "")
+		{
+			TW.target.insertText("\\end{" + temp.unclosedEnvironment + "}\n");
+		}
+		return;
+	}
+
 	var inputWord = locateWordEndingOnCursor();
 	if(inputWord.commandName == "includegraphics" ||
 			inputWord.commandName == "input" ||
@@ -24,31 +37,38 @@ function autocomplete()
 	{
 		var matchingCommands = determineMatchingCommandsFromCurrentCommand(inputWord.commandName);
 		var words = locateMatchingWords(inputWord.extractedWord, matchingCommands);
-		//TW.information(null, "Hej", words);
 	}
 	var CommonSequence = determineLongestCommonInitialSequence(words);
-	//TW.information(null, "CommonSequence", CommonSequence);
 	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, inputWord);
-	//TW.information(null, "CommonStringInAllMatchingWords", CommonStringInAllMatchingWords);
-
 
 	// Insert remaining part of the common substring
 	TW.target.insertText(CommonStringInAllMatchingWords);
 
 	var NextGuess = determineNextGuess(words, inputWord.lastGuess);
-	//TW.information(null, "NextGuess", NextGuess);
 
 	TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
 	TW.target.selectRange(inputWord.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
-
-	//TW.information(null, "Hej", getListOfFilesInDir('.'))
-	//TW.information(null, "Hej", inputWord.commandName)
-
-	//var mYchildrenRegion = TW.target.childrenRegion;
-	//var howMany = mYchildrenRegion.numRects;
-	//TW.information(null, "childrenRegion Rectangles", howMany);
 }
+function collectDetailsAboutTheCurrentSelection()
+{
+	var details = {};
+	var selectedWord = locateWordEndingOnCursor();
+	details.wordToComplete = selectedWord.extractedWord;
+	details.selectedText = TW.target.selection;
+	details.lastGuess = selectedWord.lastGuess;
+	details.commandName = selectedWord.commandName;
 
+	var unclosed = locateUnclosedEnvironmentsBeforeCursor();
+	details.unclosedEnvironment = unclosed;
+
+	details.firstPlaceInLine = false;
+	if(TW.target.text.charAt(TW.target.selectionStart - 1) == '\n')
+	{
+		details.firstPlaceInLine = true;
+	}
+
+	return(details);
+}
 // Function that extracts the longest alphanumeric string ending 
 // on the current cursor location.
 // In addition is it determined if the word is a parameter to a command, in
@@ -75,16 +95,16 @@ function getCommandName(wordStart)
 {
 	// Determine if the word is a parameter to a command
 	var counter = 100;
-	var commandName = "nothing";
+	var commandName = "commandNameNothing";
 	while(counter > 0 && isAlphaNumericKommaOrSpace(TW.target.text.charAt(wordStart - 1)))
 	{
 		wordStart = wordStart - 1;
 		counter = counter - 1;
-		commandName = "something";
+		commandName = "commandNameSomething";
 	}
 	if(TW.target.text.charAt(wordStart - 1) == "{")
 	{
-		commandName = "more";
+		commandName = "commandNameMore";
 		var commandEnd = wordStart - 1;
 		var commandStart = wordStart - 1;
 		while(counter > 0 && isAlphaNumeric(TW.target.text.charAt(commandStart - 1)))
@@ -100,6 +120,55 @@ function getCommandName(wordStart)
 	}
 
 	return(commandName);
+}
+function locateUnclosedEnvironmentsBeforeCursor()
+{
+	var textBeforeCursor = TW.target.text.substr(0, TW.target.selectionStart);
+	var listOfBeginEnvironments = [];
+	var listOfEndEnvironments = [];
+	var environmentStack = [];
+	var remainingTextToAnalyze = textBeforeCursor;
+	var tempBeginIndex = remainingTextToAnalyze.lastIndexOf("\\begin{");
+	var tempEndIndex = remainingTextToAnalyze.lastIndexOf("\\end{");
+	var unclosedEnvironment = "";
+
+	//environmentStack.push(remainingTextToAnalyze.length)
+	while(tempBeginIndex != -1 || tempEndIndex != -1)
+	{
+		if(tempBeginIndex > tempEndIndex)
+		{
+			var tempText = remainingTextToAnalyze.substr(tempBeginIndex + 7, 40);
+			var tempIndex = tempText.indexOf("}");
+			var envName = remainingTextToAnalyze.substr(tempBeginIndex + 7, tempIndex);
+
+			var topOfStack = environmentStack[environmentStack.length - 1];
+			if(topOfStack == "e:" + envName)
+			{
+				var len = environmentStack.length;
+				environmentStack = environmentStack.slice(0, len - 1);
+			}
+			else
+			{
+				unclosedEnvironment = envName;
+				break;
+			}
+			remainingTextToAnalyze = remainingTextToAnalyze.substr(0, tempBeginIndex);
+			tempBeginIndex = remainingTextToAnalyze.lastIndexOf("\\begin{");
+		}
+		else
+		{
+			var tempText = remainingTextToAnalyze.substr(tempEndIndex + 5, 40);
+			var tempIndex = tempText.indexOf("}");
+			var envName = remainingTextToAnalyze.substr(tempEndIndex + 5, tempIndex);
+			environmentStack.push("e:" + envName);
+			remainingTextToAnalyze = remainingTextToAnalyze.substr(0, tempEndIndex);
+			tempEndIndex = remainingTextToAnalyze.lastIndexOf("\\end{");
+		}
+	}
+
+	//showObject(unclosedEnvironment);
+
+	return(unclosedEnvironment);
 }
 function isAlphaNumeric(character)
 {
@@ -364,6 +433,15 @@ function max(a, b)
 		return(b);
 	}
 }
+function showObject(inputObject)
+{
+	var tempText = "";
+	for(prop in inputObject){
+		tempText += prop + " -> " + inputObject[prop] + "\n";
+	}
+	TW.information(null, "Hej", tempText);
+}
+
 
 autocomplete();
 
