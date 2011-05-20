@@ -20,14 +20,9 @@ function autocomplete()
 		return;
 	}
 
-	if(locationInformation.commandName == "includegraphics" ||
-			locationInformation.commandName == "input" ||
-			locationInformation.commandName == "include")
+	if(shouldCompleteFilename(locationInformation.commandName))
 	{
-		var currentDirectory = getPathFromFilename(TW.target.fileName);
-		var localPath = getPathFromFilename(locationInformation.extractedWord);
-		var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
-		var words = getMatchingFilenames(filenamesInDirectory, localPath, locationInformation, []);
+		var words = locateMatchingFilenames(locationInformation);
 	}
 	else
 	{
@@ -74,6 +69,24 @@ function closeEnvironment(locationInformation)
 	{
 		TW.target.insertText("\\end{" + locationInformation.unclosedEnvironment + "}\n");
 	}
+}
+function shouldCompleteFilename(commandName)
+{
+	if(commandName == "includegraphics")
+		return true;
+	if(commandName == "input")
+		return true;
+	if(commandName == "include")
+		return true;
+	return false;
+}
+function locateMatchingFilenames(locationInformation)
+{
+	var currentDirectory = getPathFromFilename(TW.target.fileName);
+	var localPath = getPathFromFilename(locationInformation.extractedWord);
+	var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
+	var words = getMatchingFilenames(filenamesInDirectory, localPath, locationInformation, []);
+	return words;
 }
 // Function that extracts the longest alphanumeric string ending 
 // on the current cursor location.
