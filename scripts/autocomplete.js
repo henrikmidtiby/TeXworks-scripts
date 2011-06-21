@@ -255,13 +255,13 @@ function getPathFromFilename(filename)
 function getListOfFilesInDir(directory)
 {
 	if (TW.platform() == 'Windows')
-	{   
-		var retVal = TW.system("cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"", true);   
-	}   
-	else     
-	{ 
-		var retVal = TW.system("ls " + directory, true);    
-	} 
+	{
+		var retVal = TW.system("cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"", true);
+	}
+	else
+	{
+		var retVal = TW.system("ls " + directory, true);
+	}
 
 	return retVal.output;
 }
@@ -294,11 +294,11 @@ function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, wo
 	return(words);
 }
 function getTypeOfLineBreak(sample) 
-{   
+{
 	if (sample.indexOf("\r\n") > -1)
-	{  
-		return("\r\n"); 
-	}    
+	{
+		return("\r\n");
+	}
 	return("\n");
 }
 // Function for removing dublicate element in an array.
