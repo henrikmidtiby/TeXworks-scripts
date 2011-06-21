@@ -263,6 +263,11 @@ function getListOfFilesInDir(directory)
 		var retVal = TW.system("ls " + directory, true);
 	}
 
+	if(retVal.output == undefined)
+	{
+		TW.information(null, "Error message", retVal.message);
+	}
+
 	return retVal.output;
 }
 function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, words)
