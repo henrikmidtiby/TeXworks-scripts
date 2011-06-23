@@ -285,7 +285,8 @@ function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, wo
 
 		if(tempWord.indexOf(extractedWord) == 0)
 		{
-			words.push(tempWord);
+			// Remove whitespaces in the word
+			words.push(tempWord.replace(/\s/, ""));
 		}
 	}
 	if(words.length > 0)
