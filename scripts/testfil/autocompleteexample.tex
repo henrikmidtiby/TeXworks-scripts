@@ -1,0 +1,134 @@
+Autocomplete script for TeXworks
+
+The script is demonstrated by letting it make suggestions
+for a sequence of usecases.
+The demonstrated autocompletion behaviour is triggered by the
+short cut "<crtl> + m", which are the only keys that are 
+pressed during recording of this video.
+
+
+
+
+
+
+
+
+
+
+
+
+Case 1:
+=======
+Fill in the rest of an incomplete word. The word must be 
+present in one of the files currently opened by TeXworks.
+
+Te
+TeXworks
+
+
+
+
+
+
+
+
+
+
+
+
+Case 2:
+=======
+If there are more than a single word that can be used for 
+autocompletion in the opened documents, it is possible to 
+cycle through all the possibe combinations by activating 
+the script repeatedly.
+
+i
+incomplete
+
+
+
+
+
+
+
+
+
+
+Case 3:
+=======
+Consider a document with the three long words
+veryLongWord
+veryLongWordWithCAPS
+veryLongWordWithoutCAPS
+and the current word that should be autocompleted is "ve".
+Then will the script detect that there are three 
+possibilities and that they all have a common prefix 
+"veryLongWord". This common prefix is typed in and then the 
+script is ready to await further input.
+
+ve
+veryLongWordWithoutCAPS
+
+
+
+
+
+Case 4: 
+=======
+Filename completion based on files in the current directory
+(the directory contains the following: 
+autocompleteexample.tex
+testing.log
+testing.tex
+subdir)
+
+\input{}
+\input{testing.tex}
+
+
+
+
+
+
+
+
+Case 5: 
+=======
+Filename completion within subdirs.
+The 'subdir' directory contains the two files
+image.png and imageTwo.jpg.
+
+(The forward slash '/' is provided by the keyboard)
+
+\includegraphics{}
+\includegraphics{subdir/imageTwo.jpg}
+
+
+
+
+
+
+
+
+
+Case 6: 
+=======
+Closing of unclosed environments.
+
+\begin{document}
+\begin{table}
+\begin{tabular}{cc}
+
+\end{tabular}
+\end{table}
+\end{document}
+
+
+
+
+
+
+
+
+
