@@ -377,7 +377,12 @@ function getTextFromAllOpenWindows()
 	for (editor in windows)
     {
        	var targetDocument = windows[editor];
-		// TODO: Only parse if the file has .tex as the extension.
+		var filename = targetDocument.fileName;
+		var hasTexExtension = new RegExp(".*tex");
+		if(hasTexExtension.test(filename))
+		{
+			fullText = fullText + targetDocument.text + " ";
+		}
 		// TODO: Search for citations if the file ends on .bib
 		fullText = fullText + targetDocument.text + " ";
 	}
