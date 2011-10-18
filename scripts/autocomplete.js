@@ -26,6 +26,10 @@ function autocomplete()
 	} else {
 		var words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
 	}
+	
+	// Sort the found matches to avoid problems when the ordering is changed 
+	// due to the current suggested completion.
+	words = words.sort();
 
 	insertSuggestion(words, locationInformation);
 }
