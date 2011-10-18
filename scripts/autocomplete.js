@@ -384,10 +384,32 @@ function getTextFromAllOpenWindows()
 			fullText = fullText + targetDocument.text + " ";
 		}
 		// TODO: Search for citations if the file ends on .bib
-		fullText = fullText + targetDocument.text + " ";
+		var hasBibExtension = new RegExp(".*bib");
+		if(hasBibExtension.test(filename))
+		{
+			fullText = fullText + " " + getBibtexKeys(targetDocument.text) + " ";
+		}
 	}
 
 	return(fullText);
+}
+function getBibtexKeys(inputString)
+{
+	var bibtexKeyList = "";
+	var bibtexTypeAndKey = new RegExp("\@[A-Z]*\{[a-zA-Z0-9]*,", "g");
+	var bibtexKey = new RegExp("\{([a-zA-Z0-9]*),");
+	var bibtexKeyMatches = inputString.match(bibtexTypeAndKey);
+	if(bibtexKeyMatches)
+	{
+		for(idx = 0; idx < bibtexKeyMatches.length; idx++)
+		{
+			var tempText = bibtexKeyMatches[idx];
+			var matches = tempText.match(bibtexKey);
+			var bibtexKeyName = matches[1];
+			bibtexKeyList = bibtexKeyList + bibtexKeyName + " "; 
+		}
+	}
+	return(bibtexKeyList);
 }
 function locateMatchingWordsInString(wordToMatch, parameterText, words)
 {
