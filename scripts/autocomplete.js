@@ -315,16 +315,16 @@ function getTypeOfLineBreak(sample)
 // Code from http://www.martienus.com/code/javascript-remove-duplicates-from-array.html
 function unique(a)
 {
-   var r = new Array();
-   o:for(var i = 0, n = a.length; i < n; i++)
-   {
-      for(var x = 0, y = r.length; x < y; x++)
-      {
-         if(r[x]==a[i]) continue o;
-      }
-      r[r.length] = a[i];
-   }
-   return r;
+	var r = new Array();
+	o:for(var i = 0, n = a.length; i < n; i++)
+	{
+		for(var x = 0, y = r.length; x < y; x++)
+		{
+			if(r[x]==a[i]) continue o;
+		}
+		r[r.length] = a[i];
+	}
+	return r;
 }
 function determineMatchingCommandsFromCurrentCommand(currentCommand)
 {
@@ -379,8 +379,8 @@ function getTextFromAllOpenWindows()
 	var fullText = "";
 
 	for (editor in windows)
-    {
-       	var targetDocument = windows[editor];
+	{
+		var targetDocument = windows[editor];
 		var filename = targetDocument.fileName;
 		var hasTexExtension = new RegExp(".*tex");
 		if(hasTexExtension.test(filename))
