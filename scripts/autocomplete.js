@@ -131,13 +131,13 @@ function locateWordEndingOnCursor()
 	var markedWord = TW.target.selection;
 	var lastGuess = extractedWord + markedWord;
 	var commandName = getCommandName(wordStart);
-	var isCommandName = "false";
+	var isCommandName = false;
 	if(wordStart > 0)
 	{
 		var charBeforeWord = TW.target.text.substring(wordStart - 1, wordStart);
 		if(charBeforeWord == "\\")
 		{
-			isCommandName = "true";
+			isCommandName = true;
 		}
 	}
 
