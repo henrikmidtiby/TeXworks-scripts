@@ -24,6 +24,8 @@ function autocomplete()
 	// complete filename.
 	if(shouldCompleteFilename(locationInformation.commandName)) {
 		var words = locateMatchingFilenames(locationInformation.extractedWord);
+	} else if(locationInformation.wordToComplete.length == 0) {
+			return;
 	} else if (locationInformation.isCommandName) {
 		var words = locateMatchingCommandNames(locationInformation.extractedWord);
 	} else {
