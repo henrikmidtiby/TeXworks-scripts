@@ -20,9 +20,12 @@ function autocomplete()
 		return;
 	}
 
-	if(shouldCompleteFilename(locationInformation.commandName))
-	{
+	// If in primary argument to input, include, includegraphics or similar, 
+	// complete filename.
+	if(shouldCompleteFilename(locationInformation.commandName)) {
 		var words = locateMatchingFilenames(locationInformation.extractedWord);
+	} else if (locationInformation.isCommandName) {
+		var words = locateMatchingCommandNames(locationInformation.extractedWord);
 	} else {
 		var words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
 	}
@@ -44,6 +47,7 @@ function collectDetailsAboutTheCurrentSelection()
 	details.extractedWord = selectedWord.extractedWord;
 	details.lastGuess = selectedWord.lastGuess;
 	details.wordStart = selectedWord.wordStart;
+	details.isCommandName = selectedWord.isCommandName;
 
 	var unclosed = locateUnclosedEnvironmentsBeforeCursor();
 	details.unclosedEnvironment = unclosed;
@@ -79,6 +83,14 @@ function locateMatchingFilenames(extractedWord)
 	var localPath = getPathFromFilename(extractedWord);
 	var filenamesInDirectory = getListOfFilesInDir(currentDirectory + "/" + localPath);
 	var words = getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, []);
+	return words;
+}
+function locateMatchingCommandNames(extractedWord)
+{
+	var words = [];
+	// Command list taken from http://en.wikibooks.org/wiki/LaTeX/Command_Glossary
+	var listOfCommands = "addcontentsline addtocontents addtocounter address addtolength addvspace alph appendix arabic author backslash baselineskip baselinestretch bf bibitem bigskipamount bigskip boldmath cal caption cdots centering chapter circle cite cleardoublepage clearpage cline closing color copyright dashbox date ddots documentclass dotfill em emph ensuremath euro fbox flushbottom fnsymbol footnote footnotemark footnotesize footnotetext frac frame framebox frenchspacing hfill hline hrulefill hspace huge Huge hyphenation include includegraphics includeonly indent input it item kill label large Large LARGE LaTeX LaTeXe ldots left lefteqn line linebreak linethickness linewidth listoffigures listoftables location makebox maketitle markboth markright mathcal mathop mbox medskip multicolumn multiput newcommand newcounter newenvironment newfont newlength newline newpage newsavebox newtheorem nocite noindent nolinebreak nonfrenchspacing normalsize nopagebreak not onecolumn opening oval overbrace overline pagebreak pagenumbering pageref pagestyle par paragraph parbox parindent parskip part protect providecommand put raggedbottom raggedleft raggedright raisebox ref renewcommand right rm roman rule savebox sbox sc scriptsize section setcounter setlength settowidth sf shortstack signature sl slash small smallskip sout space sqrt stackrel subparagraph subsection subsubsection tableofcontents telephone TeX textbf textcolor textit textmd textnormal textrm textsc textsf textsl texttt textup textwidth textheight thanks thispagestyle tiny title today tt twocolumn typeout typein uline underbrace underline unitlength usebox usecounter uwave value vbox vdots vector verb vfill vline vphantom vspace"; 
+	words = locateMatchingWordsInString(extractedWord, listOfCommands, words);
 	return words;
 }
 function locateMatchingWordsAwareOfContext(commandName, extractedWord)
@@ -119,8 +131,17 @@ function locateWordEndingOnCursor()
 	var markedWord = TW.target.selection;
 	var lastGuess = extractedWord + markedWord;
 	var commandName = getCommandName(wordStart);
+	var isCommandName = "false";
+	if(wordStart > 0)
+	{
+		var charBeforeWord = TW.target.text.substring(wordStart - 1, wordStart);
+		if(charBeforeWord == "\\")
+		{
+			isCommandName = "true";
+		}
+	}
 
-	return {wordStart: wordStart, extractedWord: extractedWord, lastGuess: lastGuess, commandName: commandName};
+	return {wordStart: wordStart, extractedWord: extractedWord, lastGuess: lastGuess, commandName: commandName, isCommandName: isCommandName};
 }
 function getCommandName(wordStart)
 {
