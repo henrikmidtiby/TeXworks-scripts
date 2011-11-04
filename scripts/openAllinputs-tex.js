@@ -127,7 +127,7 @@ function mainfunction()
 		if ( (explicitSelection == false) & (thisLine.indexOf('\\end{document}')  >-1) ) {inDocument = false;}  // avoid user notes below document proper, but explicitSelection test can allow a user selection that crosses over the \end{document}.
 
 		// ADVICE: We are looking for only one \input{} per line	
-		if ( (inDocument == true) & ((thisLine.indexOf('\\input{')>-1) | (thisLine.indexOf('\\include{')>-1) )& (thisLine.indexOf('.tex}')>-1) )
+		if ( (inDocument == true) & doesLineContainInputOrInclude(thisLine))
 		{
 			var doingInclude = false;
 
@@ -147,20 +147,14 @@ function mainfunction()
 			//TW.warning(null,"Filename Check:", fileName);
 			if (  (checkForIncludeOnly == true) & (doingInclude == true) & (buildIncludeOnly != "")  )
 			{
-				 var usable = false;
-
-				for (item in includeList)
+				if(isFileInIncludeList(fileName, includeList))
 				{
-					if (includeList[item].indexOf(fileName) > -1 )
-					{
-						usable = true;
-						break;
-					}
-				}	
-				if (usable == false)					
-				{ 
-					continue; 
-				} // include{fileName} not in \includeonly{}
+					break;
+				}
+				else
+				{
+					continue;
+				}
 			} 
 
 			fileName = currentDirectory + fileName; 
@@ -172,6 +166,41 @@ function mainfunction()
 		}
 	}// /End. for	(line in alLines)
 
+	openLocatedFiles(followThese);
+
+	if (followThese.length == 1)
+	{
+		//openedDoc.showNormal()
+	} // user has requested only one file, show it
+	else
+	{
+		TW.warning(null,"Look Under Window Menu", "Files Are Available\nUnder the Window Menu");
+	}
+	null;
+}
+function doesLineContainInputOrInclude(thisLine)
+{
+	return ((thisLine.indexOf('\\input{')>-1) | (thisLine.indexOf('\\include{')>-1) )& (thisLine.indexOf('.tex}')>-1) 
+}
+function isFileInIncludeList(fileName, includeList)
+{
+	var usable = false;
+
+	for (item in includeList)
+	{
+		if (includeList[item].indexOf(fileName) > -1 )
+		{
+			usable = true;
+			break;
+		}
+	}	
+	if (usable == false)					
+	{ 
+		continue; 
+	} // include{fileName} not in \includeonly{}
+}
+function openLocatedFiles(followThese)
+{
 	// keeping TW 'opening' in a seperate clause for debugging and any future scripting development
 	for (fileNum in followThese)
 	{
@@ -186,17 +215,8 @@ function mainfunction()
 			//openedDoc.showMinimized();
 		}
 	}// /End.  for (fileNum in followThese)
-
-	if (followThese.length == 1)
-	{
-		//openedDoc.showNormal()
-	} // user has requested only one file, show it
-	else
-	{
-		TW.warning(null,"Look Under Window Menu", "Files Are Available\nUnder the Window Menu");
-	}
-	null;
 }
+
 
 mainfunction();
 
