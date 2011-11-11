@@ -2,8 +2,9 @@
 //Title: Open All .tex Inputs/Includes (one per line)
 //Description: Within A Selection or all Text \inputs \include with .tex in them are opened
 //Author: Paul A Norman  paul.a.norman@gmail.com
-//Version: 0.1
-//Date: 2009-09-26
+// with modifications by Henrik Skov Midtiby
+//Version: 0.2
+//Date: 2011-11-11
 //Script-Type: standalone
 
 /* Main Usage Points:
