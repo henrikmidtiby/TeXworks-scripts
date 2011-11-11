@@ -205,18 +205,35 @@ function openLocatedFiles(followThese)
 	for (fileNum in followThese)
 	{
 		fileName = followThese[fileNum];					 
-		// TW.warning(null,"Filename:", fileName);
+		// TODO: Detect if the file allready exists.
 		openedDoc = TW.app.openFileFromScript(fileName, TW);
-		// TODO: Create a new file and open the save as dialog with a suggested filename.
-		//newfilename = TW.app.getSaveFileName(fileName);
-		//tempwindow = TW.app.newFile(newfilename);
-		if (openedDoc != null)
+		if(openedDoc.result == null)
 		{
-			//openedDoc.showMinimized();
+			// Failed to open document, it might be because the document does not exist.
+			// Create the document.
+			var resp = TW.writeFile(fileName, "");
+			var newWindow = TW.app.openFileFromScript(fileName, TW);
+			if(newWindow.status == 0) // SystemAccess_OK
+			{
+				copyTEXOptionsFromCurrentDocumentToNewDocument(newWindow);
+			}
 		}
 	}// /End.  for (fileNum in followThese)
 }
-
+function copyTEXOptionsFromCurrentDocumentToNewDocument(newWindow)
+{
+	// Populate with % !TEX lines from the current document.
+	var linesInCurrentDocument = TW.target.text.split("\n");
+	for(idx in linesInCurrentDocument)
+	{
+		curLine = linesInCurrentDocument[idx];
+		if(curLine.indexOf('% !TEX') > -1)
+		{
+			newWindow.result.insertText(curLine);
+			newWindow.result.insertText("\n");
+		}
+	}
+}
 
 mainfunction();
 
