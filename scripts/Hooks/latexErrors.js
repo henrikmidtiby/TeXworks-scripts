@@ -41,27 +41,8 @@ extraParens = 0;
 
 for (i = 0; i < lines.length; ++i) {
         line = lines[i];
-        
-        // check for error messages
-        if (line.match("^! ")) {
-                var error = [];
-                // record the current input file
-                error[0] = curFile;
-                // record the error message itself
-                error[2] = line;
-                // look ahead for the line number and record that
-                error[1] = 0;
-                while (++i < lines.length) {
-                        line = lines[i];
-                        if(trim(line) == '') break;
-                        matched = lineNumRE.exec(line);
-                        if (matched)
-                                error[1] = matched[1];
-                        error[2] += "\n" + line;
-                }
-                errors.push(error);
-                continue;
-        }
+
+		errors = checkForErrorMessages(line, errors, lines, i);
         
         // check for over- or underfull lines
         matched = badLineRE.exec(line);
@@ -125,6 +106,31 @@ for (i = 0; i < lines.length; ++i) {
                 }
                 pos = line.search(parenRE);
         }
+}
+
+function checkForErrorMessages(line, errors, lines, i)
+{
+	// check for error messages
+	if (line.match("^! ")) {
+		var error = [];
+		// record the current input file
+		error[0] = curFile;
+		// record the error message itself
+		error[2] = line;
+		// look ahead for the line number and record that
+		error[1] = 0;
+		while (++i < lines.length) {
+			line = lines[i];
+			if(trim(line) == '') break;
+			matched = lineNumRE.exec(line);
+			if (matched)
+				error[1] = matched[1];
+			error[2] += "\n" + line;
+		}
+		errors.push(error);
+		continue;
+	}
+	return(errors);
 }
 
 function htmlize(str) {
