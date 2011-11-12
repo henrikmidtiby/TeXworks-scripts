@@ -151,6 +151,32 @@ function makeResultRow(data, color) {
         return html;
 }
 
+function showObject(inputObject)
+{
+	var tempText = "";
+	for(prop in inputObject){
+		tempText += prop + " -> " + inputObject[prop] + "\n";
+	}
+	TW.information(null, "Hej", tempText);
+}
+
+function suggestToDeleteAuxFilesIfSpecificErrorIsSeen()
+{
+	for (index in errors)
+	{
+		error = errors[index];
+		
+		if(error[2].indexOf("File ended while scanning use of") > -1)
+		{
+			TW.target.removeAuxFiles();
+		}
+	}
+}
+
+
+suggestToDeleteAuxFilesIfSpecificErrorIsSeen(errors);
+
+
 // finally, return our result (if any)
 if (errors.length > 0 || warnings.length > 0 || infos.length > 0) {
         html  = '<html><body>';
