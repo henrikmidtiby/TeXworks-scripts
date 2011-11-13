@@ -45,7 +45,7 @@ function LatexErrorAnalyzer() {
 			obj.trackBeginningEndingOfInputFiles(line);
 		}
 
-		suggestToDeleteAuxFilesIfSpecificErrorIsSeen(obj.errors);
+		obj.suggestToDeleteAuxFilesIfSpecificErrorIsSeen();
 
 		// finally, return our result (if any)
 		if (obj.errors.length > 0 || obj.warnings.length > 0 || obj.infos.length > 0) {
@@ -218,11 +218,11 @@ function LatexErrorAnalyzer() {
 		TW.information(null, "Hej", tempText);
 	}
 
-	function suggestToDeleteAuxFilesIfSpecificErrorIsSeen()
+	obj.suggestToDeleteAuxFilesIfSpecificErrorIsSeen = function()
 	{
-		for (index in obj.errors)
+		for (index in this.errors)
 		{
-			error = obj.errors[index];
+			error = this.errors[index];
 
 			if(error[2].indexOf("File ended while scanning use of") > -1)
 			{
