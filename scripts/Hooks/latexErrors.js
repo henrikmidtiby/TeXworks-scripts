@@ -19,24 +19,7 @@ function LatexErrorAnalyzer() {
 		obj.getLinesToAnalyze();
 		obj.analyzeGatheredLines();
 		obj.suggestToDeleteAuxFilesIfSpecificErrorIsSeen();
-
-		// finally, return our result (if any)
-		if (obj.errors.length > 0 || obj.warnings.length > 0 || obj.infos.length > 0) {
-			html  = '<html><body>';
-			html += '<table border="1" cellspacing="0" cellpadding="4">';
-
-			for(i = 0; i < obj.errors.length; ++i)
-				html += makeResultRow(obj.errors[i], 'red');
-			for(i = 0; i < obj.warnings.length; ++i)
-				html += makeResultRow(obj.warnings[i], 'yellow');
-			for(i = 0; i < obj.infos.length; ++i)
-				html += makeResultRow(obj.infos[i], '#8080ff');
-
-			html += "</table>";
-			html += "</body></html>";
-			TW.result = html;
-		}
-		undefined;
+		obj.showFormattedOutput();
 	}
 
 	obj.initializeParameters = function()
@@ -230,6 +213,26 @@ function LatexErrorAnalyzer() {
 			{
 				TW.target.removeAuxFiles();
 			}
+		}
+	}
+
+	obj.showFormattedOutput = function()
+	{
+		// finally, return our result (if any)
+		if (this.errors.length > 0 || this.warnings.length > 0 || this.infos.length > 0) {
+			html  = '<html><body>';
+			html += '<table border="1" cellspacing="0" cellpadding="4">';
+
+			for(i = 0; i < this.errors.length; ++i)
+				html += makeResultRow(this.errors[i], 'red');
+			for(i = 0; i < this.warnings.length; ++i)
+				html += makeResultRow(this.warnings[i], 'yellow');
+			for(i = 0; i < this.infos.length; ++i)
+				html += makeResultRow(this.infos[i], '#8080ff');
+
+			html += "</table>";
+			html += "</body></html>";
+			TW.result = html;
 		}
 	}
 
