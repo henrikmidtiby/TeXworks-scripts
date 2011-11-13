@@ -45,10 +45,6 @@ function LatexErrorAnalyzer() {
 		this.extraParens = 0;
 	}
 
-	function trim (zeichenkette) {
-		return zeichenkette.replace (/^\s+/, '').replace (/\s+$/, '');
-	}
-
 	obj.getLinesToAnalyze = function()
 	{
 		// get the text from the standard console output
@@ -58,7 +54,7 @@ function LatexErrorAnalyzer() {
 
 	obj.analyzeGatheredLines = function()
 	{
-			for (i = 0; i < this.lines.length; ++i) {
+		for (i = 0; i < this.lines.length; ++i) {
 			line = 	this.lines[i];
 
 			// check for error messages
@@ -104,6 +100,10 @@ function LatexErrorAnalyzer() {
 			error[2] += "\n" + line;
 		}
 		this.errors.push(error);
+	}
+
+	function trim (zeichenkette) {
+		return zeichenkette.replace (/^\s+/, '').replace (/\s+$/, '');
 	}
 
 	obj.addInfoFromLine = function(line)
@@ -167,8 +167,6 @@ function LatexErrorAnalyzer() {
 			pos = line.search(this.parenRE);
 		}
 	}
-
-
 
 	function htmlize(str) {
 		var html = str;
