@@ -80,6 +80,59 @@ function LatexErrorAnalyzer() {
 		this.infos.push(error);
 	}
 
+	obj.checkForOtherWarnings = function(line)
+	{
+		var error = [];
+		error[0] = this.curFile;
+		error[1] = "?";
+		error[2] = line;
+
+		while (++i < this.lines.length) {
+			line = this.lines[i];
+			if(line == '') break;
+			error[2] += "\n" + line;
+		}
+		matched = this.warnLineNumRE.exec(error[2].replace(/\n/, ""));
+		if (matched)
+			error[1] = matched[1];
+		this.warnings.push(error);
+	}
+
+	obj.trackBeginningEndingOfInputFiles = function(line)
+	{
+		// try to track beginning/ending of input files (flaky!)
+		pos = line.search(this.parenRE);
+		while (pos >= 0) {
+			line = line.slice(pos);
+			if (line.charAt(0) == ")") {
+				if (this.extraParens > 0) {
+					--this.extraParens;
+				}
+				else if (this.filenames.length > 0) {
+					this.curFile = this.filenames.pop();
+				}
+				line = line.slice(1);
+			}
+			else {
+				match = this.newFileRE.exec(line);
+				if (match) {
+					this.filenames.push(this.curFile);
+					this.curFile = match[1];
+					line = line.slice(match[0].length);
+					this.extraParens = 0;
+				}
+				else {
+					++this.extraParens;
+					line = line.slice(1);
+				}
+			}
+			if (line == undefined) {
+				break;
+			}
+			pos = line.search(this.parenRE);
+		}
+	}
+
 
 	for (i = 0; i < obj.lines.length; ++i) {
 		line = 	obj.lines[i];
@@ -89,7 +142,6 @@ function LatexErrorAnalyzer() {
 			obj.addErrorFromLine(line);
 			continue;
 		}
-
 
 		// check for over- or underfull lines
 		matched = obj.badLineRE.exec(line);
@@ -101,54 +153,11 @@ function LatexErrorAnalyzer() {
 		// check for other warnings
 		matched = obj.warnLineRE.exec(line);
 		if (matched) {
-			var error = [];
-			error[0] = obj.curFile;
-			error[1] = "?";
-			error[2] = line;
-
-			while (++i < obj.lines.length) {
-				line = obj.lines[i];
-				if(line == '') break;
-				error[2] += "\n" + line;
-			}
-			matched = obj.warnLineNumRE.exec(error[2].replace(/\n/, ""));
-			if (matched)
-				error[1] = matched[1];
-			obj.warnings.push(error);
+			obj.checkForOtherWarnings(line);
 			continue;
 		}
 
-		// try to track beginning/ending of input files (flaky!)
-		pos = line.search(obj.parenRE);
-		while (pos >= 0) {
-			line = line.slice(pos);
-			if (line.charAt(0) == ")") {
-				if (obj.extraParens > 0) {
-					--obj.extraParens;
-				}
-				else if (obj.filenames.length > 0) {
-					obj.curFile = obj.filenames.pop();
-				}
-				line = line.slice(1);
-			}
-			else {
-				match = obj.newFileRE.exec(line);
-				if (match) {
-					obj.filenames.push(obj.curFile);
-					obj.curFile = match[1];
-					line = line.slice(match[0].length);
-					obj.extraParens = 0;
-				}
-				else {
-					++obj.extraParens;
-					line = line.slice(1);
-				}
-			}
-			if (line == undefined) {
-				break;
-			}
-			pos = line.search(obj.parenRE);
-		}
+		obj.trackBeginningEndingOfInputFiles(line);
 	}
 
 	function htmlize(str) {
