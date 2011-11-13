@@ -13,6 +13,59 @@
 
 function LatexErrorAnalyzer() {
 	var obj = {};
+	obj.analyzeLog = function()
+	{
+		obj.initializeParameters();
+		obj.getLinesToAnalyze();
+
+
+		for (i = 0; i < obj.lines.length; ++i) {
+			line = 	obj.lines[i];
+
+			// check for error messages
+			if (line.match("^! ")) {
+				obj.addErrorFromLine(line);
+				continue;
+			}
+
+			// check for over- or underfull lines
+			matched = obj.badLineRE.exec(line);
+			if (matched) {
+				obj.addInfoFromLine(line);
+				continue;
+			}
+
+			// check for other warnings
+			matched = obj.warnLineRE.exec(line);
+			if (matched) {
+				obj.checkForOtherWarnings(line);
+				continue;
+			}
+
+			obj.trackBeginningEndingOfInputFiles(line);
+		}
+
+		suggestToDeleteAuxFilesIfSpecificErrorIsSeen(obj.errors);
+
+		// finally, return our result (if any)
+		if (obj.errors.length > 0 || obj.warnings.length > 0 || obj.infos.length > 0) {
+			html  = '<html><body>';
+			html += '<table border="1" cellspacing="0" cellpadding="4">';
+
+			for(i = 0; i < obj.errors.length; ++i)
+				html += makeResultRow(obj.errors[i], 'red');
+			for(i = 0; i < obj.warnings.length; ++i)
+				html += makeResultRow(obj.warnings[i], 'yellow');
+			for(i = 0; i < obj.infos.length; ++i)
+				html += makeResultRow(obj.infos[i], '#8080ff');
+
+			html += "</table>";
+			html += "</body></html>";
+			TW.result = html;
+		}
+		undefined;
+	}
+
 	obj.initializeParameters = function()
 	{
 		this.parenRE = new RegExp("[()]");
@@ -46,9 +99,6 @@ function LatexErrorAnalyzer() {
 		txt = TW.target.consoleOutput;
 		this.lines = txt.split('\n');
 	}
-
-	obj.initializeParameters();
-	obj.getLinesToAnalyze();
 
 
 	obj.addErrorFromLine = function(line)
@@ -134,31 +184,6 @@ function LatexErrorAnalyzer() {
 	}
 
 
-	for (i = 0; i < obj.lines.length; ++i) {
-		line = 	obj.lines[i];
-
-		// check for error messages
-		if (line.match("^! ")) {
-			obj.addErrorFromLine(line);
-			continue;
-		}
-
-		// check for over- or underfull lines
-		matched = obj.badLineRE.exec(line);
-		if (matched) {
-			obj.addInfoFromLine(line);
-			continue;
-		}
-
-		// check for other warnings
-		matched = obj.warnLineRE.exec(line);
-		if (matched) {
-			obj.checkForOtherWarnings(line);
-			continue;
-		}
-
-		obj.trackBeginningEndingOfInputFiles(line);
-	}
 
 	function htmlize(str) {
 		var html = str;
@@ -206,29 +231,10 @@ function LatexErrorAnalyzer() {
 		}
 	}
 
-
-	suggestToDeleteAuxFilesIfSpecificErrorIsSeen(obj.errors);
-
-
-	// finally, return our result (if any)
-	if (obj.errors.length > 0 || obj.warnings.length > 0 || obj.infos.length > 0) {
-		html  = '<html><body>';
-		html += '<table border="1" cellspacing="0" cellpadding="4">';
-
-		for(i = 0; i < obj.errors.length; ++i)
-			html += makeResultRow(obj.errors[i], 'red');
-		for(i = 0; i < obj.warnings.length; ++i)
-			html += makeResultRow(obj.warnings[i], 'yellow');
-		for(i = 0; i < obj.infos.length; ++i)
-			html += makeResultRow(obj.infos[i], '#8080ff');
-
-		html += "</table>";
-		html += "</body></html>";
-		TW.result = html;
-	}
-	undefined;
+	return(obj);
 }
 
-LatexErrorAnalyzer();
+analyzer = LatexErrorAnalyzer();
+analyzer.analyzeLog();
 
 
