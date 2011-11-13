@@ -17,34 +17,7 @@ function LatexErrorAnalyzer() {
 	{
 		obj.initializeParameters();
 		obj.getLinesToAnalyze();
-
-
-		for (i = 0; i < obj.lines.length; ++i) {
-			line = 	obj.lines[i];
-
-			// check for error messages
-			if (line.match("^! ")) {
-				obj.addErrorFromLine(line);
-				continue;
-			}
-
-			// check for over- or underfull lines
-			matched = obj.badLineRE.exec(line);
-			if (matched) {
-				obj.addInfoFromLine(line);
-				continue;
-			}
-
-			// check for other warnings
-			matched = obj.warnLineRE.exec(line);
-			if (matched) {
-				obj.checkForOtherWarnings(line);
-				continue;
-			}
-
-			obj.trackBeginningEndingOfInputFiles(line);
-		}
-
+		obj.analyzeGatheredLines();
 		obj.suggestToDeleteAuxFilesIfSpecificErrorIsSeen();
 
 		// finally, return our result (if any)
@@ -98,6 +71,35 @@ function LatexErrorAnalyzer() {
 		// get the text from the standard console output
 		txt = TW.target.consoleOutput;
 		this.lines = txt.split('\n');
+	}
+
+	obj.analyzeGatheredLines = function()
+	{
+			for (i = 0; i < this.lines.length; ++i) {
+			line = 	this.lines[i];
+
+			// check for error messages
+			if (line.match("^! ")) {
+				this.addErrorFromLine(line);
+				continue;
+			}
+
+			// check for over- or underfull lines
+			matched = this.badLineRE.exec(line);
+			if (matched) {
+				this.addInfoFromLine(line);
+				continue;
+			}
+
+			// check for other warnings
+			matched = this.warnLineRE.exec(line);
+			if (matched) {
+				this.checkForOtherWarnings(line);
+				continue;
+			}
+
+			this.trackBeginningEndingOfInputFiles(line);
+		}
 	}
 
 
