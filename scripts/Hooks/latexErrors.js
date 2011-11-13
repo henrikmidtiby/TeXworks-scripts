@@ -31,20 +31,25 @@ function LatexErrorAnalyzer() {
 		this.errors = [];
 		this.warnings = [];
 		this.infos = [];
+		this.curFile = undefined;
+		this.filenames = [];
+		this.extraParens = 0;
 	}
-	obj.initializeParameters();
 
 	function trim (zeichenkette) {
 		return zeichenkette.replace (/^\s+/, '').replace (/\s+$/, '');
 	}
 
-	// get the text from the standard console output
-	obj.txt = TW.target.consoleOutput;
-	obj.lines = obj.txt.split('\n');
+	obj.getLinesToAnalyze = function()
+	{
+		// get the text from the standard console output
+		txt = TW.target.consoleOutput;
+		this.lines = txt.split('\n');
+	}
 
-	obj.curFile = undefined;
-	obj.filenames = [];
-	obj.extraParens = 0;
+	obj.initializeParameters();
+	obj.getLinesToAnalyze();
+
 
 	obj.addErrorFromLine = function(line)
 	{
