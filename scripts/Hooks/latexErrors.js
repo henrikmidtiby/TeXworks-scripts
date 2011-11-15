@@ -2,8 +2,9 @@
 // Title: LaTeX errors
 // Description: Looks for errors in the LaTeX terminal output
 // Author: Jonathan Kew & Stefan Löffler
-// Version: 0.4
-// Date: 2010-11-02
+// Modified by Henrik Skov Midtiby
+// Version: 0.5
+// Date: 2011-11-13
 // Script-Type: hook
 // Hook: AfterTypeset
 
