@@ -371,6 +371,10 @@ function determineMatchingCommandsFromCurrentCommand(currentCommand)
 	{
 		return(["pageref", "ref"]);
 	}
+	if(currentCommand == "cite" || currentCommand == "citep" || currentCommand == "citet")
+	{
+		return(["cite", "citep", "citet"]);
+	}
 	return([]);
 }
 function locateMatchingWords(wordToMatch, commands)
