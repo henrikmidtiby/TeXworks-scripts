@@ -365,7 +365,7 @@ function determineMatchingCommandsFromCurrentCommand(currentCommand)
 {
 	if(currentCommand == "ref" || currentCommand == "pageref")
 	{
-		return(["label"]);
+		return(["label", "ref", "pageref"]);
 	}
 	if(currentCommand == "label")
 	{
