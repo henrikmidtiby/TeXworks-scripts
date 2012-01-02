@@ -158,10 +158,22 @@ function getCommandName(wordStart)
 	}
 	if(TW.target.text.charAt(wordStart - 1) == "{")
 	{
+		wordStart = wordStart - 1;
+		// If optional arguments are given to the current command ignore these.
+		if(TW.target.text.charAt(wordStart - 1) == "]")
+		{
+			while(counter > 0 && TW.target.text.charAt(wordStart - 1) != "[")
+			{
+				wordStart = wordStart - 1;
+				counter = counter - 1;
+			}
+			wordStart = wordStart - 1;
+		}
+
 		commandName = "commandNameMore";
-		var commandEnd = wordStart - 1;
-		var commandStart = wordStart - 1;
-		while(counter > 0 && isAlphaNumeric(TW.target.text.charAt(commandStart - 1)))
+		var commandEnd = wordStart;
+		var commandStart = wordStart;
+		while(counter > 0 && isAlphaNumeric(TW.target.text.charAt(commandStart - 1))) 
 		{
 			commandName = commandName + counter;
 			commandStart = commandStart - 1;
