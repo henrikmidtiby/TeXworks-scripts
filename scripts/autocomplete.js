@@ -363,19 +363,24 @@ function unique(a)
 }
 function determineMatchingCommandsFromCurrentCommand(currentCommand)
 {
-	if(currentCommand == "ref" || currentCommand == "pageref")
+	if(isElementInList(["ref", "pageref"], currentCommand))
 	{
 		return(["label", "ref", "pageref"]);
 	}
-	if(currentCommand == "label")
+	if(isElementInList(["label"], currentCommand))
 	{
 		return(["pageref", "ref"]);
 	}
-	if(currentCommand == "cite" || currentCommand == "citep" || currentCommand == "citet")
+	if(isElementInList(["cite", "citep", "citet"], currentCommand))
 	{
 		return(["cite", "citep", "citet"]);
 	}
 	return([]);
+}
+function isElementInList(list, element)
+{
+	tempIndex = list.indexOf(element);
+	return(tempIndex > -1);
 }
 function locateMatchingWords(wordToMatch, commands)
 {
