@@ -434,6 +434,8 @@ function getTextFromAllOpenWindows()
 }
 function getBibtexKeys(inputString)
 {
+	// Extracts bibtex keys from the inputString.
+	// Assumes that inputString is in the bibtex format.
 	var bibtexKeyList = "";
 	var bibtexTypeAndKey = new RegExp("\@[A-Z]*\{[a-zA-Z0-9]*,", "g");
 	var bibtexKey = new RegExp("\{([a-zA-Z0-9]*),");
@@ -445,7 +447,7 @@ function getBibtexKeys(inputString)
 			var tempText = bibtexKeyMatches[idx];
 			var matches = tempText.match(bibtexKey);
 			var bibtexKeyName = matches[1];
-			bibtexKeyList = bibtexKeyList + bibtexKeyName + " "; 
+			bibtexKeyList = bibtexKeyList + "\\cite{" + bibtexKeyName + "} "; 
 		}
 	}
 	return(bibtexKeyList);
