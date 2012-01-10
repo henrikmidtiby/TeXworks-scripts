@@ -52,6 +52,7 @@ function LatexErrorAnalyzer() {
 		this.badLineRE = new RegExp("^(?:Over|Under)full \\\\hbox.*at lines (\\d+)");
 		this.warnLineRE = new RegExp("^(?:LaTeX|Package (?:.*)) Warning: .*");
 		this.warnLineNumRE = new RegExp("on input line (\\d+).");
+		this.latexmkApplyingRule = new RegExp("Latexmk: applying rule \'(.*)\'");
 		this.errors = [];
 		this.warnings = [];
 		this.infos = [];
@@ -60,6 +61,7 @@ function LatexErrorAnalyzer() {
 		this.extraParens = 0;
 	}
 
+	
 	obj.getLinesToAnalyze = function()
 	{
 		// get the text from the standard console output
@@ -93,6 +95,8 @@ function LatexErrorAnalyzer() {
 			}
 
 			this.trackBeginningEndingOfInputFiles(line);
+
+			this.checkForRerunOfLatex(line);
 		}
 	}
 
@@ -181,6 +185,20 @@ function LatexErrorAnalyzer() {
 			}
 			pos = line.search(this.parenRE);
 		}
+	}
+	
+	obj.checkForRerunOfLatex = function(line) {
+		matched = this.latexmkApplyingRule.exec(line);
+		if(matched)
+		{
+			this.resetWarningsInfosAndErrors();
+		}
+	}
+
+	obj.resetWarningsInfosAndErrors = function() {
+		this.warnings.length = 0;
+		this.infos.length = 0;
+		this.errors.length = 0;
 	}
 
 	function htmlize(str) {
