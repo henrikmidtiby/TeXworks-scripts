@@ -11,6 +11,20 @@
 // This is just a simple proof-of-concept; it will often get filenames wrong, for example.
 // Switching the engines to use the FILE:LINE-style error messages could help a lot.
 
+// The script will handle long filenames better 
+// with the following change of the environment 
+// (such that latex does not wrap long lines)
+//
+// Add the line
+// max_print_line=150
+// to the file
+// C:\Users\hemi\AppData\Roaming\MiKTeX\2.9\miktex\config\pdflatex.ini
+//
+// The file can also be reached by the command
+// initexmf.exe --edit-config-file=pdflatex
+// 
+// Inspiration from http://tex.stackexchange.com/a/1193/1366 and
+// http://docs.miktex.org/2.9/manual/runtimeparams.html
 
 function LatexErrorAnalyzer() {
 	var obj = {};
