@@ -22,14 +22,15 @@ function autocomplete()
 
 	// If in primary argument to input, include, includegraphics or similar, 
 	// complete filename.
+	var words;
 	if(shouldCompleteFilename(locationInformation.commandName)) {
-		var words = locateMatchingFilenames(locationInformation.extractedWord);
-	} else if(locationInformation.wordToComplete.length == 0) {
-			return;
+		words = locateMatchingFilenames(locationInformation.extractedWord);
 	} else if (locationInformation.isCommandName) {
-		var words = locateMatchingCommandNames(locationInformation.extractedWord);
+		words = locateMatchingCommandNames(locationInformation.extractedWord);
+	} else if(locationInformation.wordToComplete.length === 0) {
+		return;
 	} else {
-		var words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
+		words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
 	}
 	
 	// Sort the found matches to avoid problems when the ordering is changed 
@@ -64,19 +65,21 @@ function collectDetailsAboutTheCurrentSelection()
 }
 function closeEnvironment(unclosedEnvironment)
 {
-	if(unclosedEnvironment != "")
+	if(unclosedEnvironment !== "")
 	{
 		TW.target.insertText("\\end{" + unclosedEnvironment + "}\n");
 	}
 }
 function shouldCompleteFilename(commandName)
 {
-	if(commandName == "includegraphics")
-		return true;
-	if(commandName == "input")
-		return true;
-	if(commandName == "include")
-		return true;
+	if(commandName == "includegraphics") {
+		return true; }
+	if(commandName == "input") {
+		return true; }
+	if(commandName == "include") {
+		return true; }
+	if(commandName == "bibliograpy") {
+		return true; }
 	return false;
 }
 function locateMatchingFilenames(extractedWord)
@@ -201,11 +204,14 @@ function locateUnclosedEnvironmentsBeforeCursor()
 	//environmentStack.push(remainingTextToAnalyze.length)
 	while(tempBeginIndex != -1 || tempEndIndex != -1)
 	{
+		var tempText;
+		var tempIndex;
+		var envName;
 		if(tempBeginIndex > tempEndIndex)
 		{
-			var tempText = remainingTextToAnalyze.substr(tempBeginIndex + 7, 40);
-			var tempIndex = tempText.indexOf("}");
-			var envName = remainingTextToAnalyze.substr(tempBeginIndex + 7, tempIndex);
+			tempText = remainingTextToAnalyze.substr(tempBeginIndex + 7, 40);
+			tempIndex = tempText.indexOf("}");
+			envName = remainingTextToAnalyze.substr(tempBeginIndex + 7, tempIndex);
 
 			var topOfStack = environmentStack[environmentStack.length - 1];
 			if(topOfStack == "e:" + envName)
@@ -223,9 +229,9 @@ function locateUnclosedEnvironmentsBeforeCursor()
 		}
 		else
 		{
-			var tempText = remainingTextToAnalyze.substr(tempEndIndex + 5, 40);
-			var tempIndex = tempText.indexOf("}");
-			var envName = remainingTextToAnalyze.substr(tempEndIndex + 5, tempIndex);
+			tempText = remainingTextToAnalyze.substr(tempEndIndex + 5, 40);
+			tempIndex = tempText.indexOf("}");
+			envName = remainingTextToAnalyze.substr(tempEndIndex + 5, tempIndex);
 			environmentStack.push("e:" + envName);
 			remainingTextToAnalyze = remainingTextToAnalyze.substr(0, tempEndIndex);
 			tempEndIndex = remainingTextToAnalyze.lastIndexOf("\\end{");
@@ -293,13 +299,14 @@ function getPathFromFilename(filename)
 }
 function getListOfFilesInDir(directory)
 {
+	var retVal;
 	if (TW.platform() == 'Windows')
 	{
-		var retVal = TW.system("cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"", true);
+		retVal = TW.system("cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"", true);
 	}
 	else
 	{
-		var retVal = TW.system("ls " + directory, true);
+		retVal = TW.system("ls " + directory, true);
 	}
 
 	if(retVal.output == undefined)
@@ -316,13 +323,13 @@ function getMatchingFilenames(filenamesInDirectory, localPath, extractedWord, wo
 	{
 		var index = filenamesInDirectory.indexOf('\n');
 		var tempWord = filenamesInDirectory.substr(0, index);
-		if(localPath != "")
+		if(localPath !== "")
 		{
 			tempWord = localPath + "/" + tempWord;
 		}
-		filenamesInDirectory = filenamesInDirectory.substr(index + 1, filenamesInDirectory.length - index)
+		filenamesInDirectory = filenamesInDirectory.substr(index + 1, filenamesInDirectory.length - index);
 
-		if(tempWord.indexOf(extractedWord) == 0)
+		if(tempWord.indexOf(extractedWord) === 0)
 		{
 			// Remove whitespaces in the word
 			words.push(tempWord.replace(/\s/, ""));
@@ -355,7 +362,10 @@ function unique(a)
 	{
 		for(var x = 0, y = r.length; x < y; x++)
 		{
-			if(r[x]==a[i]) continue o;
+			if(r[x]==a[i])
+			{
+				continue o;
+			}
 		}
 		r[r.length] = a[i];
 	}
@@ -379,7 +389,7 @@ function determineMatchingCommandsFromCurrentCommand(currentCommand)
 }
 function isElementInList(list, element)
 {
-	tempIndex = list.indexOf(element);
+	var tempIndex = list.indexOf(element);
 	return(tempIndex > -1);
 }
 function locateMatchingWords(wordToMatch, commands)
@@ -388,8 +398,8 @@ function locateMatchingWords(wordToMatch, commands)
 	// Only look for matches if the wordToMatch is nonempty.
 	if(wordToMatch.length > 0)
 	{
-		fullText = getTextFromAllOpenWindows();
-		if(commands.length == 0)
+		var fullText = getTextFromAllOpenWindows();
+		if(commands.length === 0)
 		{
 			// No command names were specified
 			words = locateMatchingWordsInString(wordToMatch, fullText, words);
@@ -398,7 +408,7 @@ function locateMatchingWords(wordToMatch, commands)
 		{
 			// One or more command names were specified.
 			// Only search for matching words within parameters to these commands.
-			for(idx1 = 0; idx1 < commands.length; idx1++)
+			for(var idx1 = 0; idx1 < commands.length; idx1++)
 			{
 				var Command = commands[idx1];
 				var RegExpString = "\\\\" + Command + "{([^}]*)}";
@@ -406,7 +416,7 @@ function locateMatchingWords(wordToMatch, commands)
 				var labelsList = fullText.match(CommandParameters);
 				if(labelsList)
 				{
-					for(idx = 0; idx < labelsList.length; idx++)
+					for(var idx = 0; idx < labelsList.length; idx++)
 					{
 						var parameterText = labelsList[idx];
 						words = locateMatchingWordsInString(wordToMatch, parameterText, words);
@@ -422,7 +432,7 @@ function getTextFromAllOpenWindows()
 	var windows = TW.app.getOpenWindows();
 	var fullText = "";
 
-	for (editor in windows)
+	for (var editor in windows)
 	{
 		var targetDocument = windows[editor];
 		var filename = targetDocument.fileName;
@@ -451,7 +461,7 @@ function getBibtexKeys(inputString)
 	var bibtexKeyMatches = inputString.match(bibtexTypeAndKey);
 	if(bibtexKeyMatches)
 	{
-		for(idx = 0; idx < bibtexKeyMatches.length; idx++)
+		for(var idx = 0; idx < bibtexKeyMatches.length; idx++)
 		{
 			var tempText = bibtexKeyMatches[idx];
 			var matches = tempText.match(bibtexKey);
@@ -494,7 +504,7 @@ function wordsCleanUp(words, wordToMatch)
 	// Remove duplicates
 	words = unique(words);
 	// Ensure that there is at least one word in the words list.
-	if(words.length == 0)
+	if(words.length === 0)
 	{
 		words.push(wordToMatch);
 	}
@@ -509,9 +519,9 @@ function determineLongestCommonInitialSequence(words)
 	if(words.length > 1)
 	{
 		CommonSequence = words[0];
-		for(k = 1; k < words.length; k++)
+		for(var k = 1; k < words.length; k++)
 		{
-			for(kk = 0; kk < SeqLength; kk++)
+			for(var kk = 0; kk < SeqLength; kk++)
 			{
 				if(words[0].charAt(kk) != words[k].charAt(kk))
 				{
@@ -539,7 +549,7 @@ function determineNextGuess(words, lastGuess)
 	if(words.length > 0)
 	{
 		NextGuess = words[0];
-		for(k = 0; k < words.length - 1; k++)
+		for(var k = 0; k < words.length - 1; k++)
 		{
 			if(words[k] == lastGuess)
 			{
@@ -562,7 +572,7 @@ function max(a, b)
 function showObject(inputObject)
 {
 	var tempText = "";
-	for(prop in inputObject){
+	for(var prop in inputObject){
 		tempText += prop + " -> " + inputObject[prop] + "\n";
 	}
 	TW.information(null, "Hej", tempText);
