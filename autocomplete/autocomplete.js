@@ -20,6 +20,13 @@ function autocomplete()
 		return;
 	}
 
+	// If after a \begin{environment} finish the environment with a template.
+	if(locationInformation.commandNameInLine === "begin")
+	{
+		extentEnvironment(locationInformation.commandArgument);
+		return;
+	}
+
 	// If in primary argument to input, include, includegraphics or similar, 
 	// complete filename.
 	var words;
@@ -85,6 +92,13 @@ function closeEnvironment(unclosedEnvironment)
 	if(unclosedEnvironment !== "")
 	{
 		TW.target.insertText("\\end{" + unclosedEnvironment + "}\n");
+	}
+}
+function extentEnvironment(envName)
+{
+	if(envName == "figure")
+	{
+		TW.target.insertText("\n\\centering\n\\includegraphics[width=6cm]{}\n\\caption{}\n\\label{fig}\n\\end{figure}\n");
 	}
 }
 function shouldCompleteFilename(commandName)
@@ -213,6 +227,24 @@ function getCommandName(wordStart)
 	}
 
 	return(commandName);
+}
+function detectCertainCommands(currentLine)
+{
+	var temp = {};
+	temp.match = false;
+	temp.commandName = "None";
+	temp.commandArgument = "None";
+
+	var sectionCommand = new RegExp("\\\\([a-z]*)\{(.*)\}", "g");
+	var sectionMatches = currentLine.match(sectionCommand);
+	if(sectionMatches)
+	{
+		temp.match = true;
+		temp.commandName = RegExp.$1;
+		temp.commandArgument = RegExp.lastParen;
+	}
+
+	return(temp);
 }
 function locateUnclosedEnvironmentsBeforeCursor()
 {
