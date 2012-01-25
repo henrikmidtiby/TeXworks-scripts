@@ -27,6 +27,12 @@ function autocomplete()
 		return;
 	}
 
+	// Suggest labels to section and subsection
+	if(addLabelBelow(locationInformation))
+	{
+		return;
+	}
+
 	// If in primary argument to input, include, includegraphics or similar, 
 	// complete filename.
 	var words;
@@ -100,6 +106,29 @@ function extentEnvironment(envName)
 	{
 		TW.target.insertText("\n\\centering\n\\includegraphics[width=6cm]{}\n\\caption{}\n\\label{fig}\n\\end{figure}\n");
 	}
+}
+function addLabelBelow(locationInformation)
+{
+	var commandName = locationInformation.commandNameInLine;
+	var argument = locationInformation.commandArgument;
+	var shortCuts = new Array();
+	shortCuts['section'] = 'sec';
+	shortCuts['subsection'] = 'ssec';
+
+	if(shortCuts[commandName] !== undefined)
+	{
+		var suggestedLabel = camelize(shortCuts[commandName] + " " + argument);
+		TW.target.insertText("\n\\label{" + suggestedLabel + "}");
+		return true;
+	}
+	return false;
+}
+function camelize(str) {
+	// Borrowed from http://stackoverflow.com/questions/2970525/javascript-regex-camel-case-sentence-case
+	return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+		if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+		return index == 0 ? match.toLowerCase() : match.toUpperCase();
+	});
 }
 function shouldCompleteFilename(commandName)
 {
