@@ -51,6 +51,11 @@ function collectDetailsAboutTheCurrentSelection()
 	details.lastGuess = selectedWord.lastGuess;
 	details.wordStart = selectedWord.wordStart;
 	details.isCommandName = selectedWord.isCommandName;
+	details.currentLine = getCurrentLine();
+	tempoutput = detectCertainCommands(details.currentLine);
+	details.commandMatch = tempoutput.match;
+	details.commandName = tempoutput.commandName;
+	details.commandArgument = tempoutput.commandArgument;
 
 	var unclosed = locateUnclosedEnvironmentsBeforeCursor();
 	details.unclosedEnvironment = unclosed;
@@ -61,7 +66,19 @@ function collectDetailsAboutTheCurrentSelection()
 		details.firstPlaceInLine = true;
 	}
 
+
 	return(details);
+}
+function getCurrentLine()
+{
+	var wordStart = TW.target.selectionStart;
+	var pos = wordStart;
+	while(TW.target.text.charAt(pos - 1) !== '\n')
+	{
+		pos = pos - 1;
+	}
+	var currentLine = TW.target.text.substr(pos, wordStart - pos);
+	return(currentLine);
 }
 function closeEnvironment(unclosedEnvironment)
 {
