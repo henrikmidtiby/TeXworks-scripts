@@ -54,7 +54,7 @@ function collectDetailsAboutTheCurrentSelection()
 	details.currentLine = getCurrentLine();
 	tempoutput = detectCertainCommands(details.currentLine);
 	details.commandMatch = tempoutput.match;
-	details.commandName = tempoutput.commandName;
+	details.commandNameInLine = tempoutput.commandName;
 	details.commandArgument = tempoutput.commandArgument;
 
 	var unclosed = locateUnclosedEnvironmentsBeforeCursor();
