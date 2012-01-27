@@ -16,8 +16,12 @@ function autocomplete()
 	// If first in a line, complete unfinished environment.
 	if(locationInformation.firstPlaceInLine)
 	{
-		closeEnvironment(locationInformation.unclosedEnvironment);
-		return;
+		stack = locationInformation.environmentStack;
+		if(stack.length > 0)
+		{
+			closeEnvironment(stack[stack.length-1]);
+			return;
+		}
 	}
 
 	// If after a \begin{environment} finish the environment with a template.
@@ -69,9 +73,7 @@ function collectDetailsAboutTheCurrentSelection()
 	details.commandMatch = tempoutput.match;
 	details.commandNameInLine = tempoutput.commandName;
 	details.commandArgument = tempoutput.commandArgument;
-
-	var unclosed = locateUnclosedEnvironmentsBeforeCursor();
-	details.unclosedEnvironment = unclosed;
+	details.environmentStack = determineEnvironmentStackBeforeCursor();
 
 	details.firstPlaceInLine = false;
 	if(TW.target.text.charAt(TW.target.selectionStart - 1) == '\n')
@@ -275,57 +277,71 @@ function detectCertainCommands(currentLine)
 
 	return(temp);
 }
-function locateUnclosedEnvironmentsBeforeCursor()
+function determineEnvironmentStackBeforeCursor()
 {
 	var textBeforeCursor = TW.target.text.substr(0, TW.target.selectionStart);
-	var listOfBeginEnvironments = [];
-	var listOfEndEnvironments = [];
+	var temp = {};
 	var environmentStack = [];
-	var remainingTextToAnalyze = textBeforeCursor;
-	var tempBeginIndex = remainingTextToAnalyze.lastIndexOf("\\begin{");
-	var tempEndIndex = remainingTextToAnalyze.lastIndexOf("\\end{");
+	temp.BeginIndex = textBeforeCursor.indexOf("\\begin{");
+	temp.EndIndex = textBeforeCursor.indexOf("\\end{");
+	temp.analyzedUntil = 0;
 	var unclosedEnvironment = "";
 
-	//environmentStack.push(remainingTextToAnalyze.length)
-	while(tempBeginIndex != -1 || tempEndIndex != -1)
+	while(temp.BeginIndex != -1 || temp.EndIndex != -1)
 	{
-		var tempText;
-		var tempIndex;
-		var envName;
-		if(tempBeginIndex > tempEndIndex)
+		if(temp.BeginIndex == -1)
 		{
-			tempText = remainingTextToAnalyze.substr(tempBeginIndex + 7, 40);
-			tempIndex = tempText.indexOf("}");
-			envName = remainingTextToAnalyze.substr(tempBeginIndex + 7, tempIndex);
+			temp.BeginIndex = 100000000000;
+		}
+		if(temp.EndIndex == -1)
+		{
+			temp.EndIndex = 100000000000;
+		}
+		if(temp.BeginIndex < temp.EndIndex)
+		{
+			// The next environment thing is a "begin"
+			// Extract environmentname
+			temp.tempText = textBeforeCursor.substr(temp.BeginIndex + 7, 40);
+			temp.tempIndex = temp.tempText.indexOf("}");
+			temp.envName = textBeforeCursor.substr(temp.BeginIndex + 7, temp.tempIndex);
 
+			// Push to stack
+			environmentStack.push(temp.envName);
+
+			// Limit the text to analyze
+			temp.analyzedUntil = temp.BeginIndex + 1;
+		}
+		else
+		{
+			// The next environment thing is an "end"
+			// Extract env name
+			temp.tempText = textBeforeCursor.substr(temp.EndIndex + 5, 40);
+			temp.tempIndex = temp.tempText.indexOf("}");
+			temp.envName = textBeforeCursor.substr(temp.EndIndex + 5, temp.tempIndex);
+
+			// Pop from stack
 			var topOfStack = environmentStack[environmentStack.length - 1];
-			if(topOfStack == "e:" + envName)
+			if(topOfStack == temp.envName)
 			{
 				var len = environmentStack.length;
 				environmentStack = environmentStack.slice(0, len - 1);
 			}
 			else
 			{
-				unclosedEnvironment = envName;
-				break;
+				// Maybe issue a warning when the user tries to close a
+				// non existing environment.
+				unclosedEnvironment = temp.envName;
 			}
-			remainingTextToAnalyze = remainingTextToAnalyze.substr(0, tempBeginIndex);
-			tempBeginIndex = remainingTextToAnalyze.lastIndexOf("\\begin{");
+
+			// Limit the text to analyze
+			temp.analyzedUntil = temp.EndIndex + 1;
 		}
-		else
-		{
-			tempText = remainingTextToAnalyze.substr(tempEndIndex + 5, 40);
-			tempIndex = tempText.indexOf("}");
-			envName = remainingTextToAnalyze.substr(tempEndIndex + 5, tempIndex);
-			environmentStack.push("e:" + envName);
-			remainingTextToAnalyze = remainingTextToAnalyze.substr(0, tempEndIndex);
-			tempEndIndex = remainingTextToAnalyze.lastIndexOf("\\end{");
-		}
+		temp.BeginIndex = textBeforeCursor.indexOf("\\begin{", temp.analyzedUntil);
+		temp.EndIndex = textBeforeCursor.indexOf("\\end{", temp.analyzedUntil);
 	}
+	//showObject(environmentStack, "Environment stack");
 
-	//showObject(unclosedEnvironment);
-
-	return(unclosedEnvironment);
+	return(environmentStack);
 }
 function isAlphaNumeric(character)
 {
