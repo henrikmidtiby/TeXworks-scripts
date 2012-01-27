@@ -120,14 +120,32 @@ function addLabelBelow(locationInformation)
 	var shortCuts = new Array();
 	shortCuts['section'] = 'sec';
 	shortCuts['subsection'] = 'ssec';
+	shortCuts['caption'] = 'cap';
 
 	if(shortCuts[commandName] !== undefined)
 	{
+		shortCuts = makeCaptionContextSensitive(shortCuts, locationInformation.environmentStack);
 		var suggestedLabel = camelize(shortCuts[commandName] + " " + argument);
-		TW.target.insertText("\n\\label{" + suggestedLabel + "}");
+		TW.target.insertText("\n\\label{" + suggestedLabel + "}\n");
 		return true;
 	}
+
 	return false;
+}
+function makeCaptionContextSensitive(shortCuts, environmentStack)
+{
+	// Look for figure or table in the environment stack
+	// Todo: Deal with the case where both figure and table is in the stack
+	if(environmentStack.indexOf("figure") !== -1)
+	{
+		shortCuts['caption'] = 'fig';
+	}
+	if(environmentStack.indexOf("table") !== -1)
+	{
+		shortCuts['caption'] = 'tab';
+	}
+
+	return shortCuts;
 }
 function camelize(str) {
 	// Borrowed from http://stackoverflow.com/questions/2970525/javascript-regex-camel-case-sentence-case
