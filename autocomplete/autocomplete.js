@@ -104,6 +104,10 @@ function closeEnvironment(unclosedEnvironment)
 }
 function extentEnvironment(envName)
 {
+	if(envName == "table")
+	{
+		TW.target.insertText("\n\\centering\n\\begin{tabular}{c c}\nCol1 & Col2 \\\\\n\\hline\nV1	& V2\n\\end{tabular}\n\\caption{}\n\\label{tab}\n\\end{figure}\n");				
+	}
 	if(envName == "figure")
 	{
 		TW.target.insertText("\n\\centering\n\\includegraphics[width=6cm]{}\n\\caption{}\n\\label{fig}\n\\end{figure}\n");
