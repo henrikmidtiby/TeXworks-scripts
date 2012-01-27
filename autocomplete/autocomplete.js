@@ -692,13 +692,17 @@ function max(a, b)
 		return(b);
 	}
 }
-function showObject(inputObject)
+function showObject(inputObject, header)
 {
+	if(arguments.length == 1)
+	{
+		header = "Hej";
+	}
 	var tempText = "";
 	for(var prop in inputObject){
 		tempText += prop + " -> " + inputObject[prop] + "\n";
 	}
-	TW.information(null, "Hej", tempText);
+	TW.information(null, header, tempText);
 }
 
 
