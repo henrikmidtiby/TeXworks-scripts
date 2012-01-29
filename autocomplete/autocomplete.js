@@ -112,6 +112,18 @@ function extentEnvironment(envName)
 	{
 		TW.target.insertText("\n\\centering\n\\includegraphics[width=6cm]{}\n\\caption{}\n\\label{fig}\n\\end{figure}\n");
 	}
+	if(envName == "itemize")
+	{
+		TW.target.insertText("\n\\item\t\n\\item\t\n\\item\t\n\\end{itemize}\n");
+	}
+	if(envName == "enumerate")
+	{
+		TW.target.insertText("\n\\item\t\n\\item\t\n\\item\t\n\\end{enumerate}\n");
+	}
+	if(envName == "description")
+	{
+		TW.target.insertText("\n\\item[]\t\n\\item[]\t\n\\item[]\t\n\\end{description}\n");
+	}
 }
 function addLabelBelow(locationInformation)
 {
