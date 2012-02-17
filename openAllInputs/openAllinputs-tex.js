@@ -88,8 +88,9 @@ function OpenAllInputFiles()
 			var selStart =TW.target.selectionStart;
 			TW.target.balanceDelimiters(); // check if cursor is in an input or include 
 			this.txt = TW.target.selection;
-			TW.target.selectRange(selStart); /* protect document form accidental alteration of script selected area
-												reposition cursor to original position*/
+			// protect document form accidental alteration of script 
+			// selected area reposition cursor to original position
+			TW.target.selectRange(selStart); 
 
 			if (this.txt != "")
 			{
