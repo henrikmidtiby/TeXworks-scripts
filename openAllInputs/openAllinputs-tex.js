@@ -208,7 +208,10 @@ function OpenAllInputFiles()
 	}
 	obj.doesLineContainInputOrInclude = function(thisLine)
 	{
-		return ((thisLine.indexOf('\\input{')>-1) | (thisLine.indexOf('\\include{')>-1) )& (thisLine.indexOf('.tex}')>-1) 
+		var containsInput = thisLine.indexOf('\\input{') > -1;
+		var containsInclude = thisLine.indexOf('\\include{') > -1;
+		var containsTex = thisLine.indexOf('.tex') > -1;
+		return (containsInput | containsInclude) & containsTex; 
 	}
 	obj.isFileInIncludeList = function(fileName, includeList)
 	{
