@@ -221,20 +221,16 @@ function OpenAllInputFiles()
 	}
 	obj.isFileInIncludeList = function(fileName, includeList)
 	{
-		var usable = false;
-
 		for (item in includeList)
 		{
 			if (includeList[item].indexOf(fileName) > -1 )
 			{
-				usable = true;
-				break;
+				return true;
 			}
 		}	
-		if (usable == false)					
-		{ 
-			continue; 
-		} // include{fileName} not in \includeonly{}
+
+		// include{fileName} not in \includeonly{}
+		return false;
 	}
 	obj.openLocatedFiles = function()
 	{
