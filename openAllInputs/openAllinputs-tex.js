@@ -184,16 +184,13 @@ function OpenAllInputFiles()
 				// use original reference to retain letter case of file name for sensative OSes ;) 
 				var fileName = this.alLines[line].substr(beginInput,(endInput - beginInput)); 
 
+				var shouldBeIncluded = true;
 				//TW.warning(null,"Filename Check:", fileName);
 				if (  (this.checkForIncludeOnly == true) & (doingInclude == true) & (this.buildIncludeOnly != "")  )
 				{
-					if(this.isFileInIncludeList(fileName, this.includeList))
+					if(!this.isFileInIncludeList(fileName, this.includeList))
 					{
-						break;
-					}
-					else
-					{
-						continue;
+						shouldBeIncluded = false;
 					}
 				} 
 
@@ -208,7 +205,10 @@ function OpenAllInputFiles()
 				fileName = fileName.replace('/./','/'); // remove any un-needed user added this-directory slash from input lead 			
 
 				// keeping TW 'opening' in a seperate clause for debugging and any future scripting devlopment
-				this.followThese.push(fileName); 
+				if(shouldBeIncluded)
+				{
+					this.followThese.push(fileName); 
+				}
 			}
 		}// /End. for	(line in alLines)
 	}
