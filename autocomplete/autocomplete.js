@@ -138,6 +138,8 @@ function addLabelBelow(locationInformation)
 	{
 		shortCuts = makeCaptionContextSensitive(shortCuts, locationInformation.environmentStack);
 		var suggestedLabel = camelize(shortCuts[commandName] + " " + argument);
+		// Remove non char characters from suggestedLabel
+		suggestedLabel = suggestedLabel.replace(/[^a-zA-Z0-9]+/g, '');
 		TW.target.insertText("\n\\label{" + suggestedLabel + "}\n");
 		return true;
 	}
