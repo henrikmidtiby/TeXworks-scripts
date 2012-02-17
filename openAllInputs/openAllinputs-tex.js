@@ -179,7 +179,7 @@ function OpenAllInputFiles()
 					doingInclude = true;
 				}		 
 
-				endInput  = thisLine.indexOf('.tex}') + 4;
+				endInput  = thisLine.indexOf('}');
 
 				// use original reference to retain letter case of file name for sensative OSes ;) 
 				var fileName = this.alLines[line].substr(beginInput,(endInput - beginInput)); 
@@ -197,6 +197,12 @@ function OpenAllInputFiles()
 					}
 				} 
 
+				// Append .tex to the filename if it is not given
+				if(fileName.indexOf('.tex') === -1)
+				{
+					fileName = fileName + '.tex';
+				}
+
 				fileName = this.currentDirectory + fileName; 
 				fileName = fileName.replace('//','/'); // remove any un-needed user added slash from input lead  
 				fileName = fileName.replace('/./','/'); // remove any un-needed user added this-directory slash from input lead 			
@@ -211,7 +217,7 @@ function OpenAllInputFiles()
 		var containsInput = thisLine.indexOf('\\input{') > -1;
 		var containsInclude = thisLine.indexOf('\\include{') > -1;
 		var containsTex = thisLine.indexOf('.tex') > -1;
-		return (containsInput | containsInclude) & containsTex; 
+		return (containsInput | containsInclude); 
 	}
 	obj.isFileInIncludeList = function(fileName, includeList)
 	{
