@@ -124,20 +124,26 @@ function OpenAllInputFiles()
 				// weed out commented out %\includeonly{}-s
 				for (check in this.alLines)
 				{
-					if (this.alLines[check].indexOf('\\includeonly{') == 0) // not commented out should only be one \includeonly{ at this position in premable
-					{
-						this.includeFound = this.alLines[check];
-						this.checkForIncludeOnly = true ;
-						this.buildIncludeOnly = this.includeFound.substr(13, this.includeFound.length - 12);	
-						endIncludeOnly = this.buildIncludeOnly.indexOf("}");	
-						this.buildIncludeOnly = this.buildIncludeOnly.substr(0, endIncludeOnly);
-						this.includeList = this.buildIncludeOnly.split();
-						break; // should only be one active  \includeonly in preamble
-					}
+					var tempLine = this.alLines[check];
+					this.handleActiveIncludeOnlys(tempLine)
+
 				} // /End. 	for (check in alLines)
 			} // /End. if (startIncludeOnly > -1)
 		}	 // /End. (explicitSelection == false)
 		// TW.warning(null,"Build Include Only:", buildIncludeOnly);		 
+	}
+	obj.handleActiveIncludeOnlys = function(tempLine)
+	{
+		if (tempLine.indexOf('\\includeonly{') == 0) 
+		{
+			// not commented out should only be one \includeonly{ at this position in premable
+			this.includeFound = this.alLines[check];
+			this.checkForIncludeOnly = true ;
+			this.buildIncludeOnly = this.includeFound.substr(13, this.includeFound.length - 12);	
+			endIncludeOnly = this.buildIncludeOnly.indexOf("}");	
+			this.buildIncludeOnly = this.buildIncludeOnly.substr(0, endIncludeOnly);
+			this.includeList = this.buildIncludeOnly.split();
+		}
 	}
 	obj.searchForInputStatements = function()
 	{
