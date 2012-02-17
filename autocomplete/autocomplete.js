@@ -106,7 +106,7 @@ function extentEnvironment(envName)
 {
 	if(envName == "table")
 	{
-		TW.target.insertText("\n\\centering\n\\begin{tabular}{c c}\nCol1 & Col2 \\\\\n\\hline\nV1	& V2\n\\end{tabular}\n\\caption{}\n\\label{tab}\n\\end{figure}\n");				
+		TW.target.insertText("\n\\centering\n\\begin{tabular}{c c}\nCol1 & Col2 \\\\\n\\hline\nV1	& V2\n\\end{tabular}\n\\caption{}\n\\label{tab}\n\\end{table}\n");				
 	}
 	if(envName == "figure")
 	{
