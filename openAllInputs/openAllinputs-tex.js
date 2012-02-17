@@ -235,7 +235,7 @@ function OpenAllInputFiles()
 		// keeping TW 'opening' in a seperate clause for debugging and any future scripting development
 		for (fileNum in this.followThese)
 		{
-			fileName = followThese[fileNum];					 
+			fileName = this.followThese[fileNum];					 
 			// TODO: Detect if the file allready exists.
 			openedDoc = TW.app.openFileFromScript(fileName, TW);
 			if(openedDoc.result == null)
@@ -252,7 +252,7 @@ function OpenAllInputFiles()
 		var newWindow = TW.app.openFileFromScript(fileName, TW);
 		if(newWindow.status == 0) // SystemAccess_OK
 		{
-			copyTEXOptionsFromCurrentDocumentToNewDocument(newWindow);
+			this.copyTEXOptionsFromCurrentDocumentToNewDocument(newWindow);
 		}
 	}
 	obj.copyTEXOptionsFromCurrentDocumentToNewDocument = function(newWindow)
