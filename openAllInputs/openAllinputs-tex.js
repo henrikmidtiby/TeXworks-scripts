@@ -153,8 +153,16 @@ function OpenAllInputFiles()
 
 			var thisLine = this.alLines[line].toLowerCase();	 
 
-			if (thisLine.indexOf('\\begin{document}') >-1) {this.inDocument = true;}   // avoid preamble references
-			if ( (this.explicitSelection == false) & (thisLine.indexOf('\\end{document}')  >-1) ) {this.inDocument = false;}  // avoid user notes below document proper, but explicitSelection test can allow a user selection that crosses over the \end{document}.
+			if (thisLine.indexOf('\\begin{document}') >-1) 
+			{
+				this.inDocument = true;
+			}   // avoid preamble references
+			if ( (this.explicitSelection == false) & (thisLine.indexOf('\\end{document}')  >-1) ) 
+			{
+				// avoid user notes below document proper, but explicitSelection 
+				// test can allow a user selection that crosses over the \end{document}.
+				this.inDocument = false;
+			}  
 
 			// ADVICE: We are looking for only one \input{} per line	
 			if ( (this.inDocument == true) & this.doesLineContainInputOrInclude(thisLine))
@@ -173,7 +181,9 @@ function OpenAllInputFiles()
 
 				endInput  = thisLine.indexOf('.tex}') + 4;
 
-				var fileName = this.alLines[line].substr(beginInput,(endInput - beginInput)); // use original reference to retain letter case of file name for sensative OSes ;) 
+				// use original reference to retain letter case of file name for sensative OSes ;) 
+				var fileName = this.alLines[line].substr(beginInput,(endInput - beginInput)); 
+
 				//TW.warning(null,"Filename Check:", fileName);
 				if (  (this.checkForIncludeOnly == true) & (doingInclude == true) & (this.buildIncludeOnly != "")  )
 				{
