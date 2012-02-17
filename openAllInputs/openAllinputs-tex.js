@@ -45,6 +45,22 @@ function showObject(inputObject)
 	}
 	TW.information(null, "Hej", tempText);
 }
+function getCurrentLine()
+{
+	var wordStart = TW.target.selectionStart;
+	var lineStart = wordStart;
+	var lineEnd = wordStart;
+	while(TW.target.text.charAt(lineStart - 1) !== '\n')
+	{
+		lineStart = lineStart - 1;
+	}
+	while(TW.target.text.charAt(lineEnd + 1) !== '\n')
+	{
+		lineEnd = lineEnd + 1;
+	}
+	var currentLine = TW.target.text.substr(lineStart, 1 + lineEnd - lineStart);
+	return(currentLine);
+}
 function OpenAllInputFiles()
 {
 	var obj = {};
@@ -94,9 +110,10 @@ function OpenAllInputFiles()
 
 			if (this.txt != "")
 			{
-				if ( (this.txt.substr(0,1) == "{") & (this.txt.indexOf('.tex') > -1) )
+				var currentLine = getCurrentLine();
+				if (this.doesLineContainInputOrInclude(currentLine))
 				{
-					this.txt = '\\input' + this.txt; // make ready for processing as below to open one file where cursor was between braces {my-file.tex}
+					this.txt = currentLine;
 					this.inDocument = true;
 					this.explicitSelection = true;
 				}
