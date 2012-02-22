@@ -391,6 +391,8 @@ function isAlphaNumeric(character)
 		return(true); }
 	if('.' == character) {
 		return(true); }
+	if('-' == character) {
+		return(true); }
 	return(false);
 }
 function isAlphaNumericKommaOrSpace(character)
