@@ -132,6 +132,7 @@ function addLabelBelow(locationInformation)
 	var shortCuts = new Array();
 	shortCuts['section'] = 'sec';
 	shortCuts['subsection'] = 'ssec';
+	shortCuts['subsubsection'] = 'sssec';
 	shortCuts['caption'] = 'cap';
 
 	if(shortCuts[commandName] !== undefined)
