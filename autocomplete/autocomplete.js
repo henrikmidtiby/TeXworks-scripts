@@ -140,7 +140,7 @@ function addLabelBelow(locationInformation)
 		var suggestedLabel = camelize(shortCuts[commandName] + " " + argument);
 		// Remove non char characters from suggestedLabel
 		suggestedLabel = suggestedLabel.replace(/[^a-zA-Z0-9]+/g, '');
-		TW.target.insertText("\n\\label{" + suggestedLabel + "}\n");
+		TW.target.insertText("\n\\label{" + suggestedLabel + "}");
 		return true;
 	}
 
