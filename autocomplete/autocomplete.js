@@ -124,6 +124,10 @@ function extentEnvironment(envName)
 	{
 		TW.target.insertText("\n\\item[]\t\n\\item[]\t\n\\item[]\t\n\\end{description}\n");
 	}
+	if(envName == "wrapfigure")
+	{
+		TW.target.insertText("{r}{4cm}\n\\includegraphics{}\n\\caption{}\n\\end{wrapfigure}\n");
+	}
 }
 function addLabelBelow(locationInformation)
 {
