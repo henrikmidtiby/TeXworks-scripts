@@ -159,6 +159,10 @@ function makeCaptionContextSensitive(shortCuts, environmentStack)
 	{
 		shortCuts['caption'] = 'fig';
 	}
+	if(environmentStack.indexOf("wrapfigure") !== -1)
+	{
+		shortCuts['caption'] = 'fig';
+	}
 	if(environmentStack.indexOf("table") !== -1)
 	{
 		shortCuts['caption'] = 'tab';
