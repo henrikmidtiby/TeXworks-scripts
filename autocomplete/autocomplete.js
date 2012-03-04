@@ -187,6 +187,8 @@ function shouldCompleteFilename(commandName)
 		return true; }
 	if(commandName == "bibliograpy") {
 		return true; }
+	if(commandName == "includepdf") {
+		return true; }
 	return false;
 }
 function locateMatchingFilenames(extractedWord)
