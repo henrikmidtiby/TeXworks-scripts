@@ -134,6 +134,7 @@ function addLabelBelow(locationInformation)
 	var commandName = locationInformation.commandNameInLine;
 	var argument = locationInformation.commandArgument;
 	var shortCuts = new Array();
+	shortCuts['chapter'] = 'chap';
 	shortCuts['section'] = 'sec';
 	shortCuts['subsection'] = 'ssec';
 	shortCuts['subsubsection'] = 'sssec';
