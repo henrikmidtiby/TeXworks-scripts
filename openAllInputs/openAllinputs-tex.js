@@ -6,6 +6,7 @@
 //Version: 0.2
 //Date: 2011-11-11
 //Script-Type: standalone
+// Shortcut: Ctrl+Shift+o
 
 /* Main Usage Points:
 
