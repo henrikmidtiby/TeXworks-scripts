@@ -49,7 +49,12 @@ function autocomplete()
 	} else {
 		words = locateMatchingWordsAwareOfContext(locationInformation.commandName, locationInformation.extractedWord);
 	}
-	
+
+	if(words.length == 0)
+	{
+		return;
+	}
+
 	// Sort the found matches to avoid problems when the ordering is changed 
 	// due to the current suggested completion.
 	words = words.sort();
