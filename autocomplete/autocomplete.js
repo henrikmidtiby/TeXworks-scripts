@@ -288,7 +288,7 @@ function insertSuggestionModified(words, locationInformation)
 {
 	var CommonSequence = determineLongestCommonInitialSequence(words);
 	var idx = CommonSequence.indexOf("\n");
-	if(idx > -1)
+	if(words.length > 1 && idx > -1)
 	{
 		CommonSequence = CommonSequence.substr(0, idx-1);
 	}
