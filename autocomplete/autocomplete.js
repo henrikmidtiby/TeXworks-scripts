@@ -31,6 +31,15 @@ function autocomplete()
 		return;
 	}
 
+	var inBeginEnvironment = new RegExp("\\\\begin.*", "g");
+	var sectionMatches = locationInformation.currentLine.match(inBeginEnvironment);
+	if(sectionMatches)
+	{
+		// Autocomplete environments
+		suggestEnvironment(locationInformation);
+		return;
+	}
+
 	// Suggest labels to section and subsection
 	if(addLabelBelow(locationInformation))
 	{
@@ -52,6 +61,7 @@ function autocomplete()
 
 	if(words.length == 0)
 	{
+		suggestEnvironment(locationInformation);
 		return;
 	}
 
@@ -108,6 +118,32 @@ function closeEnvironment(unclosedEnvironment)
 	if(unclosedEnvironment !== "")
 	{
 		TW.target.insertText("\\end{" + unclosedEnvironment + "}\n");
+	}
+}
+function suggestEnvironment(locationInformation)
+{
+	possibleSuggestions = [];
+	possibleSuggestions.push("\\begin{table}\n\\end{table}");
+	possibleSuggestions.push("\\begin{tabular}{}\n\\end{tabular}");
+
+	matchedSuggestions = [];
+
+	for(var idx1 = 0; idx1 < possibleSuggestions.length; idx1++)
+	{
+		var suggestion = possibleSuggestions[idx1];
+		if(suggestion.indexOf(locationInformation.currentLine) == 0)
+		{
+			matchedSuggestions.push(suggestion);
+		}
+	}
+	if(matchedSuggestions.length > 0)
+	{
+		insertSuggestionModified(matchedSuggestions, locationInformation);
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 function extentEnvironment(envName)
@@ -241,6 +277,36 @@ function insertSuggestion(words, locationInformation)
 
 	TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
 	TW.target.selectRange(locationInformation.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
+}
+function insertSuggestionModified(words, locationInformation)
+{
+	var CommonSequence = determineLongestCommonInitialSequence(words);
+	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, "");
+
+	var temp = {};
+	temp.CommonSequence = CommonSequence;
+	temp.CommonStringInAllMatchingWords = CommonStringInAllMatchingWords;
+
+	// Delete current line and selection
+	var lineStart = locationInformation.lineStart;
+	var selectionEnd = TW.target.selectionStart + TW.target.selection.length;
+	var lastGuess = TW.target.text.substr(lineStart, selectionEnd - lineStart);
+
+	temp.lineStart = lineStart;
+	temp.selectionEnd = selectionEnd;
+	
+	//showObject(temp);
+	TW.target.selectRange(lineStart, selectionEnd - lineStart);
+	TW.target.insertText("");
+
+	// Insert remaining part of the common substring
+	TW.target.insertText(CommonStringInAllMatchingWords);
+
+	var NextGuess = determineNextGuess(words, lastGuess);
+
+	TW.target.insertText(NextGuess.substr(CommonSequence.length, NextGuess.length));
+	TW.target.selectRange(lineStart + CommonSequence.length, NextGuess.length - CommonSequence.length);
+	//TW.target.selectRange(lineStart.wordStart + CommonSequence.length, max(0, NextGuess.length - CommonSequence.length));
 }
 // Function that extracts the longest alphanumeric string ending 
 // on the current cursor location.
