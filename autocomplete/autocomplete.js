@@ -73,8 +73,10 @@ function collectDetailsAboutTheCurrentSelection()
 	details.lastGuess = selectedWord.lastGuess;
 	details.wordStart = selectedWord.wordStart;
 	details.isCommandName = selectedWord.isCommandName;
-	details.currentLine = getCurrentLine();
-	tempoutput = detectCertainCommands(details.currentLine);
+	var tempout = getCurrentLine();
+	details.currentLine = tempout.currentLine;
+	details.lineStart = tempout.lineStart;
+	var tempoutput = detectCertainCommands(details.currentLine);
 	details.commandMatch = tempoutput.match;
 	details.commandNameInLine = tempoutput.commandName;
 	details.commandArgument = tempoutput.commandArgument;
@@ -97,8 +99,9 @@ function getCurrentLine()
 	{
 		pos = pos - 1;
 	}
+	var lineStart = pos;
 	var currentLine = TW.target.text.substr(pos, wordStart - pos);
-	return(currentLine);
+	return {currentLine: currentLine, lineStart: lineStart};
 }
 function closeEnvironment(unclosedEnvironment)
 {
