@@ -281,6 +281,11 @@ function insertSuggestion(words, locationInformation)
 function insertSuggestionModified(words, locationInformation)
 {
 	var CommonSequence = determineLongestCommonInitialSequence(words);
+	var idx = CommonSequence.indexOf("\n");
+	if(idx > -1)
+	{
+		CommonSequence = CommonSequence.substr(0, idx-1);
+	}
 
 	var temp = {};
 	temp.CommonSequence = CommonSequence;
