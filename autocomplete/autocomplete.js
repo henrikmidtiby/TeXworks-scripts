@@ -281,11 +281,9 @@ function insertSuggestion(words, locationInformation)
 function insertSuggestionModified(words, locationInformation)
 {
 	var CommonSequence = determineLongestCommonInitialSequence(words);
-	var CommonStringInAllMatchingWords = getEndOfCommonSubstring(CommonSequence, "");
 
 	var temp = {};
 	temp.CommonSequence = CommonSequence;
-	temp.CommonStringInAllMatchingWords = CommonStringInAllMatchingWords;
 
 	// Delete current line and selection
 	var lineStart = locationInformation.lineStart;
@@ -297,10 +295,7 @@ function insertSuggestionModified(words, locationInformation)
 	
 	//showObject(temp);
 	TW.target.selectRange(lineStart, selectionEnd - lineStart);
-	TW.target.insertText("");
-
-	// Insert remaining part of the common substring
-	TW.target.insertText(CommonStringInAllMatchingWords);
+	TW.target.insertText(CommonSequence);
 
 	var NextGuess = determineNextGuess(words, lastGuess);
 
