@@ -123,6 +123,7 @@ function closeEnvironment(unclosedEnvironment)
 function suggestEnvironment(locationInformation)
 {
 	possibleSuggestions = [];
+	possibleSuggestions.push("\\begin{align}\n\\end{align}");
 	possibleSuggestions.push("\\begin{table}\n\\end{table}");
 	possibleSuggestions.push("\\begin{table}\n\\centering\n\\begin{tabular}{c c}\nCol1 & Col2 \\\\\n\\hline\nV1	& V2\n\\end{tabular}\n\\caption{}\n\\label{tab}\n\\end{table}");	
 	possibleSuggestions.push("\\begin{tabular}{}\n\\end{tabular}");
