@@ -38,6 +38,9 @@
  */
 
 
+const EXISTS = 0;
+const MAYEXIST = 2;
+const DOESNTEXIST = 1;
 function showObject(inputObject)
 {
 	var tempText = "";
@@ -214,9 +217,26 @@ function OpenAllInputFiles()
 				} 
 
 				// Append .tex to the filename if it is not given
-				if(fileName.indexOf('.tex') === -1)
+				// if(fileName.indexOf('.tex') === -1)
+				// Check if file exists
+				var existence = TW.fileExists(this.currentDirectory + fileName);
+				if(existence == EXISTS)
 				{
-					fileName = fileName + '.tex';
+					// Current filename is fine.
+				}
+				else
+				{
+					var existenceTwo = TW.fileExists(this.currentDirectory + fileName + '.tex');
+					if(existenceTwo == EXISTS)
+					{
+						fileName = fileName + '.tex';
+					}
+					else 
+					{
+						// If filename ends on ".tikz" or ".tex" 
+						// Do nothing
+						// Else append ".tex"
+					}
 				}
 
 				fileName = this.currentDirectory + fileName; 
