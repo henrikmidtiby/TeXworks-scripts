@@ -619,6 +619,10 @@ function determineMatchingCommandsFromCurrentCommand(currentCommand)
 	{
 		return(["cite", "citep", "citet"]);
 	}
+	if(isElementInList(["includeonly"], currentCommand))
+	{
+		return(["include"]);
+	}
 	return([]);
 }
 function isElementInList(list, element)
