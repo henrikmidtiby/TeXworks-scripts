@@ -104,6 +104,7 @@ function OpenAllInputFiles()
 	obj.getTextToAnalyze = function()
 	{
 		this.txt = TW.target.selection;
+		this.checkForRootFile(getCurrentLine());
 		if (this.txt == "")
 		{ 
 			var selStart =TW.target.selectionStart;
@@ -134,6 +135,19 @@ function OpenAllInputFiles()
 			this.explicitSelection = true;
 		} 
 		this.alLines = this.txt.split("\n");
+	}
+
+	obj.checkForRootFile = function(currentLine)
+	{
+		// % !TEX root = main.tex
+		var refersToMainFile = new RegExp("% !TEX root = (.*)", "i");
+		matches = currentLine.match(refersToMainFile);
+		if(matches)
+		{
+			fileName = matches[1];
+			fileName = this.currentDirectory + fileName; 
+			this.followThese.push(fileName); 
+		}
 	}
 	////////////// Premable End \\\\\\\\\\\\\
 
