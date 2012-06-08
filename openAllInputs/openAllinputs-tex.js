@@ -54,15 +54,16 @@ function getCurrentLine()
 	var wordStart = TW.target.selectionStart;
 	var lineStart = wordStart;
 	var lineEnd = wordStart;
-	while(TW.target.text.charAt(lineStart - 1) !== '\n')
+	txt = TW.target.text;
+	while(txt.charAt(lineStart - 1) !== '\n' && lineStart > 0)
 	{
 		lineStart = lineStart - 1;
 	}
-	while(TW.target.text.charAt(lineEnd + 1) !== '\n')
+	while(txt.charAt(lineEnd + 1) !== '\n' && lineEnd < txt.length)
 	{
 		lineEnd = lineEnd + 1;
 	}
-	var currentLine = TW.target.text.substr(lineStart, 1 + lineEnd - lineStart);
+	var currentLine = txt.substr(lineStart, 1 + lineEnd - lineStart);
 	return(currentLine);
 }
 function OpenAllInputFiles()
