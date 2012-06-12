@@ -41,6 +41,12 @@
 const EXISTS = 0;
 const MAYEXIST = 2;
 const DOESNTEXIST = 1;
+
+// Make the script work with texworks versions earlier than r961
+if (typeof(TW.fileExists) == "undefined") {
+    TW.fileExists = function() { return MAYEXIST; };
+}
+
 function showObject(inputObject)
 {
 	var tempText = "";
