@@ -96,13 +96,18 @@ function collectDetailsAboutTheCurrentSelection()
 function getCurrentLine()
 {
 	var wordStart = TW.target.selectionStart;
-	var pos = wordStart;
-	while(TW.target.text.charAt(pos - 1) !== '\n')
+	var lineStart = wordStart;
+	var lineEnd = wordStart;
+	txt = TW.target.text;
+	while(txt.charAt(lineStart - 1) !== '\n' && lineStart > 0)
 	{
-		pos = pos - 1;
+		lineStart = lineStart - 1;
 	}
-	var lineStart = pos;
-	var currentLine = TW.target.text.substr(pos, wordStart - pos);
+	while(txt.charAt(lineEnd + 1) !== '\n' && lineEnd < txt.length)
+	{
+		lineEnd = lineEnd + 1;
+	}
+	var currentLine = txt.substr(lineStart, 1 + lineEnd - lineStart);
 	return {currentLine: currentLine, lineStart: lineStart};
 }
 function closeEnvironment(unclosedEnvironment)
