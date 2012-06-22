@@ -90,7 +90,6 @@ function collectDetailsAboutTheCurrentSelection()
 		details.firstPlaceInLine = true;
 	}
 
-
 	return(details);
 }
 function getCurrentLine()

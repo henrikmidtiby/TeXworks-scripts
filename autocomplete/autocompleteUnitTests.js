@@ -27,6 +27,11 @@ function assert(exp, message) {
   }
 }
 
+function assertEqual(value, expectedValue)
+{
+	assert(value === expectedValue, 'Got "' + value + '" expected "' + expectedValue + '"');
+}
+
 // autocomplete
 // collectDetailsAboutTheCurrentSelection
 // getCurrentLine
@@ -52,20 +57,30 @@ assert(shouldCompleteFilename('unknowncommand') != true);
 // isAlphaNumeric
 // isAlphaNumericKommaOrSpace
 // getPathFromFilename
+assertEqual(getPathFromFilename('C:/Users/hemi/Dropbox/Work/2012-06-07PhdDefence/doc/presentation.tex'), 'C:/Users/hemi/Dropbox/Work/2012-06-07PhdDefence/doc');
+assertEqual(getPathFromFilename('pic/c'), 'pic');
 // getListOfFilesInDir
 // getMatchingFilenames
 // getTypeOfLineBreak
 // unique
+//assertEqual(unique(['a', 'b', 'c']), ['a', 'b', 'c']); // Does not work for some reason ...
 // determineMatchingCommandsFromCurrentCommand
 // isElementInList
+assertEqual(isElementInList(["a", "b"], "c"), false);
+assertEqual(isElementInList(["a", "b"], "b"), true);
 // locateMatchingWords
 // getTextFromAllOpenWindows
 // getBibtexKeys
 // locateMatchingWordsInString
 // wordsCleanUp
 // determineLongestCommonInitialSequence
+assertEqual(determineLongestCommonInitialSequence(['includegraphics', 'includepdf']), 'include');
 // getEndOfCommonSubstring
 // determineNextGuess
+assertEqual(determineNextGuess(['a', 'b', 'ba'], 'b'), 'ba');
+assertEqual(determineNextGuess(['a', 'b', 'ba'], 'ba'), 'a');
+assertEqual(determineNextGuess(['a', 'b', 'ba'], 'asdba'), 'a');
+assertEqual(determineNextGuess([], 'asdba'), '');
 // max
 assert(max(1, 3) == 3);
 // showObject
