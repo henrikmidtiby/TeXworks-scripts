@@ -1,13 +1,33 @@
 // TeXworksScript
-// Title: Context aware autocomplete
+// Title: Complete path
 // Description: Autocompletion inspired by vim.
 // Author: Henrik Skov Midtiby
 // Version: 0.3
 // Date: 2011-05-16
 // Script-Type: standalone
 // Context: TeXDocument
-// Shortcut: Ctrl+M
+// Shortcut: Ctrl+Shift+P
 
+function completePath()
+{
+	showObject('marker');
+	var locationInformation = collectDetailsAboutTheCurrentSelection();
+
+	showObject(locationInformation);
+
+	// If in primary argument to input, include, includegraphics or similar, 
+	// complete filename.
+	var words;
+	words = locateMatchingFilenames(locationInformation.extractedWord);
+
+	if(words.length == 0)
+	{
+		suggestEnvironment(locationInformation);
+		return;
+	}
+
+	insertSuggestion(words, locationInformation);
+}
 
 // Include functionality from other script
 var file = TW.readFile("autocompleteFunctions.js");
@@ -16,7 +36,7 @@ if (file.status == 0) {
   file = null;  // free mem
 }
 
-autocomplete();
+completePath();
 
 // Debug output
 //TW.target.selectRange(inputWord.wordStart + 15);
