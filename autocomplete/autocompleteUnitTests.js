@@ -29,6 +29,15 @@ function assert(exp, message) {
 
 function assertEqual(value, expectedValue)
 {
+	if(value !== expectedValue)
+	{
+		var temp = {};
+		temp.value = value;
+		temp.expectedValue = expectedValue;
+		showObject(temp, 'Assertion failed');
+		showObject(value, "Value");
+		showObject(expectedValue, "Expected value");
+	}
 	assert(value === expectedValue, 'Got "' + value + '" expected "' + expectedValue + '"');
 }
 
