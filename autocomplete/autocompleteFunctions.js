@@ -107,7 +107,8 @@ function getCurrentLine()
 		lineEnd = lineEnd + 1;
 	}
 	var currentLine = txt.substr(lineStart, 1 + lineEnd - lineStart);
-	return {currentLine: currentLine, lineStart: lineStart};
+	var currentLineTillCursor = txt.substr(lineStart, wordStart - lineStart);
+	return {currentLine: currentLine, lineStart: lineStart, currentLineTillCursor: currentLineTillCursor};
 }
 function closeEnvironment(unclosedEnvironment)
 {
