@@ -78,6 +78,7 @@ function collectDetailsAboutTheCurrentSelection()
 	var tempout = getCurrentLine();
 	details.currentLine = tempout.currentLine;
 	details.lineStart = tempout.lineStart;
+	details.currentLineTillCursor = tempout.currentLineTillCursor;
 	var tempoutput = detectCertainCommands(details.currentLine);
 	details.commandMatch = tempoutput.match;
 	details.commandNameInLine = tempoutput.commandName;
@@ -139,7 +140,7 @@ function suggestEnvironment(locationInformation)
 	for(var idx1 = 0; idx1 < possibleSuggestions.length; idx1++)
 	{
 		var suggestion = possibleSuggestions[idx1];
-		if(suggestion.indexOf(locationInformation.currentLine) == 0)
+		if(suggestion.indexOf(locationInformation.currentLineTillCursor) == 0)
 		{
 			matchedSuggestions.push(suggestion);
 		}
