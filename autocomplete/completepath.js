@@ -10,10 +10,9 @@
 
 function completePath()
 {
-	showObject('marker');
 	var locationInformation = collectDetailsAboutTheCurrentSelection();
 
-	showObject(locationInformation);
+	//showObject(locationInformation);
 
 	// If in primary argument to input, include, includegraphics or similar, 
 	// complete filename.
