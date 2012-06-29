@@ -96,7 +96,7 @@ function getCurrentLine()
 {
 	var wordStart = TW.target.selectionStart;
 	var lineStart = wordStart;
-	var lineEnd = wordStart;
+	var lineEnd = wordStart - 1;
 	txt = TW.target.text;
 	while(txt.charAt(lineStart - 1) !== '\n' && lineStart > 0)
 	{
