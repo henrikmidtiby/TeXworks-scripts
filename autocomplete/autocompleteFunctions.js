@@ -386,7 +386,12 @@ function detectCertainCommands(currentLine)
 }
 function determineEnvironmentStackBeforeCursor()
 {
+	// Get text in current document placed before the cursor
 	var textBeforeCursor = TW.target.text.substr(0, TW.target.selectionStart);
+	return determineEnvironmentStack(textBeforeCursor);
+}
+function determineEnvironmentStack(textBeforeCursor)
+{
 	var temp = {};
 	var environmentStack = [];
 	temp.BeginIndex = textBeforeCursor.indexOf("\\begin{");
