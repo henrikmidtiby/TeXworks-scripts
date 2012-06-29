@@ -63,6 +63,10 @@ assert(shouldCompleteFilename('unknowncommand') != true);
 // getCommandName
 // detectCertainCommands
 // determineEnvironmentStackBeforeCursor
+// determineEnvironmentStack
+//assertEqual(determineEnvironmentStack("\\begin{document}"), ["document"])
+//assertEqual(determineEnvironmentStack("\\begin{document}\\begin{figure}\\end{figure}"), ["document"])
+//assertEqual(determineEnvironmentStack("\\begin{document}\\begin{figure}"), ["document", "figure"])
 // isAlphaNumeric
 assertEqual(true, isAlphaNumeric("A"))
 assertEqual(false, isAlphaNumeric(":"))
@@ -75,6 +79,8 @@ assertEqual(getPathFromFilename('pic/c'), 'pic');
 // getListOfFilesInDir
 // getMatchingFilenames
 // getTypeOfLineBreak
+assertEqual(getTypeOfLineBreak("\n\n"), "\n")
+assertEqual(getTypeOfLineBreak("\r\n"), "\r\n")
 // unique
 //assertEqual(unique(['a', 'b', 'c']), ['a', 'b', 'c']); // Does not work for some reason ...
 // determineMatchingCommandsFromCurrentCommand
