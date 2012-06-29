@@ -23,12 +23,8 @@ function autocomplete()
 		}
 	}
 
-	var inBeginEnvironment = new RegExp("\\\\begin.*", "g");
-	var sectionMatches = locationInformation.currentLine.match(inBeginEnvironment);
-	if(sectionMatches)
+	if(suggestCommandOrEnvironment(locationInformation))
 	{
-		// Autocomplete environments
-		suggestEnvironment(locationInformation);
 		return;
 	}
 
@@ -53,7 +49,7 @@ function autocomplete()
 
 	if(words.length == 0)
 	{
-		suggestEnvironment(locationInformation);
+		suggestCommandOrEnvironment(locationInformation);
 		return;
 	}
 
@@ -118,9 +114,10 @@ function closeEnvironment(unclosedEnvironment)
 		TW.target.insertText("\\end{" + unclosedEnvironment + "}\n");
 	}
 }
-function suggestEnvironment(locationInformation)
+function suggestCommandOrEnvironment(locationInformation)
 {
 	possibleSuggestions = [];
+	possibleSuggestions = addCommands(possibleSuggestions);
 	possibleSuggestions.push("\\begin{align}\n\\end{align}");
 	possibleSuggestions.push("\\begin{table}\n\\end{table}");
 	possibleSuggestions.push("\\begin{table}\n\\centering\n\\begin{tabular}{c c}\nCol1 & Col2 \\\\\n\\hline\nV1	& V2\n\\end{tabular}\n\\caption{}\n\\label{tab}\n\\end{table}");	
@@ -136,7 +133,11 @@ function suggestEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{frame}\n\\frametitle{}\n\\centering\n\\includegraphics{}\n\\end{frame}");
 	possibleSuggestions.push("\\begin{columns}[c]\n\\column{5cm}\n\\column{5cm}\n\\end{columns}");
 	possibleSuggestions.push("\\begin{multicols}{2}\n\\end{multicols}");
-
+	possibleSuggestions.push("\\section{}");
+	possibleSuggestions.push("\\section[]{}");
+	possibleSuggestions.push("\\includegraphics{filename}");
+	possibleSuggestions.push("\\includegraphics[width=, height=, scale=]{filename}");
+	possibleSuggestions.push("\\includegraphics[trim=0 0 0 0, clip]{filename}");
 	matchedSuggestions = [];
 
 	for(var idx1 = 0; idx1 < possibleSuggestions.length; idx1++)
@@ -156,6 +157,17 @@ function suggestEnvironment(locationInformation)
 	{
 		return false;
 	}
+}
+function addCommands(possibleSuggestions)
+{
+	var listOfCommands = "addcontentsline addtocontents addtocounter address addtolength addvspace alph appendix arabic author backslash baselineskip baselinestretch bf bibitem bigskipamount bigskip boldmath cal caption cdots centering chapter circle cite cleardoublepage clearpage cline closing color copyright dashbox date ddots documentclass dotfill em emph ensuremath euro fbox flushbottom fnsymbol footnote footnotemark footnotesize footnotetext frac frame framebox frenchspacing hfill hline hrulefill hspace huge Huge hyphenation include includegraphics includeonly indent input it item kill label large Large LARGE LaTeX LaTeXe ldots left lefteqn line linebreak linethickness linewidth listoffigures listoftables location makebox maketitle markboth markright mathcal mathop mbox medskip multicolumn multiput newcommand newcounter newenvironment newfont newlength newline newpage newsavebox newtheorem nocite noindent nolinebreak nonfrenchspacing normalsize nopagebreak not onecolumn opening oval overbrace overline pagebreak pagenumbering pageref pagestyle par paragraph parbox parindent parskip part protect providecommand put raggedbottom raggedleft raggedright raisebox ref renewcommand right rm roman rule savebox sbox sc scriptsize section setcounter setlength settowidth sf shortstack signature sl slash small smallskip sout space sqrt stackrel subparagraph subsection subsubsection tableofcontents telephone TeX textbf textcolor textit textmd textnormal textrm textsc textsf textsl texttt textup textwidth textheight thanks thispagestyle tiny title today tt twocolumn typeout typein uline underbrace underline unitlength usebox usecounter usepackage uwave value vbox vdots vector verb vfill vline vphantom vspace tikzsetnextfilename tikzexternaldisable tikzexternalenable"; 
+	var commands = listOfCommands.split(" ");
+	for(commandIdx = 0; commandIdx < commands.length; commandIdx++)
+	{
+		var command = commands[commandIdx];
+		possibleSuggestions.push("\\" + command);
+	}
+	return possibleSuggestions;
 }
 function addLabelBelow(locationInformation)
 {
@@ -230,6 +242,8 @@ function locateMatchingFilenames(extractedWord)
 }
 function locateMatchingCommandNames(extractedWord)
 {
+	// TODO: Remove this function and all its dependencies, it has 
+	// been superseeded by suggestCommandOrEnvironment
 	var words = [];
 	// Command list taken from http://en.wikibooks.org/wiki/LaTeX/Command_Glossary
 	//var listOfCommands = "addcontentsline addtocontents addtocounter address addtolength addvspace alph appendix arabic author backslash baselineskip baselinestretch begin bf bibitem bigskipamount bigskip boldmath cal caption cdots centering chapter circle cite cleardoublepage clearpage cline closing color copyright dashbox date ddots documentclass dotfill em emph end ensuremath euro fbox flushbottom fnsymbol footnote footnotemark footnotesize footnotetext frac frame framebox frenchspacing hfill hline hrulefill hspace huge Huge hyphenation include includegraphics includeonly indent input it item kill label large Large LARGE LaTeX LaTeXe ldots left lefteqn line linebreak linethickness linewidth listoffigures listoftables location makebox maketitle markboth markright mathcal mathop mbox medskip multicolumn multiput newcommand newcounter newenvironment newfont newlength newline newpage newsavebox newtheorem nocite noindent nolinebreak nonfrenchspacing normalsize nopagebreak not onecolumn opening oval overbrace overline pagebreak pagenumbering pageref pagestyle par paragraph parbox parindent parskip part protect providecommand put raggedbottom raggedleft raggedright raisebox ref renewcommand right rm roman rule savebox sbox sc scriptsize section setcounter setlength settowidth sf shortstack signature sl slash small smallskip sout space sqrt stackrel subparagraph subsection subsubsection tableofcontents telephone TeX textbf textcolor textit textmd textnormal textrm textsc textsf textsl texttt textup textwidth textheight thanks thispagestyle tiny title today tt twocolumn typeout typein uline underbrace underline unitlength usebox usecounter usepackage uwave value vbox vdots vector verb vfill vline vphantom vspace tikzsetnextfilename"; 
