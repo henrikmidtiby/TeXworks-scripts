@@ -542,9 +542,13 @@ function getListOfFilesInDir(directory)
 	}
 	retVal = TW.system(commandToListFiles, true);
 
-	if(retVal.output == undefined)
+	if(retVal.status == 1)
 	{
-		TW.information(null, "Error message", retVal.message);
+		showObject(retVal, "Execution of system command failed")
+	}
+	if(retVal.status == 2)
+	{
+		TW.information(null, "Additional permissions required", "For completion of filenames you need to allow scripts to execute system commands. Edit -> Preferences -> Scripts -> Allow scripts to run system commands.");
 	}
 
 	return retVal.output;
