@@ -531,14 +531,16 @@ function getPathFromFilename(filename)
 function getListOfFilesInDir(directory)
 {
 	var retVal;
+	var commandToListFiles
 	if (TW.platform() == 'Windows')
 	{
-		retVal = TW.system("cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"", true);
+		commandToListFiles = "cmd /c dir /b \"" + directory.replace(/\//g,"\\") +"\"";
 	}
 	else
 	{
-		retVal = TW.system("ls " + directory, true);
+		commandToListFiles = "ls " + directory;
 	}
+	retVal = TW.system(commandToListFiles, true);
 
 	if(retVal.output == undefined)
 	{
