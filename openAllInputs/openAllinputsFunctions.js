@@ -78,7 +78,7 @@ function getTexWorksLines(filecontent)
 	for(lineIdx in lines)
 	{
 		var line = lines[lineIdx];
-		var texworksLine = new RegExp("%!\\s*TEX\\s+(.*?)\\s*=\\s*(.*)", "i");
+		var texworksLine = new RegExp("%\\s*!\\s*TEX\\s+(.*?)\\s*=\\s*(.*)", "i");
 		m = line.match(texworksLine);
 		if(m)
 		{
@@ -88,6 +88,96 @@ function getTexWorksLines(filecontent)
 		}
 	}
 	return res;
+}
+function getPathFromFilename(filename)
+{
+	// Locate the last directory separator
+	var counter = 0;
+	var lastDirectorySeparator = -1;
+	while(counter < filename.length)
+	{
+		if(filename.charAt(counter) == '/')
+		{
+			lastDirectorySeparator = counter;
+		}
+		counter += 1;
+	}
+	var basepath = filename.substr(0, lastDirectorySeparator);
+	return basepath;
+}
+function getRelPathToRootDocument()
+{
+	texworkLines = getTexWorksLines(TW.target.text);
+	showObject(texworkLines);
+	if(texworkLines['root'] !== undefined)
+	{
+		rootFilePath = texworkLines['root'];
+		relPath = getPathFromFilename(rootFilePath);
+		if(relPath === "")
+			return "";
+		else
+			return relPath + '/';
+	}
+	return "";
+}
+function writeTexWorksLines(texworksLines)
+{
+	var str = "";
+	for(prop in texworksLines)
+	{
+		str += "% !TEX " + prop + " = " + texworksLines[prop] + "\n";
+	}
+	return str;
+}
+function adjustRootFileLocation(texworksLines, newWindow)
+{
+	var temp = {};
+	temp.curFileDirectory = TW.target.fileName;
+	temp.newFileDirectory = newWindow.result.fileName;
+	differences = directoryDifferences(temp.newFileDirectory, temp.curFileDirectory);
+	tempPath = differences + texworksLines["root"];
+	tempPath = tempPath.replace('/[^/]+/\.\./','/'); 
+	texworksLines["root"] = tempPath;
+	return texworksLines;
+}
+function directoryDifferences(fileOne, fileTwo)
+// How to go from directory of fileOne to the directory of fileTwo
+{
+	var temp = {};
+	temp.fileOne = fileOne;
+	temp.fileTwo = fileTwo;
+	showObject(temp);
+	dirOne = getPathFromFilename(fileOne);
+	dirTwo = getPathFromFilename(fileTwo);
+	dirOneParts = dirOne.split("/");
+	dirTwoParts = dirTwo.split("/");
+
+	// Remove common parts of path
+	var commonPathElements = 0;
+	for(k = 0; k < dirOneParts.length; k++)
+	{
+		if(dirOneParts[k] === dirTwoParts[k])
+		{
+			commonPathElements = k + 1;
+		}
+		else
+	 	{
+			break;
+		}
+	}
+
+	var str = "";
+	for(k = commonPathElements; k < dirOneParts.length; k++)
+	{
+		str += "../";
+	}
+	for(k = commonPathElements; k < dirTwoParts.length; k++)
+	{
+		if(dirTwoParts[k] === "")
+			break;
+		str += dirTwoParts[k] + "/";
+	}
+	return str;
 }
 function OpenAllInputFiles()
 {
@@ -123,6 +213,9 @@ function OpenAllInputFiles()
 		var currentFileName  =  TW.target.fileName;
 		var currentDirectoryLastDelim  =  currentFileName.lastIndexOf('/');
 		this.currentDirectory  = currentFileName.substr(0,currentDirectoryLastDelim +1);
+		relPath = getRelPathToRootDocument();
+		this.currentDirectory = this.currentDirectory + relPath;
+		this.texworksLines = getTexWorksLines(TW.target.text);
 	}
 	obj.getTextToAnalyze = function()
 	{
@@ -390,10 +483,12 @@ function OpenAllInputFiles()
 			curLine = linesInCurrentDocument[idx];
 			if(curLine.indexOf('% !TEX') > -1)
 			{
-				newWindow.result.insertText(curLine);
-				newWindow.result.insertText("\n");
+//				newWindow.result.insertText(curLine);
+//				newWindow.result.insertText("\n");
 			}
 		}
+		modifiedTexworksLines = adjustRootFileLocation(this.texworksLines, newWindow);
+		newWindow.result.insertText(writeTexWorksLines(modifiedTexworksLines));
 	}
 	return(obj);
 }

@@ -22,18 +22,30 @@ if (file.status == 0) {
   file = null;  // free mem
 }
 
-
-
 // showObject
 // getCurrentLine
 // getTexWorksLines
 var res = {};
 res["program"] = "pdflatex";
 assertEqualDicts(getTexWorksLines("\n%! TEX program = pdflatex\n\n"), res);
+assertEqualDicts(getTexWorksLines("\n%!tex program = pdflatex\n\n"), res);
 assertEqualDicts(getTexWorksLines("\n%! TEX program = pdflatex\n%TEX spell=danish\n"), res);
 res["spell"] = "danish";
 assertEqualDicts(getTexWorksLines("\n%! TEX program = pdflatex\n%!TEX spell=danish\n"), res);
 assertEqualDicts(getTexWorksLines("\n%! TeX program =         pdflatex\n%!TEX spell=danish\n"), res);
+// getPathFromFilename
+assertEqual(getPathFromFilename('C:/Users/hemi/Dropbox/Work/2012-06-07PhdDefence/doc/presentation.tex'), 'C:/Users/hemi/Dropbox/Work/2012-06-07PhdDefence/doc');
+assertEqual(getPathFromFilename('pic/c'), 'pic');
+// getRelPathToRootDocument
+// writeTexWorksLines
+var res = {};
+res["program"] = "pdflatex";
+assertEqual(writeTexWorksLines(res), "% !TEX program = pdflatex\n");
+// adjustRootFileLocation
+// directoryDifferences
+assertEqual(directoryDifferences("v2/doc/file.tex", "v2/doc/otherFile.tex"), "");
+assertEqual(directoryDifferences("doc/file.tex", "otherFile.tex"), "../");
+assertEqual(directoryDifferences("doc/file.tex", "temp/otherFile.tex"), "../temp/");
 // OpenAllInputFiles
 filehandler = OpenAllInputFiles();
 // obj.openInputFiles
