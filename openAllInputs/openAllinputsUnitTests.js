@@ -87,6 +87,14 @@ function assertEqualDicts(value, expectedValue)
 
 // showObject
 // getCurrentLine
+// getTexWorksLines
+var res = {};
+res["program"] = "pdflatex";
+assertEqualDicts(getTexWorksLines("\n%! TEX program = pdflatex\n\n"), res);
+assertEqualDicts(getTexWorksLines("\n%! TEX program = pdflatex\n%TEX spell=danish\n"), res);
+res["spell"] = "danish";
+assertEqualDicts(getTexWorksLines("\n%! TEX program = pdflatex\n%!TEX spell=danish\n"), res);
+assertEqualDicts(getTexWorksLines("\n%! TeX program =         pdflatex\n%!TEX spell=danish\n"), res);
 // OpenAllInputFiles
 filehandler = OpenAllInputFiles();
 // obj.openInputFiles

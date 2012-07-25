@@ -71,6 +71,24 @@ function getCurrentLine()
 	var currentLine = txt.substr(lineStart, 1 + lineEnd - lineStart);
 	return(currentLine);
 }
+function getTexWorksLines(filecontent)
+{
+	var res = {};
+	lines = filecontent.split("\n");
+	for(lineIdx in lines)
+	{
+		var line = lines[lineIdx];
+		var texworksLine = new RegExp("%!\\s*TEX\\s+(.*?)\\s*=\\s*(.*)", "i");
+		m = line.match(texworksLine);
+		if(m)
+		{
+			key = m[1];
+			value = m[2];
+			res[key] = value;
+		}
+	}
+	return res;
+}
 function OpenAllInputFiles()
 {
 	var obj = {};
