@@ -57,6 +57,32 @@ function assertEqualLists(value, expectedValue)
 	}
 }
 
+function assertEqualDicts(value, expectedValue)
+{
+	for(prop in value)
+	{
+		assert(expectedValue[prop] !== undefined, 
+			'expectedValue["' + prop + '"] is not defined.');
+		testPassed--;
+		assert(value[prop] == expectedValue[prop], 'Property: "' + prop + '" does not match.' + 
+			' value["' + prop + '"] = "' + value[prop] + '" ' + 
+			' expectedValue["' + prop + '"] = "' + expectedValue[prop] + '"' );
+		testPassed--;
+	}
+
+	for(prop in expectedValue)
+	{
+		assert(value[prop] !== undefined, 
+			'value["' + prop + '"] is not defined.');
+		testPassed--;
+		assert(value[prop] == expectedValue[prop], 'Property: "' + prop + '" does not match.' + 
+			' value["' + prop + '"] = "' + value[prop] + '" ' + 
+			' expectedValue["' + prop + '"] = "' + expectedValue[prop] + '"' );
+		testPassed--;
+	}
+	testPassed++;
+}
+
 
 
 // showObject
