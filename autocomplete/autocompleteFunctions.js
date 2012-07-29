@@ -133,6 +133,7 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{frame}\n\\frametitle{}\n\\centering\n\\includegraphics{}\n\\end{frame}");
 	possibleSuggestions.push("\\begin{columns}[c]\n\\column{5cm}\n\\column{5cm}\n\\end{columns}");
 	possibleSuggestions.push("\\begin{multicols}{2}\n\\end{multicols}");
+	possibleSuggestions.push("\\begin{verbatim}\n\\end{verbatim}");
 	possibleSuggestions.push("\\section{}");
 	possibleSuggestions.push("\\section[]{}");
 	possibleSuggestions.push("\\includegraphics{filename}");
