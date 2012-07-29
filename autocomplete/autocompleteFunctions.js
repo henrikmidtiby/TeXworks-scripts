@@ -539,7 +539,7 @@ function getListOfFilesInDir(directory)
 	}
 	else
 	{
-		commandToListFiles = "ls " + directory;
+		commandToListFiles = "ls \"" + directory + "\"";
 	}
 	retVal = TW.system(commandToListFiles, true);
 
