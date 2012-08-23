@@ -108,7 +108,7 @@ function getPathFromFilename(filename)
 function getRelPathToRootDocument()
 {
 	texworkLines = getTexWorksLines(TW.target.text);
-	showObject(texworkLines);
+	//showObject(texworkLines);
 	if(texworkLines['root'] !== undefined)
 	{
 		rootFilePath = texworkLines['root'];
@@ -146,7 +146,7 @@ function directoryDifferences(fileOne, fileTwo)
 	var temp = {};
 	temp.fileOne = fileOne;
 	temp.fileTwo = fileTwo;
-	showObject(temp);
+	//showObject(temp);
 	dirOne = getPathFromFilename(fileOne);
 	dirTwo = getPathFromFilename(fileTwo);
 	dirOneParts = dirOne.split("/");
@@ -401,6 +401,7 @@ function OpenAllInputFiles()
 		else
 		{
 			generatedFilenames.push(inputFilename + ".tex");
+			generatedFilenames.push(inputFilename + ".sty");
 			generatedFilenames.push(inputFilename + ".tikz");
 			generatedFilenames.push(inputFilename);
 			return generatedFilenames;
