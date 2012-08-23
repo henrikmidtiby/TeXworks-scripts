@@ -139,6 +139,9 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\includegraphics{filename}");
 	possibleSuggestions.push("\\includegraphics[width=, height=, scale=]{filename}");
 	possibleSuggestions.push("\\includegraphics[trim=0 0 0 0, clip]{filename}");
+	possibleSuggestions.push("\\begin{videoexercisebox}\n\\begin{videos}\n\\myitem{}{}\n\\end{videos}\n\\begin{exercises}\n\\myitem{}{}\n\\end{exercises}\n\\end{videoexercisebox}");
+	possibleSuggestions.push("\\usepackage[colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}");
+	possibleSuggestions.push("\\usepackage[utf8]{inputenc}");
 	matchedSuggestions = [];
 
 	for(var idx1 = 0; idx1 < possibleSuggestions.length; idx1++)
