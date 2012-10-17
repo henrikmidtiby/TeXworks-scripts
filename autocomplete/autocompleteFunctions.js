@@ -482,13 +482,7 @@ function isAlphaNumeric(character)
 		return(true); }
 	if('0' <= character && character <= '9') {
 		return(true); }
-	if('/' == character) {
-		return(true); }
-	if('.' == character) {
-		return(true); }
-	if('-' == character) {
-		return(true); }
-	if('_' == character) {
+	if('/.-_ÆØÅæøå'.indexOf(character) != -1) {
 		return(true); }
 	return(false);
 }
