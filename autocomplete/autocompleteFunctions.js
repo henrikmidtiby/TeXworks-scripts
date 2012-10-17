@@ -494,12 +494,7 @@ function isAlphaNumeric(character)
 }
 function isAlphaNumericKommaOrSpace(character)
 {
-	// Check for alpha numeric values
-	if('a' <= character && character <= 'z') {
-		return(true); }
-	if('A' <= character && character <= 'Z') {
-		return(true); }
-	if('0' <= character && character <= '9') {
+	if(isAlphaNumeric(character)) {
 		return(true); }
 	// Check for komma
 	if(',' == character) {
@@ -508,10 +503,6 @@ function isAlphaNumericKommaOrSpace(character)
 	if(' ' == character) {
 		return(true); }
 	if('\t' == character) {
-		return(true); }
-	if('/' == character) {
-		return(true); }
-	if('.' == character) {
 		return(true); }
 	return(false);
 }
