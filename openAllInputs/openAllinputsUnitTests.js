@@ -62,12 +62,16 @@ assertEqual(filehandler.doesLineContainInput("\\include{filename.tex}"), false);
 // obj.doesLineContainInclude
 assertEqual(filehandler.doesLineContainInclude("\\input{filename.tex}"), false);
 assertEqual(filehandler.doesLineContainInclude("\\include{filename.tex}"), true);
+// obj.doesLineContainUsepackage
+assertEqual(filehandler.doesLineContainUsepackage("\\include{filename.tex}"), false);
+assertEqual(filehandler.doesLineContainUsepackage("\\usepackage{filename.tex}"), true);
+assertEqual(filehandler.doesLineContainUsepackage("\\usepackage[options]{hyperref}"), true);
 // obj.doesLineContainInputOrInclude
 assertEqual(filehandler.doesLineContainInputOrInclude("\\input{filename.tex}"), true);
 // obj.suggestFilenames
 assertEqualLists(filehandler.suggestFilenames("file.tex"), ["file.tex"]);
 assertEqualLists(filehandler.suggestFilenames("file.tikz"), ["file.tikz"]);
-assertEqualLists(filehandler.suggestFilenames("file"), ["file.tex", "file.tikz", "file"]);
+assertEqualLists(filehandler.suggestFilenames("file"), ["file.tex", "file.sty", "file.tikz", "file"]);
 // obj.hasProperFilenameEnding
 assertEqual(filehandler.hasProperFilenameEnding("file.tex"), true);
 assertEqual(filehandler.hasProperFilenameEnding("file.tx"), false);

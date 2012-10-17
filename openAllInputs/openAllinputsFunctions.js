@@ -179,6 +179,24 @@ function directoryDifferences(fileOne, fileTwo)
 	}
 	return str;
 }
+// Function for removing dublicate element in an array.
+// Code from http://www.martienus.com/code/javascript-remove-duplicates-from-array.html
+function unique(a)
+{
+	var r = new Array();
+	o:for(var i = 0, n = a.length; i < n; i++)
+	{
+		for(var x = 0, y = r.length; x < y; x++)
+		{
+			if(r[x]==a[i])
+			{
+				continue o;
+			}
+		}
+		r[r.length] = a[i];
+	}
+	return r;
+}
 function OpenAllInputFiles()
 {
 	var obj = {};
@@ -233,7 +251,7 @@ function OpenAllInputFiles()
 			if (this.txt != "")
 			{
 				var currentLine = getCurrentLine();
-				if (this.doesLineContainInputOrInclude(currentLine))
+				if (this.doesLineContainInputOrInclude(currentLine) || this.doesLineContainUsepackage(currentLine))
 				{
 					this.txt = currentLine;
 					this.inDocument = true;
@@ -304,7 +322,8 @@ function OpenAllInputFiles()
 		{
 			if (this.alLines[line].substr(0,1) == '%'){continue;} // ignore commented lines
 
-			var thisLine = this.alLines[line].toLowerCase();	 
+			// var thisLine = this.alLines[line].toLowerCase();	 
+			var thisLine = this.alLines[line];	 
 
 			if (thisLine.indexOf('\\begin{document}') >-1) 
 			{
@@ -319,6 +338,10 @@ function OpenAllInputFiles()
 
 			obj.handleLinesWithInput(thisLine);
 			obj.handleLinesWithInclude(thisLine);
+			if(this.explicitSelection)
+			{
+				obj.handleExplicitSelection(thisLine);
+			}
 		}// /End. for	(line in alLines)
 	}
 	obj.handleLinesWithInput = function(thisLine)
@@ -363,6 +386,18 @@ function OpenAllInputFiles()
 			}
 		}
 	}
+	obj.handleExplicitSelection = function(thisLine)
+	{
+		var temp = {};
+		temp.method = 'handleExplicitSelection';
+		temp.thisLine = thisLine;
+
+		beginInput = thisLine.indexOf('{') + 1;
+		endInput  = thisLine.indexOf('}');
+		var fileName = thisLine.substr(beginInput, endInput - beginInput); 
+		fileName = obj.determineFilename(fileName);
+		this.followThese.push(fileName); 
+	}
 	obj.doesLineContainInput = function(thisLine)
 	{
 		var containsInput = thisLine.indexOf('\\input{') > -1;
@@ -372,6 +407,11 @@ function OpenAllInputFiles()
 	{
 		var containsInclude = thisLine.indexOf('\\include{') > -1;
 		return containsInclude;
+	}
+	obj.doesLineContainUsepackage = function(thisLine)
+	{
+		var containsInput = thisLine.indexOf('\\usepackage') > -1;
+		return containsInput;
 	}
 	obj.doesLineContainInputOrInclude = function(thisLine)
 	{
@@ -453,6 +493,7 @@ function OpenAllInputFiles()
 	obj.openLocatedFiles = function()
 	{
 		// keeping TW 'opening' in a seperate clause for debugging and any future scripting development
+		this.followThese = unique(this.followThese);
 		for (fileNum in this.followThese)
 		{
 			fileName = this.followThese[fileNum];					 
