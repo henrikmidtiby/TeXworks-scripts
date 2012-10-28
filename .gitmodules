@@ -1,0 +1,3 @@
+[submodule "magicComments"]
+	path = magicComments
+	url = https://bitbucket.org/antoniomacri/texworks-magiccomments.git
