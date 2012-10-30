@@ -1,3 +1,6 @@
 [submodule "magicComments"]
 	path = magicComments
 	url = https://bitbucket.org/antoniomacri/texworks-magiccomments.git
+[submodule "logparser"]
+	path = logparser
+	url = https://bitbucket.org/antoniomacri/texworks-logparser.git
