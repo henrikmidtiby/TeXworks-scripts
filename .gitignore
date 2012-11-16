@@ -1,2 +1,9 @@
 *~
 autocomplete/testfil/testing.log
+*.swp
+Hooks/
+LaTeX styles/
+Text transforms/
+makeBold.lua
+makeBold.py
+autocomplete/testfile/citations.bib
