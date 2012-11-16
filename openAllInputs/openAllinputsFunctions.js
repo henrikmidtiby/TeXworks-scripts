@@ -230,9 +230,7 @@ function OpenAllInputFiles()
 
 		var currentFileName  =  TW.target.fileName;
 		var currentDirectoryLastDelim  =  currentFileName.lastIndexOf('/');
-		this.currentDirectory  = currentFileName.substr(0,currentDirectoryLastDelim +1);
-		relPath = getRelPathToRootDocument();
-		this.currentDirectory = this.currentDirectory + relPath;
+		this.currentDirectory = currentFileName.substr(0,currentDirectoryLastDelim +1);
 		this.texworksLines = getTexWorksLines(TW.target.text);
 	}
 	obj.getTextToAnalyze = function()
@@ -425,7 +423,8 @@ function OpenAllInputFiles()
 	{
 		suggestedFilenames = obj.suggestFilenames(fileName);
 		fileName = obj.getFirstFilenameThatMayExist(suggestedFilenames);
-		fileName = this.currentDirectory + fileName; 
+		relPath = getRelPathToRootDocument();
+		fileName = this.currentDirectory + relPath + fileName; 
 		fileName = fileName.replace('//','/'); // remove any un-needed user added slash from input lead  
 		fileName = fileName.replace('/./','/'); // remove any un-needed user added this-directory slash from input lead 			
 		return fileName;
