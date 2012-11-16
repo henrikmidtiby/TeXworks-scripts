@@ -46,6 +46,7 @@ assertEqual(writeTexWorksLines(res), "% !TEX program = pdflatex\n");
 assertEqual(directoryDifferences("v2/doc/file.tex", "v2/doc/otherFile.tex"), "");
 assertEqual(directoryDifferences("doc/file.tex", "otherFile.tex"), "../");
 assertEqual(directoryDifferences("doc/file.tex", "temp/otherFile.tex"), "../temp/");
+assertEqual(directoryDifferences("sub1/sub2/file.tex", "../../otherFile.tex"), "../../../../");
 // OpenAllInputFiles
 filehandler = OpenAllInputFiles();
 // obj.openInputFiles
