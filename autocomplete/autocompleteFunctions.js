@@ -148,6 +148,7 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{questionbox}[label]\n\\begin{question}\n\\end{question}\n\\end{questionbox}");
 	possibleSuggestions.push("\\begin{answer}\n\\begin{verbatim}\n\\end{verbatim}\n\\end{answer}");
 	possibleSuggestions.push("\\begin{dayplan}{}\n\\begin{preparation}\n\\end{preparation}\n\\begin{dayactivities}\n\\end{dayactivities}\n\\end{dayplan}");
+	possibleSuggestions.push("\\onlinebookreference{Læs mere i \\emph{} kapitel .}{url}");
 	matchedSuggestions = [];
 
 	for(var idx1 = 0; idx1 < possibleSuggestions.length; idx1++)
