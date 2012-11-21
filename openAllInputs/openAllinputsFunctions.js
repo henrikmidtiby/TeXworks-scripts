@@ -137,8 +137,28 @@ function adjustRootFileLocation(texworksLines, newWindow)
 	differences = directoryDifferences(temp.newFileDirectory, temp.curFileDirectory);
 	tempPath = differences + texworksLines["root"];
 	tempPath = tempPath.replace('/[^/]+/\.\./','/'); 
+	tempPath = cleanRelativePaths(tempPath);
 	texworksLines["root"] = tempPath;
 	return texworksLines;
+}
+function cleanRelativePaths(inputPath)
+{
+	var elements = inputPath.split("/");
+	var stackedElements = [];
+	for (partIdx in elements)
+	{
+		var part = elements[partIdx];
+		stackedElements.push(part);
+		if(part == ".." && stackedElements.length > 1)
+		{
+			if(stackedElements[stackedElements.length - 2] !== "..")
+			{
+				stackedElements.pop();
+				stackedElements.pop();
+			}
+		}
+	}
+	return stackedElements.join("/");
 }
 function directoryDifferences(fileOne, fileTwo)
 // How to go from directory of fileOne to the directory of fileTwo
@@ -489,11 +509,6 @@ function OpenAllInputFiles()
 		// include{fileName} not in \includeonly{}
 		return false;
 	}
-	obj.cleanRelativePaths = function(inputPath)
-	{
-		var elements = inputPath.split("/");
-		return inputPath;
-	}
 	obj.openLocatedFiles = function()
 	{
 		// keeping TW 'opening' in a seperate clause for debugging and any future scripting development
@@ -501,6 +516,7 @@ function OpenAllInputFiles()
 		for (fileNum in this.followThese)
 		{
 			fileName = this.followThese[fileNum];					 
+			fileName = cleanRelativePaths(fileName);
 			var existence = TW.fileExists(fileName);
 			if(existence == EXISTS)
 			{

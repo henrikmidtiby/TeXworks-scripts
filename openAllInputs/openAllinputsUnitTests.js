@@ -80,6 +80,11 @@ assertEqual(filehandler.hasProperFilenameEnding("file.tikz"), true);
 // obj.isFileInIncludeList
 assertEqual(filehandler.isFileInIncludeList("a", ["a", "b"]), true);
 assertEqual(filehandler.isFileInIncludeList("c", ["a", "b"]), false);
+// cleanRelativePaths
+assertEqual(cleanRelativePaths("sub2/file.tex"), "sub2/file.tex");
+assertEqual(cleanRelativePaths("sub/../sub2/file.tex"), "sub2/file.tex");
+assertEqual(cleanRelativePaths("../../sub2/file.tex"), "../../sub2/file.tex");
+//assertEqual(filehandler.cleanRelativePaths("se/sub/../../sub2/file.tex"), "sub2/file.tex");
 // obj.openLocatedFiles
 // obj.createAndOpenFile
 // obj.copyTEXOptionsFromCurrentDocumentToNewDocument
