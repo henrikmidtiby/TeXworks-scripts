@@ -500,7 +500,11 @@ function OpenAllInputFiles()
 			openedDoc = TW.app.openFileFromScript(fileName, TW);
 			if(openedDoc.result == null)
 			{
-				this.createAndOpenFile(fileName);
+				var result = TW.question(null,"Create file?", "Create file?", 2, 1);
+				if(result == 1)
+				{
+					this.createAndOpenFile(fileName);
+				}
 			}
 		}// /End.  for (fileNum in followThese)
 	}
