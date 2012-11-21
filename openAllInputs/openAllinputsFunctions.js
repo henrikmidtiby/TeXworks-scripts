@@ -522,16 +522,6 @@ function OpenAllInputFiles()
 	obj.copyTEXOptionsFromCurrentDocumentToNewDocument = function(newWindow)
 	{
 		// Populate with % !TEX lines from the current document.
-		var linesInCurrentDocument = TW.target.text.split("\n");
-		for(idx in linesInCurrentDocument)
-		{
-			curLine = linesInCurrentDocument[idx];
-			if(curLine.indexOf('% !TEX') > -1)
-			{
-//				newWindow.result.insertText(curLine);
-//				newWindow.result.insertText("\n");
-			}
-		}
 		modifiedTexworksLines = adjustRootFileLocation(this.texworksLines, newWindow);
 		newWindow.result.insertText(writeTexWorksLines(modifiedTexworksLines));
 	}
