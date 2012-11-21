@@ -40,7 +40,7 @@ assertEqual(getPathFromFilename('pic/c'), 'pic');
 // writeTexWorksLines
 var res = {};
 res["program"] = "pdflatex";
-assertEqual(writeTexWorksLines(res), "% !TEX program = pdflatex\n");
+assertEqual(writeTexWorksLines(res), "% !TeX program = pdflatex\n");
 // adjustRootFileLocation
 // directoryDifferences
 assertEqual(directoryDifferences("v2/doc/file.tex", "v2/doc/otherFile.tex"), "");
