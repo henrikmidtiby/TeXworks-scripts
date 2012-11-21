@@ -125,7 +125,7 @@ function writeTexWorksLines(texworksLines)
 	var str = "";
 	for(prop in texworksLines)
 	{
-		str += "% !TEX " + prop + " = " + texworksLines[prop] + "\n";
+		str += "% !TeX " + prop + " = " + texworksLines[prop] + "\n";
 	}
 	return str;
 }
