@@ -489,6 +489,11 @@ function OpenAllInputFiles()
 		// include{fileName} not in \includeonly{}
 		return false;
 	}
+	obj.cleanRelativePaths = function(inputPath)
+	{
+		var elements = inputPath.split("/");
+		return inputPath;
+	}
 	obj.openLocatedFiles = function()
 	{
 		// keeping TW 'opening' in a seperate clause for debugging and any future scripting development
@@ -496,9 +501,24 @@ function OpenAllInputFiles()
 		for (fileNum in this.followThese)
 		{
 			fileName = this.followThese[fileNum];					 
-			// TODO: Detect if the file allready exists.
-			openedDoc = TW.app.openFileFromScript(fileName, TW);
-			if(openedDoc.result == null)
+			var existence = TW.fileExists(fileName);
+			if(existence == EXISTS)
+			{
+				openedDoc = TW.app.openFileFromScript(fileName, TW);
+			}
+			if(existence == MAYEXIST)
+			{
+				openedDoc = TW.app.openFileFromScript(fileName, TW);
+				if(openedDoc.result == null)
+				{
+					var result = TW.question(null,"Create file?", "Create file?", 2, 1);
+					if(result == 1)
+					{
+						this.createAndOpenFile(fileName);
+					}
+				}
+			}
+			if(existence == DOESNTEXIST)
 			{
 				var result = TW.question(null,"Create file?", "Create file?", 2, 1);
 				if(result == 1)
