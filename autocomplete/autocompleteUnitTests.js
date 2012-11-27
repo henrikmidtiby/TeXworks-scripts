@@ -16,29 +16,10 @@ if (file.status == 0) {
   file = null;  // free mem
 }
 
-function AssertException(message) { this.message = message; }
-AssertException.prototype.toString = function () {
-  return 'AssertException: ' + this.message;
-}
-
-function assert(exp, message) {
-  if (!exp) {
-    throw new AssertException(message);
-  }
-}
-
-function assertEqual(value, expectedValue)
-{
-	if(value !== expectedValue)
-	{
-		var temp = {};
-		temp.value = value;
-		temp.expectedValue = expectedValue;
-		showObject(temp, 'Assertion failed');
-		showObject(value, "Value");
-		showObject(expectedValue, "Expected value");
-	}
-	assert(value === expectedValue, 'Got "' + value + '" expected "' + expectedValue + '"');
+var file = TW.readFile("../utilities/functionsForUnittesting.js");
+if (file.status == 0) {
+  eval(file.result);
+  file = null;  // free mem
 }
 
 // autocomplete
@@ -111,9 +92,8 @@ assert(max(1, 3) == 3);
 // showObject
 
 
-var temp = {};
-temp.message = 'Test passed';
-showObject(temp);
+showTestSummary();
+
 
 
 // Debug output
