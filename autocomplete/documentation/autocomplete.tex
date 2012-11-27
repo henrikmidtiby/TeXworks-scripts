@@ -119,6 +119,18 @@ TeXWorks scripts dir.
 
 \subsection{State representation}
 
+The script relies on a state representation that contains information 
+about what should be completed and the last suggestion presented to 
+the user.
+What should be completed is in front of the cursor and the last 
+suggestion is stored in the selected area.
+As an example take the following string
+
+eqnP\selection{Testing}	\\
+
+\noindent
+The representation is given as 
+
 
 
 \noindent
@@ -131,15 +143,87 @@ eqnP\selection{Testing}
 
 \subsection{Context recognition}
 
-
-
-    
 \begin{figure}
 \centering
 \input{pic/flowdiagram.tikz}
 \caption{Flow chart.}
 \label{figFlowChart}
 \end{figure}
+
+
+\subsubsection{Close environment}
+
+
+\begin{multicols}{2}
+\noindent
+\textbackslash begin\{center\}\\
+\cursor
+
+\columnbreak
+\noindent
+\textbackslash begin\{center\}\\
+\textbackslash end\{center\}
+\end{multicols}
+
+\subsubsection{Suggest command or template}
+
+\begin{multicols}{2}
+\noindent
+\textbackslash include\cursor \\
+\textbackslash include\selection{graphics}\\
+\textbackslash include\selection{only}\\
+\textbackslash include\selection{graphics\{filename\}}
+
+\columnbreak
+\noindent
+\textbackslash include\selection{graphics}
+\end{multicols}
+
+
+\subsubsection{Suggest label}
+
+
+\begin{multicols}{2}
+\noindent
+\textbackslash ref\{eq\cursor \\
+\textbackslash ref\{eq\selection{nMaxHeight} \\
+\textbackslash ref\{eq\selection{nSurf} \\
+\textbackslash ref\{eq\selection{nVol} 
+
+
+\columnbreak
+\noindent
+\phantom{d}
+\end{multicols}
+
+
+\subsubsection{Suggest filename}
+
+
+
+\begin{multicols}{2}
+\noindent
+\textbackslash include\{\cursor \\
+%\textbackslash include\{\selection{autocomplete.aux} \\
+%\textbackslash include\{\selection{autocomplete.log} \\
+%\textbackslash include\{\selection{autocomplete.out} \\
+%\textbackslash include\{\selection{autocomplete.pdf} \\
+%\textbackslash include\{\selection{autocomplete.synctex.gz} \\
+\textbackslash include\{\selection{autocomplete.tex}
+
+
+\columnbreak
+\noindent
+\textbackslash includegraphics\{pic\slash \cursor \\
+\textbackslash includegraphics\{pic\slash flowdiagram.tikz\cursor
+
+\end{multicols}
+
+
+
+\subsubsection{Suggest ref, label or citation}
+\subsubsection{Suggest word}
+    
 
 
 \end{document}
