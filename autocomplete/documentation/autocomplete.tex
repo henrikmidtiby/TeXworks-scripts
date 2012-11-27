@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{todonotes}
+
+\title{Documentation for TeXworks autocompleter}
+\author{Henrik Skov Midtiby}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+TeXWorks is cool ;-)
+\end{abstract}
+
+\section{What can the script do?}
+
+\section{How to install}
+
+\section{How does it work}
+
+\subsection{State representation}
+
+
+\newcommand{\cursor}{%
+\begin{tikzpicture}[remember picture, overlay]%
+\draw[color=blue, very thick, opacity=0.5] (0, 0.3) -- (0, -0.1);
+\end{tikzpicture}%
+}
+
+\newcommand{\selection}[1]{%
+\begin{tikzpicture}[remember picture, overlay]%
+\node [coordinate] (selectionStart) {};%
+\end{tikzpicture}%
+#1%
+\begin{tikzpicture}[remember picture, overlay]%
+\fill[color=blue, opacity=0.5] (selectionStart)++(0, -0.1) rectangle (0, 0.3);
+\end{tikzpicture}%
+}
+
+\noindent
+eqnP\cursor	\\
+eqnP\selection{Testing}	\\
+eqnP\selection{ower}	\\
+eqnP\selection{ythagoras}	\\
+eqnP\selection{ython}	\\
+eqnP\selection{Testing}
+
+\subsection{Context recognition}
+
+\todo[inline]{Draw decision tree}
+
+
+\end{document}
