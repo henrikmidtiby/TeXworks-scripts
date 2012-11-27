@@ -1,28 +1,12 @@
 \documentclass{article}
 \usepackage{todonotes}
-
-\title{Documentation for TeXworks autocompleter}
-\author{Henrik Skov Midtiby}
-
-\begin{document}
-\maketitle
-
-\begin{abstract}
-TeXWorks is cool ;-)
-\end{abstract}
-
-\section{What can the script do?}
-
-\section{How to install}
-
-\section{How does it work}
-
-\subsection{State representation}
+\usepackage[colorlinks, urlcolor=blue, linkcolor=blue]{hyperref}
+\usepackage{multicol}
 
 
 \newcommand{\cursor}{%
 \begin{tikzpicture}[remember picture, overlay]%
-\draw[color=blue, very thick, opacity=0.5] (0, 0.3) -- (0, -0.1);
+\draw[color=blue, very thick, opacity=0.3] (0, 0.3) -- (0, -0.1);
 \end{tikzpicture}%
 }
 
@@ -32,9 +16,106 @@ TeXWorks is cool ;-)
 \end{tikzpicture}%
 #1%
 \begin{tikzpicture}[remember picture, overlay]%
-\fill[color=blue, opacity=0.5] (selectionStart)++(0, -0.1) rectangle (0, 0.3);
+\fill[color=blue, opacity=0.3] (selectionStart)++(0, -0.1) rectangle (0, 0.3);
 \end{tikzpicture}%
 }
+
+
+\title{Documentation for TeXworks autocompleter}
+\author{Henrik Skov Midtiby}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+TeXworks is a powerfull latex editor which can be extended 
+through scripts written in javascript.
+This script is an attempt at adding autocompletion capability 
+to the TeXworks editor.
+Currently it can complete references, citations, filenames,
+words present in the open files and items in a list of templates.
+\end{abstract}
+
+\section{What can the script do?}
+\label{secWhatCanTheScriptDo}
+
+The script can do context based completions in latex documents.
+By looking at open files (*.tex and *.bib) and contents of the 
+local directory, the script can complete
+\begin{itemize}
+\item	references, defined with label in open files
+\item	citations, used in opened files and in open bibtex files
+\item	filenames, based on directory content
+\end{itemize}
+
+All interaction with the script consists of activating it using 
+its shortcut \mbox{crtl + m}. 
+In a document with the content shown in figure 
+\ref{figExampleDocument}, the script will generate the following 
+completions.
+In the first line, the cursor location is marked with\cursor
+in the following lines the selected text is marked as \selection{this}.
+
+\begin{multicols}{3}
+
+\noindent
+hiera\cursor	\\
+hierarchy\cursor
+
+\columnbreak
+\noindent
+h\cursor	\\
+hi\selection{erarchy} \\
+hi\selection{eroglyphs} \\
+
+\columnbreak
+\noindent
+\textbackslash ref\{h\cursor	\\
+\textbackslash ref\{he\selection{lloWorld} \\
+\textbackslash ref\{he\selection{rons} \\
+\textbackslash ref\{he\selection{lloWorld}
+\end{multicols}
+
+If there is a single completion candidate, the candidate is inserted 
+and you can continue writing.
+If multiple candidates exists, the first candidate is inserted with 
+the last part of it selected; when the script is activated again the 
+next completion candidate is inserted, this is continued until all 
+candidates have been shown and the first is inserted again.
+
+
+
+\begin{figure}[t]
+\centering
+\begin{verbatim}
+\section{Hello world}
+\label{helloWorld}
+
+Some text about hierarchy and hieroglyphs.
+
+\begin{align}
+\label{herons}
+A
+	& = \sqrt{s \cdot (s - a) \cdot (s - b) \cdot (s - c)}
+\end{align}
+\end{verbatim}
+\caption{Example document containing references and labels used in section \ref{secWhatCanTheScriptDo}.}
+\label{figExampleDocument}
+\end{figure}
+
+
+\subsection{How to install the script}
+
+Download \texttt{autocomplete.js} and 
+\texttt{autocompleteFunctions.js}\footnote{\url{https://github.com/henrikmidtiby/TeXworks-scripts/tree/master/autocomplete}} and place them in a subfolder of your 
+TeXWorks scripts dir.
+
+
+\section{How does it work}
+
+\subsection{State representation}
+
+
 
 \noindent
 eqnP\cursor	\\
