@@ -1,7 +1,9 @@
+% !TeX root = autocomplete.tex
 \documentclass{article}
 \usepackage{todonotes}
 \usepackage[colorlinks, urlcolor=blue, linkcolor=blue]{hyperref}
 \usepackage{multicol}
+\usetikzlibrary{shapes,arrows}
 
 
 \newcommand{\cursor}{%
@@ -111,6 +113,8 @@ Download \texttt{autocomplete.js} and
 TeXWorks scripts dir.
 
 
+
+
 \section{How does it work}
 
 \subsection{State representation}
@@ -127,7 +131,15 @@ eqnP\selection{Testing}
 
 \subsection{Context recognition}
 
-\todo[inline]{Draw decision tree}
+
+
+    
+\begin{figure}
+\centering
+\input{pic/flowdiagram.tikz}
+\caption{Flow chart.}
+\label{figFlowChart}
+\end{figure}
 
 
 \end{document}

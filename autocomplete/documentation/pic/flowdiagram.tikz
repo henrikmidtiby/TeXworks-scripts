@@ -1,0 +1,61 @@
+% !TeX root = ../autocomplete.tex
+% Define block styles
+\tikzstyle{decision} = [rectangle, draw, fill=green!20, 
+    text width=9em, text centered, rounded corners, minimum height=2em]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=9em, text centered, rounded corners, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{tikzpicture}[node distance=1.5cm, auto]
+	% Draw nodes
+	% Activate script
+	\node [block] (activate) {activate script};
+	% First in line, -> close environment
+	\node [decision, below of=activate] (firstInInlineQ) {Cursor placed first in line?};
+	\node [block, right of=firstInInlineQ, node distance=5cm] (closeEnvironment) {Close environment};
+	% Suggest command or environment
+	\node [decision, below of=firstInInlineQ] (suggestCommand) {Can command be completed?};
+	\node [block, right of=suggestCommand, node distance=5cm] (insertCommand) {Suggest command};
+	% addLabelBelow
+	\node [decision, below of=suggestCommand] (addLabelBelowQ) {At end of section or similar?};
+	\node [block, right of=addLabelBelowQ, node distance=5cm] (suggestLabel) {Suggest label};
+	% should complete filename
+	\node [decision, below of=addLabelBelowQ] (completeFilenameQ) {Can a filename be completed?};
+	\node [block, right of=completeFilenameQ, node distance=5cm] (completeFilename) {Suggest filename};
+	% should complete argument to macro
+	\node [decision, below of=completeFilenameQ] (completeArgumentToMacroQ) {Can complete ref, label or citation?};
+	\node [block, right of=completeArgumentToMacroQ, node distance=5cm] (completeArgumentToMacro) {Suggest completion};
+	% complete based on words in file
+	\node [block, below of=completeArgumentToMacroQ] (wordCompletion) {Suggest word};
+
+	% Stop
+	\node [block, below of=activate, node distance=10.5cm, xshift=8cm] (stop) {stop};
+
+	% Draw edges
+	% Activate script
+	% First in line, -> close environment
+	\path [line] (activate) -- (firstInInlineQ);
+	\path [line] (firstInInlineQ) -- node {yes} (closeEnvironment);
+	\path [line] (closeEnvironment) -| (stop);
+	% Suggest command or environment
+	\path [line] (firstInInlineQ) -- node {no} (suggestCommand);
+	\path [line] (suggestCommand) -- node {yes} (insertCommand);
+	\path [line] (insertCommand) -| (stop);
+	% addLabelBelow
+	\path [line] (suggestCommand) -- node {no} (addLabelBelowQ);
+	\path [line] (addLabelBelowQ) -- node {yes} (suggestLabel);
+	\path [line] (suggestLabel) -| (stop);
+	% should complete filename
+	\path [line] (addLabelBelowQ) -- node {no} (completeFilenameQ);
+	\path [line] (completeFilenameQ) -- node {yes} (completeFilename);
+	\path [line] (completeFilename) -| (stop);
+	% should complete argument to macro
+	\path [line] (completeFilenameQ) -- node {no} (completeArgumentToMacroQ);
+	\path [line] (completeArgumentToMacroQ) -- node {yes} (completeArgumentToMacro);
+	\path [line] (completeArgumentToMacro) -| (stop);
+	% complete based on words in file
+	\path [line] (completeArgumentToMacroQ) -- node {no} (wordCompletion);
+	\path [line] (wordCompletion) -| (stop);
+
+
+\end{tikzpicture}
