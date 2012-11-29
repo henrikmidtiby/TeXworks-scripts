@@ -1,14 +1,18 @@
 % !TeX root = autocomplete.tex
-\documentclass{article}
+\documentclass[a4paper]{article}
 \usepackage{todonotes}
 \usepackage[colorlinks, urlcolor=blue, linkcolor=blue]{hyperref}
 \usepackage{multicol}
 \usetikzlibrary{shapes,arrows}
+\usepackage{dirtree}
 
 
 \newcommand{\cursor}{%
 \begin{tikzpicture}[remember picture, overlay]%
-\draw[color=blue, very thick, opacity=0.3] (0, 0.3) -- (0, -0.1);
+%    \begin{scope}[transparency group]
+		\draw[color=blue, very thick, opacity=0.3] (0, 0.3) -- (0, -0.08);
+		\draw[color=blue, very thick, opacity=0.3] (-0.1, -0.1) -- (0.1, -0.1);
+%    \end{scope}
 \end{tikzpicture}%
 }
 
@@ -55,11 +59,10 @@ its shortcut \mbox{crtl + m}.
 In a document with the content shown in figure 
 \ref{figExampleDocument}, the script will generate the following 
 completions.
-In the first line, the cursor location is marked with\cursor
+In the first line, the cursor location is marked with\cursor, 
 in the following lines the selected text is marked as \selection{this}.
-
+%
 \begin{multicols}{3}
-
 \noindent
 hiera\cursor	\\
 hierarchy\cursor
@@ -105,8 +108,21 @@ A
 \label{figExampleDocument}
 \end{figure}
 
+\subsection{See the script in action}
+\label{ssecSeeTheScriptInAction}
+
+The following two videos demonstrates how the script can be used.
+%
+\begin{itemize}
+\item	Demonstration of context aware autocompletion for texworks\\
+		\url{http://www.youtube.com/watch?v=wTjyiik9xm0}
+\item	Autocompleter for TeXworks\\
+		\url{http://www.youtube.com/watch?v=gRSq_OSxPec}
+\end{itemize}
+
 
 \subsection{How to install the script}
+\label{ssecHowToInstallTheScript}
 
 Download \texttt{autocomplete.js} and 
 \texttt{autocompleteFunctions.js}\footnote{\url{https://github.com/henrikmidtiby/TeXworks-scripts/tree/master/autocomplete}} and place them in a subfolder of your 
@@ -116,6 +132,7 @@ TeXWorks scripts dir.
 
 
 \section{How does it work}
+\label{secHowDoesItWork}
 
 \subsection{State representation}
 
@@ -127,19 +144,16 @@ suggestion is stored in the selected area.
 As an example take the following string
 
 eqnP\selection{Testing}	\\
-
 \noindent
-The representation is given as 
+The representation is given as two parts \emph{eqnP} and \emph{Testing}.
+The last suggestion is found by combining the two parts of the 
+representation, which gives \emph{eqnPTesting}.
+From the first part (\emph{eqnP}) can the list of completion candidates 
+be determined and with the last part (\emph{Testing}) it is possible to 
+determine the next element to suggest.
 
 
 
-\noindent
-eqnP\cursor	\\
-eqnP\selection{Testing}	\\
-eqnP\selection{ower}	\\
-eqnP\selection{ythagoras}	\\
-eqnP\selection{ython}	\\
-eqnP\selection{Testing}
 
 \subsection{Context recognition}
 
@@ -152,36 +166,158 @@ eqnP\selection{Testing}
 
 
 \subsubsection{Close environment}
+\label{sssecCloseEnvironment}
 
+Open environments can be closed by placing the cursor first
+in the line where the environment should be closed.
+The script can handle nested environments by only closing
+previously unclosed environments.
 
 \begin{multicols}{2}
 \noindent
+Before \\
 \textbackslash begin\{center\}\\
 \cursor
 
 \columnbreak
 \noindent
+After \\
 \textbackslash begin\{center\}\\
-\textbackslash end\{center\}
+\textbackslash end\{center\}\\
+\cursor
 \end{multicols}
 
-\subsubsection{Suggest command or template}
 
 \begin{multicols}{2}
+\noindent
+Before \\
+\textbackslash begin\{center\}\\
+\textbackslash begin\{itemize\}\\
+\textbackslash item\\
+\cursor
+
+\columnbreak
+\noindent
+After \\
+\textbackslash begin\{center\}\\
+\textbackslash begin\{itemize\}\\
+\textbackslash item\\
+\textbackslash end\{itemize\} \\
+\textbackslash end\{center\} \\
+\cursor
+\end{multicols}
+
+
+\subsubsection{Suggest command or template}
+\label{sssecSuggestCommandOrTemplate}
+
 \noindent
 \textbackslash include\cursor \\
 \textbackslash include\selection{graphics}\\
 \textbackslash include\selection{only}\\
 \textbackslash include\selection{graphics\{filename\}}
 
-\columnbreak
-\noindent
-\textbackslash include\selection{graphics}
-\end{multicols}
 
 
 \subsubsection{Suggest label}
+\label{sssecSuggestLabel}
 
+Place the cursor at the end of a line containing a section, subsection 
+or similar, activate the script and a label for the section / subsection
+will be suggested.
+
+
+
+\begin{multicols}{2}
+\noindent
+Before \\
+\textbackslash subsubsection\{Suggest label\}\cursor\\
+
+\columnbreak
+\noindent
+After \\
+\textbackslash subsubsection\{Suggest label\}\\
+\textbackslash label\{sssecSuggestLabel\}\cursor
+\end{multicols}
+
+\noindent
+It also works inside figure and table environments after the 
+caption command as shown below.
+%
+\begin{multicols}{2}
+\noindent
+Before \\
+\textbackslash begin\{figure\}		\\
+\textbackslash centering		\\
+\textbackslash includegraphics[width=6cm]\{\}		\\
+\textbackslash caption\{Testing\}\cursor		\\
+\textbackslash end\{figure\}
+
+\columnbreak
+\noindent
+After \\
+\textbackslash begin\{figure\}		\\
+\textbackslash centering		\\
+\textbackslash includegraphics[width=6cm]\{\}		\\
+\textbackslash caption\{Testing\}		\\
+\textbackslash label\{figTesting\}\cursor		\\
+\textbackslash end\{figure\}
+\end{multicols}
+
+
+
+
+
+
+
+\subsubsection{Suggest filename}
+\label{sssecSuggestFilename}
+
+Arguments to macros like include, input and includegraphics that 
+accept filenames can be completed based on the files in the current 
+directory structure.
+The following completion sequences can be observed in a directory 
+structure as shown in figure \ref{figDirectoryStructure}.
+
+\begin{multicols}{2}
+\noindent
+\textbackslash include\{\cursor \\
+\textbackslash include\{\selection{autocomplete.aux} \\
+\textbackslash include\{\selection{autocomplete.tex}
+
+
+\columnbreak
+\noindent
+\textbackslash includegraphics\{pic\slash \cursor \\
+\textbackslash includegraphics\{pic\slash flowdiagram.tikz\cursor
+
+\end{multicols}
+
+\begin{figure}[h]
+\dirtree{%
+.1 Current directory.
+.2 autocomplete.aux.
+.2 autocomplete.tex.
+.2 pic.
+.3 flowdiagram.tikz.
+}
+\caption{Example directory structure used in section 
+\ref{sssecSuggestFilename}.}
+\label{figDirectoryStructure}
+\end{figure}
+
+
+
+\subsubsection{Suggest ref, label or citation}
+\label{sssecSuggestRefLabelOrCitation}
+
+References completed based on observed arguments to macros like
+label, ref, pageref and eqref in all files currently opened by 
+TeXworks.
+A similar approach is used for completing arguments to label and 
+cite commands.
+When completing cite commands the script also searches for candidates 
+in open bibtex files.
 
 \begin{multicols}{2}
 \noindent
@@ -197,33 +333,25 @@ eqnP\selection{Testing}
 \end{multicols}
 
 
-\subsubsection{Suggest filename}
-
-
-
-\begin{multicols}{2}
+\subsubsection{Suggest word}
+\label{sssecSuggestWord}
+    
+\begin{multicols}{3}
 \noindent
-\textbackslash include\{\cursor \\
-%\textbackslash include\{\selection{autocomplete.aux} \\
-%\textbackslash include\{\selection{autocomplete.log} \\
-%\textbackslash include\{\selection{autocomplete.out} \\
-%\textbackslash include\{\selection{autocomplete.pdf} \\
-%\textbackslash include\{\selection{autocomplete.synctex.gz} \\
-\textbackslash include\{\selection{autocomplete.tex}
-
 
 \columnbreak
 \noindent
-\textbackslash includegraphics\{pic\slash \cursor \\
-\textbackslash includegraphics\{pic\slash flowdiagram.tikz\cursor
 
+\columnbreak
+\noindent
 \end{multicols}
 
 
+\subsection{Insert common text present in all candidates}
 
-\subsubsection{Suggest ref, label or citation}
-\subsubsection{Suggest word}
-    
+\section{Feedback and suggestions}
 
+If you have any feedback or suggestions about the script, feel 
+free to contact me on \texttt{henrikmidtiby@gmail.com}.
 
 \end{document}
