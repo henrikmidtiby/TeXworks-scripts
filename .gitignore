@@ -7,3 +7,8 @@ Text transforms/
 makeBold.lua
 makeBold.py
 autocomplete/testfile/citations.bib
+autocomplete/documentation/autocomplete.aux
+autocomplete/documentation/autocomplete.log
+autocomplete/documentation/autocomplete.out
+autocomplete/documentation/autocomplete.pdf
+autocomplete/documentation/autocomplete.synctex.gz
