@@ -17,7 +17,7 @@ Prerequisites
 Installation
 ============
 
-Simply put the script files (autocomplete.js and autocompleteFunctions.ks) 
+Simply put the script files (autocomplete.js and autocompleteFunctions.js) 
 into the "scripts" folder (or one of its subfolders).
 You can find the "scripts" folder most easily by using the "Scripts > Scripting
 TeXworks > Show Scripts Folder" menu item in TeXworks itself.

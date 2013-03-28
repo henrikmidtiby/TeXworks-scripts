@@ -149,6 +149,11 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{answer}\n\\begin{verbatim}\n\\end{verbatim}\n\\end{answer}");
 	possibleSuggestions.push("\\begin{dayplan}{}\n\\begin{preparation}\n\\end{preparation}\n\\begin{dayactivities}\n\\end{dayactivities}\n\\end{dayplan}");
 	possibleSuggestions.push("\\onlinebookreference{Læs mere i \\emph{} kapitel .}{url}");
+	possibleSuggestions.push("\\begin{weeklynote}{Ugeseddel for \\emph{Matematik og Fysik}}\n\\begin{weekdescription}\n\\hfill Henrik Midtiby\n\\end{weekdescription}\n\n\\begin{dayplan}{}\n\\begin{preparation}\n\\item\t\n\\end{preparation}\n\\begin{dayactivities}\n\\item\t\n\\end{dayactivities}\n\\end{dayplan}\n\n\\begin{dayplan}{}\n\\begin{preparation}\n\\item\t\n\\end{preparation}\n\\begin{dayactivities}\n\\item\t\n\\end{dayactivities}\n\\end{dayplan}\n\n\\begin{goals}\n\\item\t\n\\end{goals}\n\\end{weeklynote}\n");
+	possibleSuggestions.push("\\begin{relatedexamquestions}\n\\item	\n\\item	\n\\item	\n\\end{relatedexamquestions}");
+	possibleSuggestions.push("\\documentclass{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage{todonotes}\n\\usepackage{graphicx}\n\n\\begin{document}\n\\section{Hello world!}\n\n\\end{document}");
+
+
 	matchedSuggestions = [];
 
 	for(var idx1 = 0; idx1 < possibleSuggestions.length; idx1++)
