@@ -17,12 +17,9 @@ Prerequisites
 Installation
 ============
 
-Simply put the script files (autocomplete.js and autocompleteFunctions.js) 
-into the "scripts" folder (or one of its subfolders).
-You can find the "scripts" folder most easily by using the "Scripts > Scripting
-TeXworks > Show Scripts Folder" menu item in TeXworks itself.
-Afterwards, you need to click on "Scripts > Scripting TeXworks > Reload Script
-List" or restart TeXworks.
+1. Download the entire git repository using the "Download ZIP" button on https://github.com/henrikmidtiby/TeXworks-scripts 
+2. From the zip file extract the directory "Autocomplete" and place it in the ~/.TeXworks/scripts/ 
+3. Launch TeXworks and a new subdirectory "autocomplete" should appear in the script directory. 
 
 
 
