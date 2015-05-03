@@ -334,7 +334,7 @@ function locateWordEndingOnCursor()
 	var wordStart = TW.target.selectionStart;
 	var wordEnd = TW.target.selectionStart;
 
-	while(isAlphaNumeric(TW.target.text.charAt(wordStart - 1)))
+	while(isAlphaNumeric(TW.target.text.charAt(wordStart - 1)) || TW.target.text.charAt(wordStart-1) === ':')
 	{
 		wordStart = wordStart - 1;
 	}
@@ -727,7 +727,7 @@ function locateMatchingWordsInString(wordToMatch, parameterText, words)
 		if(tempStart > -1)
 		{
 			var tempEnd = tempStart;
-			while(isAlphaNumeric(parameterText.charAt(searchIndex + tempEnd)))
+			while(isAlphaNumeric(parameterText.charAt(searchIndex + tempEnd)) || parameterText.charAt(searchIndex + tempEnd) === ':')
 			{
 				tempEnd = tempEnd + 1;
 			}
