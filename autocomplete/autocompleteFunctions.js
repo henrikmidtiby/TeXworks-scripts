@@ -95,11 +95,11 @@ function getCurrentLine()
 	var lineStart = wordStart;
 	var lineEnd = wordStart - 1;
 	txt = TW.target.text;
-	while(txt.charAt(lineStart - 1) !== '\n' && lineStart > 0)
+	while(lineStart > 0 && txt.charAt(lineStart-1) !== '\n')
 	{
 		lineStart = lineStart - 1;
 	}
-	while(txt.charAt(lineEnd + 1) !== '\n' && lineEnd < txt.length)
+	while(lineEnd < txt.length-1 && txt.charAt(lineEnd+1) !== '\n' )
 	{
 		lineEnd = lineEnd + 1;
 	}
