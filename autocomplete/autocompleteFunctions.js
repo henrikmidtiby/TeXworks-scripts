@@ -126,8 +126,10 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{figure}\n\\centering\n\\includegraphics[width=6cm]{}\n\\caption{}\n\\label{fig}\n\\end{figure}");
 	possibleSuggestions.push("\\begin{itemize}\n\\item\t\n\\item\t\n\\item\t\n\\end{itemize}");
 	possibleSuggestions.push("\\begin{enumerate}\n\\item\t\n\\item\t\n\\item\t\n\\end{enumerate}");
+	possibleSuggestions.push("\\begin{enumerate}[a)]\n\\item\t\n\\end{enumerate}");
 	possibleSuggestions.push("\\begin{description}\n\\item[]\t\n\\item[]\t\n\\item[]\t\n\\end{description}");
 	possibleSuggestions.push("\\begin{wrapfigure}{r}{6cm}\n\\includegraphics{}\n\\caption{}\n\\end{wrapfigure}");
+	possibleSuggestions.push("\\begin{wrapfigure}[lineheight]{r}[overhang]{6cm}\n\\includegraphics{}\n\\caption{}\n\\end{wrapfigure}");
 	possibleSuggestions.push("\\begin{document}\n\\end{document}");
 	possibleSuggestions.push("\\begin{tikzpicture}\n\\end{tikzpicture}");
 	possibleSuggestions.push("\\begin{frame}\n\\frametitle{}\n\\end{frame}");
@@ -153,6 +155,8 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{relatedexamquestions}\n\\item	\n\\item	\n\\item	\n\\end{relatedexamquestions}");
 	possibleSuggestions.push("\\documentclass{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage{todonotes}\n\\usepackage{graphicx}\n\n\\begin{document}\n\\section{Hello world!}\n\n\\end{document}");
 	possibleSuggestions.push("\\lstinputlisting[firstnumber=, firstline=, lastline=]{}");
+	possibleSuggestions.push("\\includepdf[pages = -]{filename.pdf}");
+	possibleSuggestions.push("\\includepdf[pages = -, nup=2x6, column]{filename.pdf}");
 
 
 	matchedSuggestions = [];
