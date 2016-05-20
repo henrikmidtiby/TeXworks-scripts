@@ -16,6 +16,10 @@ function openDirectory()
 	temp.currentDirectory = getPathFromFilename(TW.target.fileName);
 	temp.combinedDirectory = temp.currentDirectory + "/" + temp.pathName;
 	temp.result = TW.launchFile(temp.combinedDirectory);
+	if(temp.result["status"] == 2) // SystemAccess_PermissionDenied
+	{
+		TW.information(null, "System access permission denied", "Cannot open the containing directory, due to insufficient permissions.\n\nEnable \"Enable scripts to run system commands.\" in the preferences menu.");
+	}
 }
 function locateContentsOfBraces()
 {
