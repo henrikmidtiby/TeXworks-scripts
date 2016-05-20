@@ -616,13 +616,13 @@ function unique(a)
 }
 function determineMatchingCommandsFromCurrentCommand(currentCommand)
 {
-	if(isElementInList(["ref", "pageref", "eqref"], currentCommand))
+	if(isElementInList(["ref", "pageref", "eqref", "nameref", "autoref"], currentCommand))
 	{
-		return(["label", "ref", "pageref", "eqref"]);
+		return(["label", "ref", "pageref", "eqref", "nameref", "autoref"]);
 	}
 	if(isElementInList(["label"], currentCommand))
 	{
-		return(["pageref", "ref", "eqref"]);
+		return(["pageref", "ref", "eqref", "nameref", "autoref"]);
 	}
 	if(isElementInList(["cite", "citep", "citet"], currentCommand))
 	{
