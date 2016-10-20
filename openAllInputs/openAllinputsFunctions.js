@@ -421,6 +421,11 @@ function OpenAllInputFiles()
 		var containsInput = thisLine.indexOf('\\input{') > -1;
 		return containsInput;
 	}
+	obj.doesLineContainAddbibressources = function(thisLine)
+	{
+		var containsInput = thisLine.indexOf('\\addbibresource{') > -1;
+		return containsInput;
+	}
 	obj.doesLineContainInclude = function(thisLine)
 	{
 		var containsInclude = thisLine.indexOf('\\include{') > -1;
@@ -433,6 +438,8 @@ function OpenAllInputFiles()
 	}
 	obj.doesLineContainInputOrInclude = function(thisLine)
 	{
+		if(obj.doesLineContainAddbibressources(thisLine))
+			return true;
 		if(obj.doesLineContainInput(thisLine))
 			return true;
 		if(obj.doesLineContainInclude(thisLine))
