@@ -624,9 +624,9 @@ function determineMatchingCommandsFromCurrentCommand(currentCommand)
 	{
 		return(["pageref", "ref", "eqref", "nameref", "autoref"]);
 	}
-	if(isElementInList(["cite", "citep", "citet"], currentCommand))
+	if(isElementInList(["cite", "citep", "citet", "autocite"], currentCommand))
 	{
-		return(["cite", "citep", "citet"]);
+		return(["cite", "citep", "citet", "autocite"]);
 	}
 	if(isElementInList(["includeonly"], currentCommand))
 	{
