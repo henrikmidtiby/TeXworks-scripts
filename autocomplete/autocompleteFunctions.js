@@ -703,8 +703,8 @@ function getBibtexKeys(inputString)
 	// Extracts bibtex keys from the inputString.
 	// Assumes that inputString is in the bibtex format.
 	var bibtexKeyList = "";
-	var bibtexTypeAndKey = new RegExp("\@[A-Za-z]*\{[a-zA-Z0-9]*,", "g");
-	var bibtexKey = new RegExp("\{([a-zA-Z0-9]*),");
+	var bibtexTypeAndKey = new RegExp("\@[A-Za-z]*\{[a-zA-Z0-9-]*,", "g");
+	var bibtexKey = new RegExp("\{([a-zA-Z0-9-]*),");
 	var bibtexKeyMatches = inputString.match(bibtexTypeAndKey);
 	if(bibtexKeyMatches)
 	{
