@@ -13,7 +13,6 @@ function openTerminal()
 	var temp = {};
 	temp.currentDirectory = getPathFromFilename(TW.target.fileName);
 	temp.command = "gnome-terminal.real --working-directory=\"" + temp.currentDirectory + "\""
-	showObject(temp);
 	temp.result = TW.system(temp.command);
 	if(temp.result["status"] == 2) // SystemAccess_PermissionDenied
 	{
