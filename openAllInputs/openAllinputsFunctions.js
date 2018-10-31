@@ -431,6 +431,11 @@ function OpenAllInputFiles()
 		var containsInclude = thisLine.indexOf('\\include{') > -1;
 		return containsInclude;
 	}
+	obj.doesLineContainLstInputListing = function(thisLine)
+	{
+		var containsLstInputListing = thisLine.indexOf('\\lstinputlisting{') > -1;
+		return containsLstInputListing;
+	}
 	obj.doesLineContainUsepackage = function(thisLine)
 	{
 		var containsInput = thisLine.indexOf('\\usepackage') > -1;
@@ -443,6 +448,8 @@ function OpenAllInputFiles()
 		if(obj.doesLineContainInput(thisLine))
 			return true;
 		if(obj.doesLineContainInclude(thisLine))
+			return true;
+		if(obj.doesLineContainLstInputListing(thisLine))
 			return true;
 		return false;
 	}
