@@ -31,7 +31,7 @@ function assertEqualLists(value, expectedValue)
 {
 	len1 = value.length;
 	len2 = expectedValue.length;
-	assert(len1 === len2, 'List lengths differs');
+	assert(len1 === len2, 'List lengths differs: \nValue = ' + value + ' \nExpected = ' + expectedValue);
 	for(k = 0; k < len1; k++)
 	{
 		assert(value[k] === expectedValue[k], 'The ' + k + 'th element differs. Actual value: "' + value[k] + '" expected value "' + expectedValue[k] + '".');
