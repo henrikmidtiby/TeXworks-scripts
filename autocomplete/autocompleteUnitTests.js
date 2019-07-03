@@ -17,6 +17,9 @@ if (file.status == 0) {
 }
 
 var file = TW.readFile("../utilities/functionsForUnittesting.js");
+if(file.status == 2) {
+  TW.information(null, "Unable to open file", "Unable to open file, please check permissions in Texworks");
+}
 if (file.status == 0) {
   eval(file.result);
   file = null;  // free mem
