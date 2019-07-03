@@ -69,7 +69,7 @@ assertEqual(getTypeOfLineBreak("\r\n"), "\r\n")
 //assertEqual(unique(['a', 'b', 'c']), ['a', 'b', 'c']); // Does not work for some reason ...
 // determineMatchingCommandsFromCurrentCommand
 assertEqualLists(determineMatchingCommandsFromCurrentCommand("includeonly"), ["include"])
-assertEqualLists(determineMatchingCommandsFromCurrentCommand("label"), ["pageref", "ref", "eqref"])
+assertEqualLists(determineMatchingCommandsFromCurrentCommand("label"), ["pageref", "ref", "eqref", "nameref", "autoref"])
 // isElementInList
 assertEqual(isElementInList(["a", "b"], "c"), false);
 assertEqual(isElementInList(["a", "b"], "b"), true);
