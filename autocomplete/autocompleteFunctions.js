@@ -546,7 +546,9 @@ function getListOfFilesInDir(directory)
 	}
 	else
 	{
-		commandToListFiles = "ls \"" + directory + "\"";
+		// Get list of files and directories.
+		// Directories are listed with a "/" at the end.
+		commandToListFiles = "ls --file-type \"" + directory + "\"";
 	}
 	retVal = TW.system(commandToListFiles, true);
 
