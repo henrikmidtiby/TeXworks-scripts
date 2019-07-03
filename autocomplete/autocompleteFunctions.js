@@ -251,6 +251,8 @@ function shouldCompleteFilename(commandName)
 		return true; }
 	if(commandName == "includepdf") {
 		return true; }
+	if(commandName == "lstinputlisting") {
+		return true; }
 	return false;
 }
 function locateMatchingFilenames(extractedWord)
