@@ -691,6 +691,21 @@ function getTextFromAllOpenWindows()
 		if(hasTexExtension.test(filename))
 		{
 			fullText = fullText + targetDocument.text + " ";
+
+      // Search for citations if a bibfile magic mark has been specified.
+      bibtex_files = get_bibtex_filenames_from_magic_mark(targetDocument.text);
+
+      for(var idx = 0; idx < bibtex_files.length; idx++)
+      {
+        var currentDirectory = getPathFromFilename(TW.target.fileName);
+        var full_path_to_bibfile = currentDirectory + "/" + bibtex_files[idx];
+
+        var file_contents = TW.readFile(full_path_to_bibfile);
+        if(file_contents.status == 0)
+        {
+			    fullText = fullText + " " + getBibtexKeys(file_contents.result) + " ";
+        }
+      }
 		}
 		// TODO: Search for citations if the file ends on .bib
 		var hasBibExtension = new RegExp(".*bib");
@@ -698,9 +713,52 @@ function getTextFromAllOpenWindows()
 		{
 			fullText = fullText + " " + getBibtexKeys(targetDocument.text) + " ";
 		}
+
 	}
 
 	return(fullText);
+}
+function get_bibtex_filenames_from_magic_mark(input_text)
+{
+  // Search for the bibtex file annotation, 
+  // https://github.com/TeXworks/texworks/wiki/Magic-Comments#using-the-insert-citations-feature
+  // % !TEX bibfile = file.bib
+  // % !TEX bibfile = file1.bib, file2.bib
+  var hasMagicBibfileMark = new RegExp("bibfile = (.*)");
+  var lines_with_magic_marks = get_lines_with_magic_mark(input_text);
+  var result_array = [];
+  for(var lines_idx = 0; lines_idx < lines_with_magic_marks.length; lines_idx++)
+  {
+    var current_line = lines_with_magic_marks[lines_idx];
+    var res = hasMagicBibfileMark.exec(current_line);
+    if(res !== null)
+    {
+      var temp = res[1].replace(" ", "");
+      result_array = result_array.concat(temp.split(','));
+    }
+  }
+  return result_array;
+}
+function get_lines_with_magic_mark(input_text)
+{
+  // Search for magic marks
+  // % !TEX bibfile = file.bib
+  // % !TEX root = master.tex
+  var hasMagicMark = new RegExp("% !TEX");
+  var result = [];
+
+  var lines = input_text.split("\n");
+  for(var lines_idx = 0; lines_idx < lines.length; lines_idx++)
+  {
+    var current_line = lines[lines_idx];
+    var res = hasMagicMark.exec(current_line);
+
+    if(hasMagicMark.test(current_line))
+    {
+      result.push(current_line);
+    }
+  }
+  return result;
 }
 function getBibtexKeys(inputString)
 {

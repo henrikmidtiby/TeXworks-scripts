@@ -9,6 +9,21 @@
 // Shortcut: Ctrl+Shift+M
 
 
+function showObject(inputObject, header)
+{
+	if(arguments.length == 1)
+	{
+		header = "Hej";
+	}
+	var tempText = "";
+	for(var prop in inputObject){
+		tempText += prop + " -> " + inputObject[prop] + "\n";
+	}
+	TW.information(null, header, tempText);
+}
+
+
+
 // Include functionality from other script
 var file = TW.readFile("autocompleteFunctions.js");
 if (file.status == 0) {
@@ -75,6 +90,15 @@ assertEqual(isElementInList(["a", "b"], "c"), false);
 assertEqual(isElementInList(["a", "b"], "b"), true);
 // locateMatchingWords
 // getTextFromAllOpenWindows
+// get_bibtex_filenames_from_magic_mark
+assertEqualLists(get_bibtex_filenames_from_magic_mark("\n% !TEX bibfile = library.bib\n"), ["library.bib"]);
+assertEqualLists(get_bibtex_filenames_from_magic_mark("\n% !TEX bibfile = library.bib, library2.bib\n"), ["library.bib", "library2.bib"]);
+assertEqualLists(get_bibtex_filenames_from_magic_mark("\n% !TEX root = master.tex\n"), []);
+assertEqualLists(get_bibtex_filenames_from_magic_mark("\n% !TEX root = master.tex\n% !TEX bibfile = library.bib\n"), ["library.bib"]);
+// get_lines_with_magic_mark
+assertEqualLists(get_lines_with_magic_mark("\n% !TEX bibfile = library.bib\n"), ["% !TEX bibfile = library.bib"]);
+assertEqualLists(get_lines_with_magic_mark("\n% !TEX root = master.tex\n"), ["% !TEX root = master.tex"]);
+assertEqualLists(get_lines_with_magic_mark("\n% !TEX root = master.tex\n% !TEX bibfile = library.bib\n"), ["% !TEX root = master.tex", "% !TEX bibfile = library.bib"]);
 // getBibtexKeys
 assertEqual(getBibtexKeys("\n\@article{key, \n"), "\\cite{key} ")
 assertEqual(getBibtexKeys("\n\@article{keyOne, \n\n\@book{keyTwo, \n"), "\\cite{keyOne} \\cite{keyTwo} ")
