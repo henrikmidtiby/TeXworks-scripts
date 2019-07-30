@@ -67,24 +67,24 @@ assert(shouldCompleteFilename('unknowncommand') != true);
 //assertEqual(determineEnvironmentStack("\\begin{document}\\begin{figure}\\end{figure}"), ["document"])
 //assertEqual(determineEnvironmentStack("\\begin{document}\\begin{figure}"), ["document", "figure"])
 // isAlphaNumeric
-assertEqual(true, isAlphaNumeric("A"))
-assertEqual(false, isAlphaNumeric(":"))
+assertEqual(true, isAlphaNumeric("A"));
+assertEqual(false, isAlphaNumeric(":"));
 // isAlphaNumericKommaOrSpace
-assertEqual(true, isAlphaNumericKommaOrSpace("A"))
-assertEqual(false, isAlphaNumericKommaOrSpace(":"))
+assertEqual(true, isAlphaNumericKommaOrSpace("A"));
+assertEqual(false, isAlphaNumericKommaOrSpace(":"));
 // getPathFromFilename
 assertEqual(getPathFromFilename('C:/Users/hemi/Dropbox/Work/2012-06-07PhdDefence/doc/presentation.tex'), 'C:/Users/hemi/Dropbox/Work/2012-06-07PhdDefence/doc');
 assertEqual(getPathFromFilename('pic/c'), 'pic');
 // getListOfFilesInDir
 // getMatchingFilenames
 // getTypeOfLineBreak
-assertEqual(getTypeOfLineBreak("\n\n"), "\n")
-assertEqual(getTypeOfLineBreak("\r\n"), "\r\n")
+assertEqual(getTypeOfLineBreak("\n\n"), "\n");
+assertEqual(getTypeOfLineBreak("\r\n"), "\r\n");
 // unique
 //assertEqual(unique(['a', 'b', 'c']), ['a', 'b', 'c']); // Does not work for some reason ...
 // determineMatchingCommandsFromCurrentCommand
-assertEqualLists(determineMatchingCommandsFromCurrentCommand("includeonly"), ["include"])
-assertEqualLists(determineMatchingCommandsFromCurrentCommand("label"), ["pageref", "ref", "eqref", "nameref", "autoref"])
+assertEqualLists(determineMatchingCommandsFromCurrentCommand("includeonly"), ["include"]);
+assertEqualLists(determineMatchingCommandsFromCurrentCommand("label"), ["pageref", "ref", "eqref", "nameref", "autoref"]);
 // isElementInList
 assertEqual(isElementInList(["a", "b"], "c"), false);
 assertEqual(isElementInList(["a", "b"], "b"), true);
@@ -100,16 +100,16 @@ assertEqualLists(get_lines_with_magic_mark("\n% !TEX bibfile = library.bib\n"), 
 assertEqualLists(get_lines_with_magic_mark("\n% !TEX root = master.tex\n"), ["% !TEX root = master.tex"]);
 assertEqualLists(get_lines_with_magic_mark("\n% !TEX root = master.tex\n% !TEX bibfile = library.bib\n"), ["% !TEX root = master.tex", "% !TEX bibfile = library.bib"]);
 // getBibtexKeys
-assertEqual(getBibtexKeys("\n\@article{key, \n"), "\\cite{key} ")
-assertEqual(getBibtexKeys("\n\@article{keyOne, \n\n\@book{keyTwo, \n"), "\\cite{keyOne} \\cite{keyTwo} ")
+assertEqual(getBibtexKeys("\n\@article{key, \n"), "\\cite{key} ");
+assertEqual(getBibtexKeys("\n\@article{keyOne, \n\n\@book{keyTwo, \n"), "\\cite{keyOne} \\cite{keyTwo} ");
 // locateMatchingWordsInString
 //assertEqual(locateMatchingWordsInString("tes", "testing other words", []), ["testing"])
 // wordsCleanUp
 // determineLongestCommonInitialSequence
 assertEqual(determineLongestCommonInitialSequence(['includegraphics', 'includepdf']), 'include');
 // getEndOfCommonSubstring
-assertEqual(getEndOfCommonSubstring("test", "tes"), "t")
-assertEqual(getEndOfCommonSubstring("testing", "tes"), "ting")
+assertEqual(getEndOfCommonSubstring("test", "tes"), "t");
+assertEqual(getEndOfCommonSubstring("testing", "tes"), "ting");
 // determineNextGuess
 assertEqual(determineNextGuess(['a', 'b', 'ba'], 'b'), 'ba');
 assertEqual(determineNextGuess(['a', 'b', 'ba'], 'ba'), 'a');
