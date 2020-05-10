@@ -720,6 +720,10 @@ function getTextFromAllOpenWindows()
 }
 function get_bibtex_filenames_from_magic_mark(input_text)
 {
+  if(typeof input_text == "undefined")
+  {
+    return [];
+  }
   // Search for the bibtex file annotation, 
   // https://github.com/TeXworks/texworks/wiki/Magic-Comments#using-the-insert-citations-feature
   // % !TEX bibfile = file.bib
