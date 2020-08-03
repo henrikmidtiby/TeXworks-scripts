@@ -118,6 +118,7 @@ function suggestCommandOrEnvironment(locationInformation)
 {
 	possibleSuggestions = [];
 	possibleSuggestions = addCommands(possibleSuggestions);
+	possibleSuggestions.push("\\begin{ex}\nThe function signature should be:\n\\begin{lstlisting}\n\\end{lstlisting}\nUse the following examples to test the function:\n\\begin{lstlisting}\n\\end{lstlisting}\n\\begin{hint}\n\\end{hint}\n\\begin{sol}\nA solution is:\n\\begin{lstlisting}\n\\end{lstlisting}\n\\end{sol}\n\\end{ex}\n");
 	possibleSuggestions.push("\\begin{align}\n\\end{align}");
 	possibleSuggestions.push("\\begin{align*}\n\\end{align*}");
 	possibleSuggestions.push("\\begin{table}\n\\end{table}");
@@ -145,6 +146,7 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{videoexercisebox}\n\\begin{videos}\n\\myitem{}{}\n\\end{videos}\n\\begin{exercises}\n\\myitem{}{}\n\\end{exercises}\n\\end{videoexercisebox}");
 	possibleSuggestions.push("\\usepackage[colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}");
 	possibleSuggestions.push("\\usepackage[utf8]{inputenc}");
+	possibleSuggestions.push("\\usepackage[font=it,labelfont=bf]{caption}");
 	possibleSuggestions.push("\\begin{questionbox}[label]\n\\begin{question}\n\\end{question}\n\\begin{answer}\n\\begin{verbatim}\n\\end{verbatim}\n\\end{answer}\n\\end{questionbox}");
 	possibleSuggestions.push("\\begin{questionbox}[label]\n\\begin{question}\n\\end{question}\n\\begin{answer}\n\\end{answer}\n\\end{questionbox}");
 	possibleSuggestions.push("\\begin{questionbox}[label]\n\\begin{question}\n\\end{question}\n\\end{questionbox}");
