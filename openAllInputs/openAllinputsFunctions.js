@@ -568,6 +568,10 @@ function OpenAllInputFiles()
 		{
 			this.copyTEXOptionsFromCurrentDocumentToNewDocument(newWindow);
 		}
+		else
+		{
+			TW.information(null, "Failed to create file", "Failed to create file probably due to missing permissions.\n\nEnable \"Allow scripts to write files.\" in the preferences menu.");
+		}
 	}
 	obj.copyTEXOptionsFromCurrentDocumentToNewDocument = function(newWindow)
 	{
