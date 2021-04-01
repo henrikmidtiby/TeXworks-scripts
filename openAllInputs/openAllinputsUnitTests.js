@@ -1,5 +1,5 @@
 // TeXworksScript
-// Title: Context aware autocomplete, unit tests
+// Title: Open all inputs, unit tests
 // Description: Unittests for autocompleter.
 // Author: Henrik Skov Midtiby
 // Version: 0.3
