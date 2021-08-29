@@ -160,6 +160,7 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\includepdf[pages = -]{filename.pdf}");
 	possibleSuggestions.push("\\includepdf[pages = -, nup=2x6, column]{filename.pdf}");
 	possibleSuggestions.push("\\begin{ex}\n\\begin{hint}\n\\end{hint}\n\\begin{secondhint}\n\\end{secondhint}\n\\begin{thirdhint}\n\\end{thirdhint}\n\\end{ex}");
+	possibleSuggestions.push("\\begin{lstlisting}\n\\end{lstlisting}");
 
 	matchedSuggestions = [];
 
