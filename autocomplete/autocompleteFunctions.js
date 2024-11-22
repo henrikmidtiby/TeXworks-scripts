@@ -558,7 +558,8 @@ function getListOfFilesInDir(directory)
 
 	if(retVal.status == 1)
 	{
-		showObject(retVal, "Execution of system command failed")
+		showObject(commandToListFiles, "commandToListFiles");
+		showObject(retVal, "Execution of system command failed");
 	}
 	if(retVal.status == 2)
 	{
