@@ -125,10 +125,10 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{table}\n\\centering\n\\begin{tabular}{c c}\nCol1 & Col2 \\\\\n\\hline\nV1	& V2\n\\end{tabular}\n\\caption{}\n\\label{tab}\n\\end{table}");	
 	possibleSuggestions.push("\\begin{tabular}{}\n\\end{tabular}");
 	possibleSuggestions.push("\\begin{figure}\n\\centering\n\\includegraphics[width=6cm]{}\n\\caption{}\n\\label{fig}\n\\end{figure}");
-	possibleSuggestions.push("\\begin{itemize}\n\\item\t\n\\item\t\n\\item\t\n\\end{itemize}");
-	possibleSuggestions.push("\\begin{enumerate}\n\\item\t\n\\item\t\n\\item\t\n\\end{enumerate}");
+	possibleSuggestions.push("\\begin{itemize}\n\\item \n\\item \n\\item \n\\end{itemize}");
+	possibleSuggestions.push("\\begin{enumerate}\n\\item \n\\item \n\\item \n\\end{enumerate}");
 	possibleSuggestions.push("\\begin{enumerate}[a)]\n\\item\t\n\\end{enumerate}");
-	possibleSuggestions.push("\\begin{description}\n\\item[]\t\n\\item[]\t\n\\item[]\t\n\\end{description}");
+	possibleSuggestions.push("\\begin{description}\n\\item[] \n\\item[] \n\\item[] \n\\end{description}");
 	possibleSuggestions.push("\\begin{wrapfigure}{r}{6cm}\n\\includegraphics{}\n\\caption{}\n\\end{wrapfigure}");
 	possibleSuggestions.push("\\begin{wrapfigure}[lineheight]{r}[overhang]{6cm}\n\\includegraphics{}\n\\caption{}\n\\end{wrapfigure}");
 	possibleSuggestions.push("\\begin{document}\n\\end{document}");
@@ -161,6 +161,7 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\includepdf[pages = -, nup=2x6, column]{filename.pdf}");
 	possibleSuggestions.push("\\begin{ex}\n\\begin{hint}\n\\end{hint}\n\\begin{secondhint}\n\\end{secondhint}\n\\begin{thirdhint}\n\\end{thirdhint}\n\\end{ex}");
 	possibleSuggestions.push("\\begin{lstlisting}\n\\end{lstlisting}");
+	possibleSuggestions.push("\\begin{considerations}\n\\begin{align*}\n\\end{align*}\n\\end{considerations}");
 
 	matchedSuggestions = [];
 
