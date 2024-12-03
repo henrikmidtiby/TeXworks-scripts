@@ -162,6 +162,7 @@ function suggestCommandOrEnvironment(locationInformation)
 	possibleSuggestions.push("\\begin{ex}\n\\begin{hint}\n\\end{hint}\n\\begin{secondhint}\n\\end{secondhint}\n\\begin{thirdhint}\n\\end{thirdhint}\n\\end{ex}");
 	possibleSuggestions.push("\\begin{lstlisting}\n\\end{lstlisting}");
 	possibleSuggestions.push("\\begin{considerations}\n\\begin{align*}\n\\end{align*}\n\\end{considerations}");
+	possibleSuggestions.push("\\begin{Question}{10}\n\\end{Question}\n\n\\begin{Answer}\n\\end{Answer}\n\n\\begin{Answer}\n\\end{Answer}\n\n\\begin{Answer}\n\\end{Answer}\n\n\\begin{Answer}\n\\end{Answer}\n")
 
 	matchedSuggestions = [];
 
